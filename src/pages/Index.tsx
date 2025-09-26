@@ -11,14 +11,14 @@ const Index = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       
-      <div className="flex flex-1 h-[calc(100vh-4rem)]">
+      <div className="flex flex-1 items-stretch h-[calc(100vh-4rem)]">
         {/* Left Sidebar - Document Library */}
-        <div className="w-72 h-full flex flex-col">
+        <div className="w-72 flex flex-col">
           <DocumentLibrary />
         </div>
 
         {/* Main Content - Document Table */}
-        <div className="flex-1 h-full flex flex-col">
+        <div className="flex-1 flex flex-col">
           <div className="p-6 flex flex-col h-full">
             {/* Action Cards */}
             <div className="grid grid-cols-3 gap-4 mb-8 flex-shrink-0">
@@ -79,7 +79,7 @@ const Index = () => {
         </div>
 
         {/* Right Sidebar - AI Assistant */}
-        <div className="w-80 h-full border-l flex flex-col">
+        <div className="w-80 border-l flex flex-col">
           <div className="h-full p-4 flex flex-col">
             <div className="flex-1 min-h-0">
               <AIAssistant />
