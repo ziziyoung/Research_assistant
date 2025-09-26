@@ -9,21 +9,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { DocumentLibrary } from "@/components/DocumentLibrary";
 
 export const Header = () => {
   return (
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center justify-between px-6">
-        {/* Logo and My Library */}
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">AI</span>
-            </div>
-            <h1 className="text-xl font-bold text-foreground">Research Assistant</h1>
+        {/* Logo */}
+        <div className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+            <span className="text-primary-foreground font-bold text-sm">AI</span>
           </div>
-          <DocumentLibrary />
+          <h1 className="text-xl font-bold text-foreground">Research Assistant</h1>
         </div>
 
         {/* Center Content */}

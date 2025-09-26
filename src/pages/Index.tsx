@@ -9,6 +9,11 @@ const Index = () => {
       <Header />
       
       <div className="flex h-[calc(100vh-4rem)]">
+        {/* Left Sidebar - Document Library */}
+        <div className="w-80 border-r bg-card">
+          <DocumentLibrary />
+        </div>
+
         {/* Main Content - Document Table */}
         <div className="flex-1 p-6">
           <DocumentTable />
