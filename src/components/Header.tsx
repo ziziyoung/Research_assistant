@@ -9,7 +9,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { DocumentLibrary } from "@/components/DocumentLibrary";
 
 export const Header = () => {
   return (
@@ -25,8 +24,7 @@ export const Header = () => {
 
         {/* Center Content */}
         <div className="flex-1 max-w-2xl mx-8">
-          <div className="flex gap-4 items-center">
-            <DocumentLibrary />
+          <div className="flex gap-4">
             <Button variant="default" size="sm">
               <Plus className="h-4 w-4 mr-2" />
               Create Document

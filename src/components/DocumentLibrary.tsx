@@ -1,15 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Plus, Upload, FileText, File, Image, Music, ChevronDown } from "lucide-react";
+import { Search, Plus, Upload, FileText, File, Image, Music } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 interface Document {
   id: string;
@@ -84,29 +78,24 @@ export const DocumentLibrary = () => {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="justify-between w-48">
-          My Library
-          <ChevronDown className="ml-2 h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-80 max-h-96 overflow-y-auto">
+    <div className="flex flex-col h-full">
+      {/* Header */}
+      <div className="p-4 border-b">
+        <h2 className="text-lg font-semibold text-foreground mb-3">My Library</h2>
+        
         {/* Search */}
-        <div className="p-3 border-b">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search documents..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 h-8"
-            />
-          </div>
+        <div className="relative mb-3">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            placeholder="Search documents..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9"
+          />
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-2 p-3 border-b">
+        <div className="flex gap-2">
           <Button variant="default" size="sm" className="flex-1">
             <Plus className="h-4 w-4 mr-2" />
             Create
@@ -116,32 +105,32 @@ export const DocumentLibrary = () => {
             Upload
           </Button>
         </div>
+      </div>
 
-        {/* Document List */}
-        <div className="max-h-64 overflow-y-auto">
-          {filteredDocuments.map((doc) => (
-            <DropdownMenuItem
-              key={doc.id}
-              className="p-3 cursor-pointer focus:bg-accent"
-              onClick={() => handleDocumentClick(doc.id)}
-            >
-              <div className="flex items-start gap-3 w-full">
-                {getFileIcon(doc.type)}
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-medium text-sm text-foreground truncate">
-                    {doc.name}
-                  </h4>
-                  <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
-                    <span>Modified {doc.modified}</span>
-                    <span>•</span>
-                    <span>{doc.size}</span>
-                  </div>
+      {/* Document List */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-2">
+        {filteredDocuments.map((doc) => (
+          <Card
+            key={doc.id}
+            className="p-3 document-hover cursor-pointer hover:shadow-sm"
+            onClick={() => handleDocumentClick(doc.id)}
+          >
+            <div className="flex items-start gap-3">
+              {getFileIcon(doc.type)}
+              <div className="flex-1 min-w-0">
+                <h4 className="font-medium text-sm text-foreground truncate">
+                  {doc.name}
+                </h4>
+                <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
+                  <span>Modified {doc.modified}</span>
+                  <span>•</span>
+                  <span>{doc.size}</span>
                 </div>
               </div>
-            </DropdownMenuItem>
-          ))}
-        </div>
-      </DropdownMenuContent>
-    </DropdownMenu>
+            </div>
+          </Card>
+        ))}
+      </div>
+    </div>
   );
 };
