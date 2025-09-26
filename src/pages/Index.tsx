@@ -13,7 +13,7 @@ const Index = () => {
       
       <div className="flex flex-1 h-[calc(100vh-4rem)]">
         {/* Left Sidebar - Collapsible Document Library */}
-        <div className="min-w-0 max-w-xs h-full">
+        <div className="w-72 h-full flex-shrink-0">
           <DocumentLibrary />
         </div>
 
@@ -76,7 +76,7 @@ const Index = () => {
         </div>
 
         {/* Right Sidebar - AI Assistant */}
-        <div className="w-80 h-full border-l">
+        <div className="w-80 h-full border-l flex-shrink-0">
           <div className="h-full p-4">
             <AIAssistant />
           </div>
