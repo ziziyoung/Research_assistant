@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Plus, Upload, FileText, File, Image, Music, ChevronDown, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Search, FileText, File, Image, Music, ChevronDown, ChevronRight } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -91,9 +90,8 @@ export const DocumentLibrary = () => {
       </CollapsibleTrigger>
       
       <CollapsibleContent className="flex flex-col">
-        {/* Search and Actions */}
-        <div className="p-4 border-b space-y-3">
-          {/* Search */}
+        {/* Search */}
+        <div className="p-4 border-b">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
@@ -102,18 +100,6 @@ export const DocumentLibrary = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-9"
             />
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex gap-2">
-            <Button variant="default" size="sm" className="flex-1">
-              <Plus className="h-4 w-4 mr-2" />
-              Create
-            </Button>
-            <Button variant="secondary" size="sm" className="flex-1">
-              <Upload className="h-4 w-4 mr-2" />
-              Upload
-            </Button>
           </div>
         </div>
 
