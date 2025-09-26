@@ -164,7 +164,7 @@ export const AIIndexing = () => {
       <div className="p-4 border-b">
         <h2 className="text-xl font-semibold text-foreground mb-2">AI Indexes</h2>
         <p className="text-sm text-muted-foreground">
-          Automatically generate summaries, keywords, and metadata for your documents
+          Display AI-generated document indexes with automatic summaries, keyword annotations, thumbnails, method summaries, code addresses, and literature times
         </p>
       </div>
 
@@ -235,13 +235,20 @@ export const AIIndexing = () => {
           </TabsContent>
 
           <TabsContent value="indexes" className="flex-1 p-4">
+            <div className="mb-4 p-3 bg-muted/50 rounded-lg">
+              <h3 className="font-medium text-sm text-foreground">AI-Generated Index Display</h3>
+              <p className="text-xs text-muted-foreground mt-1">
+                View and manage automatically generated document indexes with comprehensive AI analysis
+              </p>
+            </div>
+            
             <ScrollArea className="h-full">
               <div className="space-y-4">
                 {documents.length === 0 ? (
                   <Card>
                     <CardContent className="text-center py-8">
                       <FileText className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                      <p className="text-muted-foreground">No indexed documents yet. Upload and process documents to see AI-generated indexes here.</p>
+                      <p className="text-muted-foreground">No AI indexes available. Upload and process documents to generate AI-powered indexes with summaries, keywords, thumbnails, and metadata.</p>
                     </CardContent>
                   </Card>
                 ) : (
