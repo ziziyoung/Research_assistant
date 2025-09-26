@@ -20,39 +20,6 @@ const Index = () => {
         {/* Main Content - Document Table */}
         <div className="flex-1 flex flex-col justify-end">
           <div className="p-6 flex flex-col h-full">
-            {/* Action Cards */}
-            <div className="grid grid-cols-3 gap-4 mb-8 flex-shrink-0">
-              <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Plus className="h-5 w-5 text-blue-600" />
-                </div>
-                <div>
-                  <h3 className="font-medium text-foreground">New</h3>
-                  <p className="text-sm text-muted-foreground">Create a new document</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
-                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <Upload className="h-5 w-5 text-orange-600" />
-                </div>
-                <div>
-                  <h3 className="font-medium text-foreground">Upload</h3>
-                  <p className="text-sm text-muted-foreground">Upload local files</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
-                <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                  <FileText className="h-5 w-5 text-red-600" />
-                </div>
-                <div>
-                  <h3 className="font-medium text-foreground">Templates</h3>
-                  <p className="text-sm text-muted-foreground">Go to template gallery</p>
-                </div>
-              </div>
-            </div>
-            
             {/* Tabs and Document Table */}
             <div className="flex-1 flex flex-col min-h-0">
               <Tabs defaultValue="recent" className="w-full h-full flex flex-col">
