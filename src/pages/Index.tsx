@@ -9,8 +9,8 @@ const Index = () => {
       <Header />
       
       <div className="flex h-[calc(100vh-4rem)]">
-        {/* Left Sidebar - Document Library */}
-        <div className="w-80 border-r bg-card">
+        {/* Left Sidebar - Collapsible Document Library */}
+        <div className="min-w-0 max-w-xs">
           <DocumentLibrary />
         </div>
 

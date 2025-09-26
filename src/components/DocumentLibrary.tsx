@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Plus, Upload, FileText, File, Image, Music } from "lucide-react";
+import { Search, Plus, Upload, FileText, File, Image, Music, ChevronDown, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface Document {
   id: string;
@@ -67,6 +68,7 @@ const getFileIcon = (type: string) => {
 export const DocumentLibrary = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [documents] = useState<Document[]>(mockDocuments);
+  const [isOpen, setIsOpen] = useState(true);
   const navigate = useNavigate();
 
   const filteredDocuments = documents.filter(doc =>
@@ -78,59 +80,68 @@ export const DocumentLibrary = () => {
   };
 
   return (
-    <div className="flex flex-col h-full">
-      {/* Header */}
-      <div className="p-4 border-b">
-        <h2 className="text-lg font-semibold text-foreground mb-3">My Library</h2>
-        
-        {/* Search */}
-        <div className="relative mb-3">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Search documents..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
-          />
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="border-r bg-card">
+      <CollapsibleTrigger className="flex items-center justify-between w-full p-4 border-b hover:bg-muted/50 transition-colors">
+        <h2 className="text-lg font-semibold text-foreground">My Library</h2>
+        {isOpen ? (
+          <ChevronDown className="h-4 w-4 text-muted-foreground" />
+        ) : (
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        )}
+      </CollapsibleTrigger>
+      
+      <CollapsibleContent className="flex flex-col">
+        {/* Search and Actions */}
+        <div className="p-4 border-b space-y-3">
+          {/* Search */}
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search documents..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9"
+            />
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex gap-2">
+            <Button variant="default" size="sm" className="flex-1">
+              <Plus className="h-4 w-4 mr-2" />
+              Create
+            </Button>
+            <Button variant="secondary" size="sm" className="flex-1">
+              <Upload className="h-4 w-4 mr-2" />
+              Upload
+            </Button>
+          </div>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex gap-2">
-          <Button variant="default" size="sm" className="flex-1">
-            <Plus className="h-4 w-4 mr-2" />
-            Create
-          </Button>
-          <Button variant="secondary" size="sm" className="flex-1">
-            <Upload className="h-4 w-4 mr-2" />
-            Upload
-          </Button>
-        </div>
-      </div>
-
-      {/* Document List */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2">
-        {filteredDocuments.map((doc) => (
-          <Card
-            key={doc.id}
-            className="p-3 document-hover cursor-pointer hover:shadow-sm"
-            onClick={() => handleDocumentClick(doc.id)}
-          >
-            <div className="flex items-start gap-3">
-              {getFileIcon(doc.type)}
-              <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-sm text-foreground truncate">
-                  {doc.name}
-                </h4>
-                <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
-                  <span>Modified {doc.modified}</span>
-                  <span>•</span>
-                  <span>{doc.size}</span>
+        {/* Document List */}
+        <div className="max-h-96 overflow-y-auto p-4 space-y-2">
+          {filteredDocuments.map((doc) => (
+            <Card
+              key={doc.id}
+              className="p-3 cursor-pointer hover:shadow-sm transition-shadow"
+              onClick={() => handleDocumentClick(doc.id)}
+            >
+              <div className="flex items-start gap-3">
+                {getFileIcon(doc.type)}
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-medium text-sm text-foreground truncate">
+                    {doc.name}
+                  </h4>
+                  <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground">
+                    <span>Modified {doc.modified}</span>
+                    <span>•</span>
+                    <span>{doc.size}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Card>
-        ))}
-      </div>
-    </div>
+            </Card>
+          ))}
+        </div>
+      </CollapsibleContent>
+    </Collapsible>
   );
 };
