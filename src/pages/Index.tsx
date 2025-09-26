@@ -13,12 +13,12 @@ const Index = () => {
       
       <div className="flex h-[calc(100vh-4rem)]">
         {/* Left Sidebar - Collapsible Document Library */}
-        <div className="min-w-0 max-w-xs flex flex-col">
+        <div className="min-w-0 max-w-xs h-full flex flex-col">
           <DocumentLibrary />
         </div>
 
         {/* Main Content - Document Table */}
-        <div className="flex-1 p-6 flex flex-col">
+        <div className="flex-1 h-full p-6 flex flex-col">
           {/* Action Cards */}
           <div className="grid grid-cols-3 gap-4 mb-8 flex-shrink-0">
             <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
@@ -52,7 +52,7 @@ const Index = () => {
             </div>
           </div>
           
-          <div className="flex-1 min-h-0">
+          <div className="flex-1 overflow-hidden">
             <Tabs defaultValue="recent" className="w-full h-full flex flex-col">
               <TabsList className="grid w-fit grid-cols-3 mb-4 flex-shrink-0">
                 <TabsTrigger value="recent">Recent</TabsTrigger>
@@ -60,15 +60,15 @@ const Index = () => {
                 <TabsTrigger value="favorites">Favorites</TabsTrigger>
               </TabsList>
               
-              <TabsContent value="recent" className="flex-1 min-h-0">
+              <TabsContent value="recent" className="flex-1 overflow-hidden">
                 <DocumentTable />
               </TabsContent>
               
-              <TabsContent value="shared" className="flex-1 min-h-0">
+              <TabsContent value="shared" className="flex-1 overflow-hidden">
                 <DocumentTable />
               </TabsContent>
               
-              <TabsContent value="favorites" className="flex-1 min-h-0">
+              <TabsContent value="favorites" className="flex-1 overflow-hidden">
                 <DocumentTable />
               </TabsContent>
             </Tabs>
@@ -76,8 +76,10 @@ const Index = () => {
         </div>
 
         {/* Right Sidebar - AI Assistant */}
-        <div className="w-80 border-l p-4 flex flex-col">
-          <AIAssistant />
+        <div className="w-80 h-full border-l flex flex-col">
+          <div className="flex-1 p-4">
+            <AIAssistant />
+          </div>
         </div>
       </div>
     </div>
