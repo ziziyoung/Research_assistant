@@ -6,7 +6,7 @@ import { AIIndexing } from "@/components/AIIndexing";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
-import { Plus, Upload, FileText, Bot } from "lucide-react";
+import { Plus, Upload, FileText } from "lucide-react";
 
 const Index = () => {
   return (
@@ -23,21 +23,12 @@ const Index = () => {
         
         <ResizableHandle />
 
-        {/* Main Content - Document Management */}
+        {/* Main Content - Document Table */}
         <ResizablePanel defaultSize={58} minSize={40}>
-          <div className="flex flex-col h-full">
-            {/* Unified Header */}
-            <div className="p-6 border-b bg-background">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h1 className="text-2xl font-bold text-foreground">Document Management</h1>
-                  <p className="text-muted-foreground">Manage your documents with AI-powered indexing and organization</p>
-                </div>
-                <Bot className="h-8 w-8 text-primary" />
-              </div>
-              
+          <div className="flex flex-col justify-end h-full">
+            <div className="p-6 flex flex-col h-full">
               {/* Action Cards */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-4 mb-8 flex-shrink-0">
                 <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                     <Plus className="h-5 w-5 text-blue-600" />
@@ -68,48 +59,54 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            
-            {/* Main Content Tabs */}
-            <div className="flex-1 flex flex-col min-h-0">
-              <Tabs defaultValue="documents" className="w-full h-full flex flex-col">
-                <TabsList className="grid w-fit grid-cols-4 mx-6 mt-4 mb-4 flex-shrink-0">
-                  <TabsTrigger value="documents">Documents</TabsTrigger>
-                  <TabsTrigger value="recent">Recent</TabsTrigger>
-                  <TabsTrigger value="shared">Shared</TabsTrigger>
-                  <TabsTrigger value="ai-indexes">AI Indexes</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="documents" className="flex-1 min-h-0 px-6">
-                  <DocumentTable />
-                </TabsContent>
-                
-                <TabsContent value="recent" className="flex-1 min-h-0 px-6">
-                  <DocumentTable />
-                </TabsContent>
-                
-                <TabsContent value="shared" className="flex-1 min-h-0 px-6">
-                  <DocumentTable />
-                </TabsContent>
-                
-                <TabsContent value="ai-indexes" className="flex-1 min-h-0">
-                  <AIIndexing />
-                </TabsContent>
-              </Tabs>
+              
+              {/* Tabs and Document Table */}
+              <div className="flex-1 flex flex-col min-h-0">
+                <Tabs defaultValue="recent" className="w-full h-full flex flex-col">
+                  <TabsList className="grid w-fit grid-cols-3 mb-4 flex-shrink-0">
+                    <TabsTrigger value="recent">Recent</TabsTrigger>
+                    <TabsTrigger value="shared">Shared With Me</TabsTrigger>
+                    <TabsTrigger value="favorites">Favorites</TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="recent" className="flex-1 min-h-0">
+                    <DocumentTable />
+                  </TabsContent>
+                  
+                  <TabsContent value="shared" className="flex-1 min-h-0">
+                    <DocumentTable />
+                  </TabsContent>
+                  
+                  <TabsContent value="favorites" className="flex-1 min-h-0">
+                    <DocumentTable />
+                  </TabsContent>
+                </Tabs>
+              </div>
             </div>
           </div>
         </ResizablePanel>
 
         <ResizableHandle />
 
-        {/* Right Sidebar - AI Assistant */}
+        {/* Right Sidebar - AI Tools */}
         <ResizablePanel defaultSize={20} minSize={15} maxSize={35}>
           <div className="border-l flex flex-col h-full">
-            <div className="h-full p-4 flex flex-col">
-              <div className="flex-1 min-h-0">
-                <AIAssistant />
-              </div>
-            </div>
+            <Tabs defaultValue="assistant" className="h-full flex flex-col">
+              <TabsList className="grid w-full grid-cols-2 mx-4 mt-4">
+                <TabsTrigger value="assistant">AI Assistant</TabsTrigger>
+                <TabsTrigger value="indexing">AI Indexes</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="assistant" className="flex-1 p-4 min-h-0">
+                <div className="h-full">
+                  <AIAssistant />
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="indexing" className="flex-1 min-h-0">
+                <AIIndexing />
+              </TabsContent>
+            </Tabs>
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
