@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, Plus, Upload, FileText, File, Image, Music } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,34 +17,34 @@ interface Document {
 const mockDocuments: Document[] = [
   {
     id: "1",
-    name: "Voice Computing Analysis.pdf",
+    name: "Short Video Competition Analysis Lab",
     type: "pdf",
     created: "2024-01-15",
-    modified: "2024-01-17",
+    modified: "6:52 PM Sep 17",
     size: "2.3 MB"
   },
   {
     id: "2",
-    name: "Research Notes",
+    name: "Board",
     type: "text",
     created: "2024-01-14",
-    modified: "2024-01-16",
+    modified: "2:38 PM Sep 17",
     size: "456 KB"
   },
   {
     id: "3",
-    name: "Interview Transcript",
+    name: "Flowchart",
     type: "text",
     created: "2024-01-13",
-    modified: "2024-01-15",
+    modified: "2:37 PM Sep 17",
     size: "1.2 MB"
   },
   {
     id: "4",
-    name: "Dataset",
+    name: "Board",
     type: "data",
     created: "2024-01-12",
-    modified: "2024-01-14",
+    modified: "2:36 PM Sep 17",
     size: "5.7 MB"
   }
 ];
@@ -66,10 +67,15 @@ const getFileIcon = (type: string) => {
 export const DocumentLibrary = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [documents] = useState<Document[]>(mockDocuments);
+  const navigate = useNavigate();
 
   const filteredDocuments = documents.filter(doc =>
     doc.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleDocumentClick = (docId: string) => {
+    navigate(`/file/${docId}`);
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -107,6 +113,7 @@ export const DocumentLibrary = () => {
           <Card
             key={doc.id}
             className="p-3 document-hover cursor-pointer hover:shadow-sm"
+            onClick={() => handleDocumentClick(doc.id)}
           >
             <div className="flex items-start gap-3">
               {getFileIcon(doc.type)}

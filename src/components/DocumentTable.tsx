@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FileText, File, Image, Music, MoreHorizontal, Eye, Download, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -22,51 +23,38 @@ interface Document {
   id: string;
   name: string;
   type: string;
-  created: string;
+  owner: string;
   modified: string;
-  size: string;
 }
 
 const mockDocuments: Document[] = [
   {
     id: "1",
-    name: "Voice Computing Analysis.pdf",
+    name: "Short Video Competition Analysis Lab",
     type: "pdf",
-    created: "2024-01-15",
-    modified: "2024-01-17",
-    size: "2.3 MB"
+    owner: "yangyuwei",
+    modified: "6:52 PM Sep 17"
   },
   {
     id: "2",
-    name: "Research Notes.docx",
+    name: "Board",
     type: "text",
-    created: "2024-01-14",
-    modified: "2024-01-16",
-    size: "456 KB"
+    owner: "yangyuwei",
+    modified: "2:38 PM Sep 17"
   },
   {
     id: "3",
-    name: "Interview Transcript.txt",
+    name: "Flowchart",
     type: "text",
-    created: "2024-01-13",
-    modified: "2024-01-15",
-    size: "1.2 MB"
+    owner: "yangyuwei",
+    modified: "2:37 PM Sep 17"
   },
   {
     id: "4",
-    name: "Dataset.xlsx",
+    name: "Board",
     type: "data",
-    created: "2024-01-12",
-    modified: "2024-01-14",
-    size: "5.7 MB"
-  },
-  {
-    id: "5",
-    name: "Audio Recording.mp3",
-    type: "audio",
-    created: "2024-01-11",
-    modified: "2024-01-13",
-    size: "12.4 MB"
+    owner: "yangyuwei",
+    modified: "2:36 PM Sep 17"
   }
 ];
 
@@ -87,11 +75,23 @@ const getFileIcon = (type: string) => {
 
 export const DocumentTable = () => {
   const [documents] = useState<Document[]>(mockDocuments);
+  const navigate = useNavigate();
+
+  const handleFileClick = (fileId: string) => {
+    navigate(`/file/${fileId}`);
+  };
 
   return (
     <Card className="h-full">
-      <div className="p-6">
-        <h3 className="text-lg font-semibold text-foreground mb-4">Documents</h3>
+        <div className="p-6">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-lg font-semibold text-foreground">Documents</h3>
+            <div className="text-xs text-muted-foreground">
+              AI indexes: Automatically generate summary indexes, simple keyword annotations,<br />
+              thumbnails, method summaries, code addresses, literature times, and supports<br />
+              batch import and batch generation of index management documents
+            </div>
+          </div>
         
         <div className="rounded-md border">
           <Table>
@@ -99,15 +99,18 @@ export const DocumentTable = () => {
               <TableRow>
                 <TableHead className="w-[50px]"></TableHead>
                 <TableHead>Name</TableHead>
-                <TableHead>Created</TableHead>
+                <TableHead>Owner</TableHead>
                 <TableHead>Modified</TableHead>
-                <TableHead>Size</TableHead>
                 <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {documents.map((doc) => (
-                <TableRow key={doc.id} className="document-hover">
+                <TableRow 
+                  key={doc.id} 
+                  className="document-hover cursor-pointer"
+                  onClick={() => handleFileClick(doc.id)}
+                >
                   <TableCell>
                     {getFileIcon(doc.type)}
                   </TableCell>
@@ -115,15 +118,12 @@ export const DocumentTable = () => {
                     {doc.name}
                   </TableCell>
                   <TableCell className="text-muted-foreground">
-                    {doc.created}
+                    {doc.owner}
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {doc.modified}
                   </TableCell>
-                  <TableCell className="text-muted-foreground">
-                    {doc.size}
-                  </TableCell>
-                  <TableCell>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
@@ -131,7 +131,7 @@ export const DocumentTable = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleFileClick(doc.id)}>
                           <Eye className="h-4 w-4 mr-2" />
                           View
                         </DropdownMenuItem>

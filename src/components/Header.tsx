@@ -22,28 +22,22 @@ export const Header = () => {
           <h1 className="text-xl font-bold text-foreground">Research Assistant</h1>
         </div>
 
-        {/* Center Search */}
-        <div className="flex-1 max-w-md mx-8">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search across all documents..."
-              className="pl-9 bg-muted/50"
-            />
+        {/* Center Content */}
+        <div className="flex-1 max-w-2xl mx-8">
+          <div className="flex gap-4">
+            <Button variant="default" size="sm">
+              <Plus className="h-4 w-4 mr-2" />
+              Create Document
+            </Button>
+            <Button variant="secondary" size="sm">
+              <Upload className="h-4 w-4 mr-2" />
+              Upload File
+            </Button>
           </div>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          <Button variant="secondary" size="sm">
-            <Plus className="h-4 w-4 mr-2" />
-            Create Document
-          </Button>
-          <Button variant="secondary" size="sm">
-            <Upload className="h-4 w-4 mr-2" />
-            Upload File
-          </Button>
-          
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="relative h-8 w-8 rounded-full">
