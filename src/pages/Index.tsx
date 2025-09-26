@@ -11,14 +11,14 @@ const Index = () => {
     <div className="min-h-screen bg-background flex flex-col">
       <Header />
       
-      <div className="flex flex-1 h-[calc(100vh-4rem)]">
+      <div className="flex flex-1 h-[calc(100vh-4rem)] items-stretch">
         {/* Left Sidebar - Collapsible Document Library */}
-        <div className="w-72 h-full flex-shrink-0">
+        <div className="w-72 flex-shrink-0 self-end flex">
           <DocumentLibrary />
         </div>
 
         {/* Main Content - Document Table */}
-        <div className="flex-1 h-full p-6 flex flex-col">
+        <div className="flex-1 p-6 flex flex-col self-end">
           {/* Action Cards */}
           <div className="grid grid-cols-3 gap-4 mb-8 flex-shrink-0">
             <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
@@ -76,8 +76,8 @@ const Index = () => {
         </div>
 
         {/* Right Sidebar - AI Assistant */}
-        <div className="w-80 h-full border-l flex-shrink-0">
-          <div className="h-full p-4">
+        <div className="w-80 border-l flex-shrink-0 self-end flex">
+          <div className="p-4 flex-1">
             <AIAssistant />
           </div>
         </div>
