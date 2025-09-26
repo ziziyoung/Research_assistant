@@ -134,7 +134,7 @@ export const DocumentTable = () => {
         </div>
       </div>
       
-      <div className="rounded-md border flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
