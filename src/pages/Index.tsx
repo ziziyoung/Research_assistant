@@ -2,6 +2,7 @@ import { Header } from "@/components/Header";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
 import { DocumentTable } from "@/components/DocumentTable";
 import { AIAssistant } from "@/components/AIAssistant";
+import { AIIndexing } from "@/components/AIIndexing";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
@@ -87,14 +88,25 @@ const Index = () => {
 
         <ResizableHandle />
 
-        {/* Right Sidebar - AI Assistant */}
+        {/* Right Sidebar - AI Tools */}
         <ResizablePanel defaultSize={20} minSize={15} maxSize={35}>
           <div className="border-l flex flex-col h-full">
-            <div className="h-full p-4 flex flex-col">
-              <div className="flex-1 min-h-0">
-                <AIAssistant />
-              </div>
-            </div>
+            <Tabs defaultValue="assistant" className="h-full flex flex-col">
+              <TabsList className="grid w-full grid-cols-2 mx-4 mt-4">
+                <TabsTrigger value="assistant">AI Assistant</TabsTrigger>
+                <TabsTrigger value="indexing">AI Indexes</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="assistant" className="flex-1 p-4 min-h-0">
+                <div className="h-full">
+                  <AIAssistant />
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="indexing" className="flex-1 min-h-0">
+                <AIIndexing />
+              </TabsContent>
+            </Tabs>
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
