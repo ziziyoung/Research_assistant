@@ -18,7 +18,7 @@ const Index = () => {
         </div>
 
         {/* Main Content - Document Table */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col justify-end">
           <div className="p-6 flex flex-col h-full">
             {/* Action Cards */}
             <div className="grid grid-cols-3 gap-4 mb-8 flex-shrink-0">
