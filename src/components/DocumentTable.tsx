@@ -83,9 +83,9 @@ export const DocumentTable = () => {
   };
 
   return (
-    <div className="h-full">
+    <div className="h-full flex flex-col">
       {/* Filter Toolbar */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 flex-shrink-0">
         <div className="flex items-center gap-2">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -134,7 +134,7 @@ export const DocumentTable = () => {
         </div>
       </div>
       
-      <div className="rounded-md border">
+      <div className="rounded-md border flex-1 overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>
@@ -145,63 +145,67 @@ export const DocumentTable = () => {
               <TableHead className="w-[50px]"></TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {documents.map((doc) => (
-              <TableRow 
-                key={doc.id} 
-                className="cursor-pointer hover:bg-muted/50"
-                onClick={() => handleFileClick(doc.id)}
-              >
-                <TableCell>
-                  {getFileIcon(doc.type)}
-                </TableCell>
-                <TableCell>
-                  <div>
-                    <div className="font-medium text-foreground">{doc.name}</div>
-                    <div className="text-sm text-muted-foreground">in Drive</div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-2">
-                    <Avatar className="h-6 w-6">
-                      <AvatarFallback className="text-xs bg-purple-100 text-purple-600">
-                        {doc.owner.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span className="text-sm text-muted-foreground">{doc.owner}</span>
-                  </div>
-                </TableCell>
-                <TableCell className="text-muted-foreground text-sm">
-                  {doc.modified}
-                </TableCell>
-                <TableCell onClick={(e) => e.stopPropagation()}>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                        <MoreHorizontal className="h-4 w-4" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleFileClick(doc.id)}>
-                        <Eye className="h-4 w-4 mr-2" />
-                        View
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Download className="h-4 w-4 mr-2" />
-                        Download
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-destructive">
-                        <Trash2 className="h-4 w-4 mr-2" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
         </Table>
+        <div className="overflow-auto h-full">
+          <Table>
+            <TableBody>
+              {documents.map((doc) => (
+                <TableRow 
+                  key={doc.id} 
+                  className="cursor-pointer hover:bg-muted/50"
+                  onClick={() => handleFileClick(doc.id)}
+                >
+                  <TableCell>
+                    {getFileIcon(doc.type)}
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <div className="font-medium text-foreground">{doc.name}</div>
+                      <div className="text-sm text-muted-foreground">in Drive</div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <Avatar className="h-6 w-6">
+                        <AvatarFallback className="text-xs bg-purple-100 text-purple-600">
+                          {doc.owner.charAt(0).toUpperCase()}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span className="text-sm text-muted-foreground">{doc.owner}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground text-sm">
+                    {doc.modified}
+                  </TableCell>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => handleFileClick(doc.id)}>
+                          <Eye className="h-4 w-4 mr-2" />
+                          View
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Download className="h-4 w-4 mr-2" />
+                          Download
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="text-destructive">
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </div>
     </div>
   );

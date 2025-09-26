@@ -79,8 +79,8 @@ export const DocumentLibrary = () => {
   };
 
   return (
-    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="border-r bg-card">
-      <CollapsibleTrigger className="flex items-center justify-between w-full p-4 border-b hover:bg-muted/50 transition-colors">
+    <Collapsible open={isOpen} onOpenChange={setIsOpen} className="border-r bg-card h-full flex flex-col">
+      <CollapsibleTrigger className="flex items-center justify-between w-full p-4 border-b hover:bg-muted/50 transition-colors flex-shrink-0">
         <h2 className="text-lg font-semibold text-foreground">My Library</h2>
         {isOpen ? (
           <ChevronDown className="h-4 w-4 text-muted-foreground" />
@@ -89,9 +89,9 @@ export const DocumentLibrary = () => {
         )}
       </CollapsibleTrigger>
       
-      <CollapsibleContent className="flex flex-col">
+      <CollapsibleContent className="flex flex-col flex-1 overflow-hidden">
         {/* Search */}
-        <div className="p-4 border-b">
+        <div className="p-4 border-b flex-shrink-0">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
@@ -104,11 +104,11 @@ export const DocumentLibrary = () => {
         </div>
 
         {/* Document List */}
-        <div className="max-h-96 overflow-y-auto p-4 space-y-2">
+        <div className="flex-1 overflow-y-auto p-4 space-y-2">
           {filteredDocuments.map((doc) => (
             <Card
               key={doc.id}
-              className="p-3 cursor-pointer hover:shadow-sm transition-shadow"
+              className="p-3 cursor-pointer hover:shadow-sm transition-shadow flex-shrink-0"
               onClick={() => handleDocumentClick(doc.id)}
             >
               <div className="flex items-start gap-3">

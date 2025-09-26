@@ -8,12 +8,12 @@ import { Plus, Upload, FileText } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Header />
       
-      <div className="flex h-[calc(100vh-4rem)]">
+      <div className="flex flex-1 h-[calc(100vh-4rem)]">
         {/* Left Sidebar - Collapsible Document Library */}
-        <div className="min-w-0 max-w-xs h-full flex flex-col">
+        <div className="min-w-0 max-w-xs h-full">
           <DocumentLibrary />
         </div>
 
@@ -76,8 +76,8 @@ const Index = () => {
         </div>
 
         {/* Right Sidebar - AI Assistant */}
-        <div className="w-80 h-full border-l flex flex-col">
-          <div className="flex-1 p-4">
+        <div className="w-80 h-full border-l">
+          <div className="h-full p-4">
             <AIAssistant />
           </div>
         </div>
