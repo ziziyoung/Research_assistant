@@ -13,14 +13,14 @@ const Index = () => {
       
       <div className="flex h-[calc(100vh-4rem)]">
         {/* Left Sidebar - Collapsible Document Library */}
-        <div className="min-w-0 max-w-xs">
+        <div className="min-w-0 max-w-xs flex flex-col">
           <DocumentLibrary />
         </div>
 
         {/* Main Content - Document Table */}
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-6 flex flex-col">
           {/* Action Cards */}
-          <div className="grid grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-3 gap-4 mb-8 flex-shrink-0">
             <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
               <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                 <Plus className="h-5 w-5 text-blue-600" />
@@ -52,29 +52,31 @@ const Index = () => {
             </div>
           </div>
           
-          <Tabs defaultValue="recent" className="w-full">
-            <TabsList className="grid w-fit grid-cols-3 mb-4">
-              <TabsTrigger value="recent">Recent</TabsTrigger>
-              <TabsTrigger value="shared">Shared With Me</TabsTrigger>
-              <TabsTrigger value="favorites">Favorites</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="recent">
-              <DocumentTable />
-            </TabsContent>
-            
-            <TabsContent value="shared">
-              <DocumentTable />
-            </TabsContent>
-            
-            <TabsContent value="favorites">
-              <DocumentTable />
-            </TabsContent>
-          </Tabs>
+          <div className="flex-1 min-h-0">
+            <Tabs defaultValue="recent" className="w-full h-full flex flex-col">
+              <TabsList className="grid w-fit grid-cols-3 mb-4 flex-shrink-0">
+                <TabsTrigger value="recent">Recent</TabsTrigger>
+                <TabsTrigger value="shared">Shared With Me</TabsTrigger>
+                <TabsTrigger value="favorites">Favorites</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="recent" className="flex-1 min-h-0">
+                <DocumentTable />
+              </TabsContent>
+              
+              <TabsContent value="shared" className="flex-1 min-h-0">
+                <DocumentTable />
+              </TabsContent>
+              
+              <TabsContent value="favorites" className="flex-1 min-h-0">
+                <DocumentTable />
+              </TabsContent>
+            </Tabs>
+          </div>
         </div>
 
         {/* Right Sidebar - AI Assistant */}
-        <div className="w-80 border-l p-4">
+        <div className="w-80 border-l p-4 flex flex-col">
           <AIAssistant />
         </div>
       </div>
