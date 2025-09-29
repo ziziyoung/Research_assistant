@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   FileText, 
   Hash, 
@@ -73,7 +72,7 @@ export const AIIndexing = () => {
         </p>
       </div>
 
-      <ScrollArea className="flex-1">
+      <div className="flex-1 overflow-auto">{/* Both horizontal and vertical scroll */}
         <div className="p-6 space-y-6">
           {documents.map((doc) => (
             <Card key={doc.id} className="overflow-hidden">
@@ -165,7 +164,7 @@ export const AIIndexing = () => {
             </Card>
           ))}
         </div>
-      </ScrollArea>
+      </div>
     </div>
   );
 };

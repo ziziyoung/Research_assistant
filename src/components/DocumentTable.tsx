@@ -134,7 +134,7 @@ export const DocumentTable = () => {
         </div>
       </div>
       
-      <div className="flex-1 overflow-auto">
+      <div className="flex-1 overflow-auto">{/* Both horizontal and vertical scroll */}
         <Table>
           <TableHeader>
             <TableRow>

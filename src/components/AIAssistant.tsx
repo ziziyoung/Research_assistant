@@ -3,7 +3,6 @@ import { Bot, Send, Mic, Square, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useToast } from "@/hooks/use-toast";
 
 interface Message {
@@ -118,7 +117,7 @@ export const AIAssistant = () => {
       </div>
 
       {/* Messages */}
-      <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
+      <div className="flex-1 overflow-auto p-4" ref={scrollAreaRef}>{/* Both horizontal and vertical scroll */}
         <div className="space-y-4">
           {messages.map((message) => (
             <div
@@ -150,7 +149,7 @@ export const AIAssistant = () => {
             </div>
           )}
         </div>
-      </ScrollArea>
+      </div>
 
       {/* Input */}
       <div className="p-4 border-t">
