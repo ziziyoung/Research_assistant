@@ -64,7 +64,7 @@ export const AIIndexing = () => {
   ]);
 
   return (
-    <div className="h-full w-full flex flex-col bg-background">{/* Independent scroll container */}
+    <div className="h-full flex flex-col bg-background">
       <div className="p-6 border-b bg-card">
         <h2 className="text-2xl font-bold text-foreground mb-2">AI Indexes</h2>
         <p className="text-sm text-muted-foreground">

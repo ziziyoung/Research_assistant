@@ -15,20 +15,57 @@ const Index = () => {
       
       <ResizablePanelGroup direction="horizontal" className="flex-1 h-[calc(100vh-4rem)]">
         {/* Left Sidebar - Document Library */}
-        <ResizablePanel defaultSize={22} minSize={15} maxSize={35}>
-          <div className="h-full w-full overflow-hidden">
-            <DocumentLibrary />
-          </div>
+        <ResizablePanel defaultSize={22} minSize={15} maxSize={35} className="overflow-hidden">
+          <DocumentLibrary />
         </ResizablePanel>
         
         <ResizableHandle />
 
         {/* Main Content - Document Management */}
-        <ResizablePanel defaultSize={58} minSize={40}>
-          <div className="h-full w-full overflow-hidden flex flex-col">
+        <ResizablePanel defaultSize={58} minSize={40} className="overflow-hidden">
+          <div className="flex flex-col h-full">
             {/* Unified Header */}
             <div className="p-6 border-b bg-background flex-shrink-0">
-...
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h1 className="text-2xl font-bold text-foreground">Document Management</h1>
+                  <p className="text-muted-foreground">Manage your documents with AI-powered indexing and organization</p>
+                </div>
+                <Bot className="h-8 w-8 text-primary" />
+              </div>
+              
+              {/* Action Cards */}
+              <div className="grid grid-cols-3 gap-4">
+                <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <Plus className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-foreground">New</h3>
+                    <p className="text-sm text-muted-foreground">Create a new document</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
+                  <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                    <Upload className="h-5 w-5 text-orange-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-foreground">Upload</h3>
+                    <p className="text-sm text-muted-foreground">Upload local files</p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
+                  <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                    <FileText className="h-5 w-5 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-medium text-foreground">Templates</h3>
+                    <p className="text-sm text-muted-foreground">Go to template gallery</p>
+                  </div>
+                </div>
+              </div>
             </div>
             
             {/* Main Content Tabs */}
@@ -41,19 +78,19 @@ const Index = () => {
                   <TabsTrigger value="ai-indexes">AI Indexes</TabsTrigger>
                 </TabsList>
                 
-                <TabsContent value="documents" className="flex-1 min-h-0 px-6 overflow-auto m-0">
+                <TabsContent value="documents" className="flex-1 min-h-0 px-6 overflow-hidden">
                   <DocumentTable />
                 </TabsContent>
                 
-                <TabsContent value="recent" className="flex-1 min-h-0 px-6 overflow-auto m-0">
+                <TabsContent value="recent" className="flex-1 min-h-0 px-6 overflow-hidden">
                   <DocumentTable />
                 </TabsContent>
                 
-                <TabsContent value="shared" className="flex-1 min-h-0 px-6 overflow-auto m-0">
+                <TabsContent value="shared" className="flex-1 min-h-0 px-6 overflow-hidden">
                   <DocumentTable />
                 </TabsContent>
                 
-                <TabsContent value="ai-indexes" className="flex-1 min-h-0 overflow-auto m-0">
+                <TabsContent value="ai-indexes" className="flex-1 min-h-0 overflow-hidden">
                   <AIIndexing />
                 </TabsContent>
               </Tabs>
@@ -64,8 +101,8 @@ const Index = () => {
         <ResizableHandle />
 
         {/* Right Sidebar - AI Assistant */}
-        <ResizablePanel defaultSize={20} minSize={15} maxSize={35}>
-          <div className="h-full w-full overflow-hidden border-l">
+        <ResizablePanel defaultSize={20} minSize={15} maxSize={35} className="overflow-hidden">
+          <div className="border-l h-full">
             <AIAssistant />
           </div>
         </ResizablePanel>

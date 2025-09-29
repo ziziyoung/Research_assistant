@@ -96,7 +96,7 @@ export const AIAssistant = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col p-4">{/* Independent scroll container */}
+    <div className="flex flex-col h-full p-4">
       <Card className="flex flex-col h-full glass-panel overflow-hidden">
       {/* Header */}
       <div className="p-4 border-b bg-ai-secondary/20">

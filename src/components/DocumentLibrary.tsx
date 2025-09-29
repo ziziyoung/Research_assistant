@@ -149,7 +149,7 @@ export const DocumentLibrary = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col border-r bg-card">{/* Independent scroll container */}
+    <div className="h-full flex flex-col border-r bg-card">
       {/* Header */}
       <div className="p-4 border-b flex-shrink-0">
         <h2 className="text-lg font-semibold text-foreground mb-3">My Library</h2>
