@@ -102,9 +102,7 @@ const Index = () => {
 
         {/* Right Sidebar - AI Assistant */}
         <ResizablePanel defaultSize={20} minSize={15} maxSize={35} className="overflow-hidden">
-          <div className="border-l h-full">
-            <AIAssistant />
-          </div>
+          <AIAssistant />
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>

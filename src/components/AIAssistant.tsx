@@ -96,7 +96,7 @@ export const AIAssistant = () => {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full border-l">
       {/* Header */}
       <div className="p-4 border-b bg-card flex-shrink-0">
         <div className="flex items-center justify-between">
