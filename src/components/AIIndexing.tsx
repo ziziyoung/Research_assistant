@@ -65,106 +65,107 @@ export const AIIndexing = () => {
   ]);
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-4 border-b">
-        <h2 className="text-xl font-semibold text-foreground mb-2">AI Indexes</h2>
+    <div className="h-full flex flex-col bg-background">
+      <div className="p-6 border-b bg-card">
+        <h2 className="text-2xl font-bold text-foreground mb-2">AI Indexes</h2>
         <p className="text-sm text-muted-foreground">
-          Display AI-generated document indexes with automatic summaries, keyword annotations, thumbnails, method summaries, code addresses, and literature times
+          AI-generated document indexes with automatic summaries and metadata
         </p>
       </div>
 
-      <div className="flex-1 overflow-hidden">
-        <div className="mb-4 p-3 bg-muted/50 rounded-lg mx-4 mt-4">
-          <h3 className="font-medium text-sm text-foreground">AI-Generated Index Display</h3>
-          <p className="text-xs text-muted-foreground mt-1">
-            Displaying AI-generated document indexes with automatic summaries, keyword annotations, thumbnails, method summaries, code addresses, and literature times
-          </p>
+      <ScrollArea className="flex-1">
+        <div className="p-6 space-y-6">
+          {documents.map((doc) => (
+            <Card key={doc.id} className="overflow-hidden">
+              <CardHeader className="pb-4 bg-muted/30">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <CardTitle className="text-lg font-semibold truncate">{doc.name}</CardTitle>
+                    <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
+                      <Clock className="h-3 w-3" />
+                      <span>{doc.literatureTime}</span>
+                    </div>
+                  </div>
+                  <Badge variant="secondary" className="shrink-0">
+                    {doc.processingStatus}
+                  </Badge>
+                </div>
+              </CardHeader>
+              
+              <CardContent className="pt-6">
+                <div className="grid grid-cols-1 lg:grid-cols-[1fr,200px] gap-6">
+                  {/* Main Content */}
+                  <div className="space-y-6">
+                    {/* Summary */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <FileText className="h-4 w-4 text-primary" />
+                        <h4 className="font-semibold text-sm text-foreground">Summary</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {doc.summary}
+                      </p>
+                    </div>
+
+                    {/* Method Summary */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Code className="h-4 w-4 text-primary" />
+                        <h4 className="font-semibold text-sm text-foreground">Method Summary</h4>
+                      </div>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        {doc.methodSummary}
+                      </p>
+                    </div>
+
+                    {/* Keywords */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Hash className="h-4 w-4 text-primary" />
+                        <h4 className="font-semibold text-sm text-foreground">Keywords</h4>
+                      </div>
+                      <div className="flex flex-wrap gap-2">
+                        {doc.keywords.map((keyword, index) => (
+                          <Badge key={index} variant="outline" className="text-xs font-normal">
+                            {keyword}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Code Address */}
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Code className="h-4 w-4 text-primary" />
+                        <h4 className="font-semibold text-sm text-foreground">Code Address</h4>
+                      </div>
+                      <a 
+                        href={doc.codeAddress} 
+                        className="text-sm text-primary hover:underline break-all"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {doc.codeAddress}
+                      </a>
+                    </div>
+                  </div>
+
+                  {/* Thumbnail Sidebar */}
+                  <div className="flex flex-col items-center">
+                    <div className="flex items-center gap-2 mb-3 self-start">
+                      <Image className="h-4 w-4 text-primary" />
+                      <h4 className="font-semibold text-sm text-foreground">Thumbnail</h4>
+                    </div>
+                    <div className="w-full aspect-[3/4] bg-muted/50 rounded-lg border-2 border-border flex items-center justify-center">
+                      <Image className="h-12 w-12 text-muted-foreground/50" />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-        
-        <ScrollArea className="h-full px-4">
-          <div className="space-y-4">
-            {documents.map((doc) => (
-              <Card key={doc.id}>
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-lg">{doc.name}</CardTitle>
-                    <Badge variant="default">
-                      {doc.processingStatus}
-                    </Badge>
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-3">
-                      <div>
-                        <h4 className="font-medium flex items-center gap-2 text-sm">
-                          <FileText className="h-4 w-4" />
-                          Summary
-                        </h4>
-                        <p className="text-sm text-muted-foreground mt-1">{doc.summary}</p>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-medium flex items-center gap-2 text-sm">
-                          <Hash className="h-4 w-4" />
-                          Keywords
-                        </h4>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {doc.keywords.map((keyword, index) => (
-                            <Badge key={index} variant="outline" className="text-xs">
-                              {keyword}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h4 className="font-medium flex items-center gap-2 text-sm">
-                          <Code className="h-4 w-4" />
-                          Method Summary
-                        </h4>
-                        <p className="text-sm text-muted-foreground mt-1">{doc.methodSummary}</p>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3">
-                      <div>
-                        <h4 className="font-medium flex items-center gap-2 text-sm">
-                          <Image className="h-4 w-4" />
-                          Thumbnail
-                        </h4>
-                        <div className="mt-1 w-24 h-32 bg-muted rounded border flex items-center justify-center">
-                          <Image className="h-8 w-8 text-muted-foreground" />
-                        </div>
-                      </div>
-
-                      <div>
-                        <h4 className="font-medium flex items-center gap-2 text-sm">
-                          <Clock className="h-4 w-4" />
-                          Literature Time
-                        </h4>
-                        <p className="text-sm text-muted-foreground mt-1">{doc.literatureTime}</p>
-                      </div>
-
-                      <div>
-                        <h4 className="font-medium text-sm">Code Address</h4>
-                        <a 
-                          href={doc.codeAddress} 
-                          className="text-sm text-primary hover:underline mt-1 block truncate"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {doc.codeAddress}
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </ScrollArea>
-      </div>
+      </ScrollArea>
     </div>
   );
 };
