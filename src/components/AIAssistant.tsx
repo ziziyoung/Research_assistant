@@ -97,7 +97,8 @@ export const AIAssistant = () => {
   };
 
   return (
-    <Card className="flex flex-col h-full glass-panel">
+    <div className="flex flex-col h-full p-4">
+      <Card className="flex flex-col h-full glass-panel overflow-hidden">
       {/* Header */}
       <div className="p-4 border-b bg-ai-secondary/20">
         <div className="flex items-center justify-between">
@@ -183,6 +184,7 @@ export const AIAssistant = () => {
           </Button>
         </div>
       </div>
-    </Card>
+      </Card>
+    </div>
   );
 };

@@ -15,19 +15,17 @@ const Index = () => {
       
       <ResizablePanelGroup direction="horizontal" className="flex-1 h-[calc(100vh-4rem)]">
         {/* Left Sidebar - Document Library */}
-        <ResizablePanel defaultSize={22} minSize={15} maxSize={35}>
-          <div className="h-full flex flex-col">
-            <DocumentLibrary />
-          </div>
+        <ResizablePanel defaultSize={22} minSize={15} maxSize={35} className="overflow-hidden">
+          <DocumentLibrary />
         </ResizablePanel>
         
         <ResizableHandle />
 
         {/* Main Content - Document Management */}
-        <ResizablePanel defaultSize={58} minSize={40}>
+        <ResizablePanel defaultSize={58} minSize={40} className="overflow-hidden">
           <div className="flex flex-col h-full">
             {/* Unified Header */}
-            <div className="p-6 border-b bg-background">
+            <div className="p-6 border-b bg-background flex-shrink-0">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h1 className="text-2xl font-bold text-foreground">Document Management</h1>
@@ -71,7 +69,7 @@ const Index = () => {
             </div>
             
             {/* Main Content Tabs */}
-            <div className="flex-1 flex flex-col min-h-0">
+            <div className="flex-1 min-h-0 overflow-hidden">
               <Tabs defaultValue="documents" className="w-full h-full flex flex-col">
                 <TabsList className="grid w-fit grid-cols-4 mx-6 mt-4 mb-4 flex-shrink-0">
                   <TabsTrigger value="documents">Documents</TabsTrigger>
@@ -80,19 +78,19 @@ const Index = () => {
                   <TabsTrigger value="ai-indexes">AI Indexes</TabsTrigger>
                 </TabsList>
                 
-                <TabsContent value="documents" className="flex-1 min-h-0 px-6">
+                <TabsContent value="documents" className="flex-1 min-h-0 px-6 overflow-hidden">
                   <DocumentTable />
                 </TabsContent>
                 
-                <TabsContent value="recent" className="flex-1 min-h-0 px-6">
+                <TabsContent value="recent" className="flex-1 min-h-0 px-6 overflow-hidden">
                   <DocumentTable />
                 </TabsContent>
                 
-                <TabsContent value="shared" className="flex-1 min-h-0 px-6">
+                <TabsContent value="shared" className="flex-1 min-h-0 px-6 overflow-hidden">
                   <DocumentTable />
                 </TabsContent>
                 
-                <TabsContent value="ai-indexes" className="flex-1 min-h-0">
+                <TabsContent value="ai-indexes" className="flex-1 min-h-0 overflow-hidden">
                   <AIIndexing />
                 </TabsContent>
               </Tabs>
@@ -103,13 +101,9 @@ const Index = () => {
         <ResizableHandle />
 
         {/* Right Sidebar - AI Assistant */}
-        <ResizablePanel defaultSize={20} minSize={15} maxSize={35}>
-          <div className="border-l flex flex-col h-full">
-            <div className="h-full p-4 flex flex-col">
-              <div className="flex-1 min-h-0">
-                <AIAssistant />
-              </div>
-            </div>
+        <ResizablePanel defaultSize={20} minSize={15} maxSize={35} className="overflow-hidden">
+          <div className="border-l h-full">
+            <AIAssistant />
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
