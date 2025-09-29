@@ -117,7 +117,7 @@ export const AIAssistant = () => {
 
       {/* Messages - Scrollable chat history fills remaining space */}
       <div 
-        className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4" 
+        className="flex-1 min-h-0 overflow-y-scroll overflow-x-hidden p-4" 
         ref={scrollAreaRef}
       >
         <div className="space-y-4">
