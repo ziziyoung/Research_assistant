@@ -96,7 +96,7 @@ export const AIAssistant = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col border-l bg-background relative">
+    <div className="h-full w-full flex flex-col border-l bg-background">
       {/* Header - Fixed at top */}
       <div className="p-4 border-b flex-shrink-0 bg-background">
         <div className="flex items-center justify-between">
@@ -115,9 +115,9 @@ export const AIAssistant = () => {
         </div>
       </div>
 
-      {/* Messages - Scrollable chat history that fills available space */}
+      {/* Messages - Scrollable chat history fills remaining space */}
       <div 
-        className="flex-1 overflow-y-auto overflow-x-hidden p-4 pb-24" 
+        className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4" 
         ref={scrollAreaRef}
       >
         <div className="space-y-4">
@@ -153,8 +153,8 @@ export const AIAssistant = () => {
         </div>
       </div>
 
-      {/* Input Bar - Fixed at bottom of panel */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-background">
+      {/* Input Bar - Pinned to bottom of panel, always visible */}
+      <div className="p-4 border-t bg-background flex-shrink-0">
         <div className="flex gap-2">
           <div className="flex-1 relative">
             <Input
