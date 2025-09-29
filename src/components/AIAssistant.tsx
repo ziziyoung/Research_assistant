@@ -115,8 +115,8 @@ export const AIAssistant = () => {
         </div>
       </div>
 
-      {/* Messages - Scrollable conversation area */}
-      <div className="flex-1 min-h-0 overflow-y-auto p-4" ref={scrollAreaRef}>
+      {/* Messages - Scrollable conversation area that fills available space */}
+      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4" ref={scrollAreaRef}>
         <div className="space-y-4">
           {messages.map((message) => (
             <div
@@ -130,7 +130,7 @@ export const AIAssistant = () => {
                     : "bg-muted text-muted-foreground"
                 }`}
               >
-                <p className="text-sm">{message.content}</p>
+                <p className="text-sm whitespace-pre-wrap break-words">{message.content}</p>
                 <p className="text-xs opacity-70 mt-1">
                   {message.timestamp.toLocaleTimeString()}
                 </p>
@@ -150,8 +150,8 @@ export const AIAssistant = () => {
         </div>
       </div>
 
-      {/* Input - Fixed at bottom */}
-      <div className="p-4 border-t bg-card flex-shrink-0">
+      {/* Input - Fixed at bottom, always visible */}
+      <div className="p-4 border-t bg-background flex-shrink-0">
         <div className="flex gap-2">
           <div className="flex-1 relative">
             <Input
