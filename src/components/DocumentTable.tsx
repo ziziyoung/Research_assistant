@@ -83,7 +83,7 @@ export const DocumentTable = () => {
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full w-full flex flex-col">{/* Independent scroll container */}
       {/* Filter Toolbar */}
       <div className="flex items-center justify-between mb-4 flex-shrink-0">
         <div className="flex items-center gap-2">
