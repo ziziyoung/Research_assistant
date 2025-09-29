@@ -96,9 +96,9 @@ export const AIAssistant = () => {
   };
 
   return (
-    <div className="h-full w-full flex flex-col border-l bg-background">
-      {/* Header */}
-      <div className="p-4 border-b flex-shrink-0">
+    <div className="h-full w-full flex flex-col border-l bg-background relative">
+      {/* Header - Fixed at top */}
+      <div className="p-4 border-b flex-shrink-0 bg-background">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-primary" />
@@ -115,8 +115,11 @@ export const AIAssistant = () => {
         </div>
       </div>
 
-      {/* Messages - Scrollable conversation area that fills available space */}
-      <div className="flex-1 min-h-0 overflow-y-auto overflow-x-hidden p-4" ref={scrollAreaRef}>
+      {/* Messages - Scrollable chat history that fills available space */}
+      <div 
+        className="flex-1 overflow-y-auto overflow-x-hidden p-4 pb-24" 
+        ref={scrollAreaRef}
+      >
         <div className="space-y-4">
           {messages.map((message) => (
             <div
@@ -150,8 +153,8 @@ export const AIAssistant = () => {
         </div>
       </div>
 
-      {/* Input - Fixed at bottom, always visible */}
-      <div className="p-4 border-t bg-background flex-shrink-0">
+      {/* Input Bar - Fixed at bottom of panel */}
+      <div className="absolute bottom-0 left-0 right-0 p-4 border-t bg-background">
         <div className="flex gap-2">
           <div className="flex-1 relative">
             <Input
