@@ -96,9 +96,9 @@ export const AIAssistant = () => {
   };
 
   return (
-    <div className="flex flex-col h-full border-l">
+    <div className="h-full w-full flex flex-col border-l bg-background">
       {/* Header */}
-      <div className="p-4 border-b bg-card flex-shrink-0">
+      <div className="p-4 border-b flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-primary" />
@@ -116,7 +116,7 @@ export const AIAssistant = () => {
       </div>
 
       {/* Messages - Scrollable conversation area */}
-      <div className="flex-1 overflow-y-auto p-4" ref={scrollAreaRef}>
+      <div className="flex-1 min-h-0 overflow-y-auto p-4" ref={scrollAreaRef}>
         <div className="space-y-4">
           {messages.map((message) => (
             <div
