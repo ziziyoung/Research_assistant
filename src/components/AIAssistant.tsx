@@ -96,13 +96,12 @@ export const AIAssistant = () => {
   };
 
   return (
-    <div className="flex flex-col h-full p-4">
-      <Card className="flex flex-col h-full glass-panel overflow-hidden">
+    <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="p-4 border-b bg-ai-secondary/20">
+      <div className="p-4 border-b bg-card flex-shrink-0">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Bot className="h-5 w-5 text-ai-primary ai-pulse" />
+            <Bot className="h-5 w-5 text-primary" />
             <h3 className="font-semibold text-foreground">AI Assistant</h3>
           </div>
           <Button
@@ -116,8 +115,8 @@ export const AIAssistant = () => {
         </div>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-auto p-4" ref={scrollAreaRef}>{/* Both horizontal and vertical scroll */}
+      {/* Messages - Scrollable conversation area */}
+      <div className="flex-1 overflow-y-auto p-4" ref={scrollAreaRef}>
         <div className="space-y-4">
           {messages.map((message) => (
             <div
@@ -142,7 +141,7 @@ export const AIAssistant = () => {
             <div className="flex justify-start">
               <div className="bg-muted rounded-lg p-3">
                 <div className="flex items-center gap-2">
-                  <Bot className="h-4 w-4 text-ai-primary ai-pulse" />
+                  <Bot className="h-4 w-4 text-primary animate-pulse" />
                   <span className="text-sm text-muted-foreground">Thinking...</span>
                 </div>
               </div>
@@ -151,8 +150,8 @@ export const AIAssistant = () => {
         </div>
       </div>
 
-      {/* Input */}
-      <div className="p-4 border-t">
+      {/* Input - Fixed at bottom */}
+      <div className="p-4 border-t bg-card flex-shrink-0">
         <div className="flex gap-2">
           <div className="flex-1 relative">
             <Input
@@ -167,7 +166,7 @@ export const AIAssistant = () => {
               variant="ghost"
               size="sm"
               className={`absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 ${
-                isRecording ? "text-red-500 voice-recording" : "text-muted-foreground"
+                isRecording ? "text-red-500" : "text-muted-foreground"
               }`}
               onClick={handleVoiceToggle}
             >
@@ -183,7 +182,6 @@ export const AIAssistant = () => {
           </Button>
         </div>
       </div>
-      </Card>
     </div>
   );
 };
