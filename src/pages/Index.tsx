@@ -10,7 +10,7 @@ import { Plus, Upload, FileText, Bot, Sparkles } from "lucide-react";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="h-screen overflow-hidden bg-background flex flex-col">
       <Header />
       
       <ResizablePanelGroup direction="horizontal" className="flex-1 h-[calc(100vh-4rem)]">
