@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { 
   FileText, 
   Hash, 
   Image, 
   Code, 
-  Clock
+  Clock,
+  Search
 } from "lucide-react";
 
 interface DocumentIndex {
@@ -23,6 +25,8 @@ interface DocumentIndex {
 }
 
 export const AIIndexing = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  
   // Sample AI-generated indexes for display
   const [documents] = useState<DocumentIndex[]>([
     {
@@ -63,18 +67,51 @@ export const AIIndexing = () => {
     }
   ]);
 
+  // Filter documents based on search query
+  const filteredDocuments = documents.filter(doc => {
+    const query = searchQuery.toLowerCase();
+    return (
+      doc.name.toLowerCase().includes(query) ||
+      doc.summary.toLowerCase().includes(query) ||
+      doc.keywords.some(keyword => keyword.toLowerCase().includes(query)) ||
+      doc.methodSummary.toLowerCase().includes(query)
+    );
+  });
+
   return (
     <div className="h-full flex flex-col bg-background">
-      <div className="p-6 border-b bg-card">
-        <h2 className="text-2xl font-bold text-foreground mb-2">AI Indexes</h2>
-        <p className="text-sm text-muted-foreground">
-          AI-generated document indexes with automatic summaries and metadata
-        </p>
+      <div className="p-6 border-b bg-card space-y-4">
+        <div>
+          <h2 className="text-2xl font-bold text-foreground mb-2">AI Indexes</h2>
+          <p className="text-sm text-muted-foreground">
+            AI-generated document indexes with automatic summaries and metadata
+          </p>
+        </div>
+        
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search documents by name, summary, or keywords..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9"
+          />
+        </div>
       </div>
 
       <div className="flex-1 overflow-auto">{/* Both horizontal and vertical scroll */}
         <div className="p-6 space-y-6">
-          {documents.map((doc) => (
+          {filteredDocuments.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <Search className="h-12 w-12 text-muted-foreground/50 mb-4" />
+              <h3 className="text-lg font-semibold text-foreground mb-2">No results found</h3>
+              <p className="text-sm text-muted-foreground">
+                Try adjusting your search query
+              </p>
+            </div>
+          ) : (
+            filteredDocuments.map((doc) => (
             <Card key={doc.id} className="overflow-hidden">
               <CardHeader className="pb-4 bg-muted/30">
                 <div className="flex items-start justify-between gap-4">
@@ -162,7 +199,8 @@ export const AIIndexing = () => {
                 </div>
               </CardContent>
             </Card>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
