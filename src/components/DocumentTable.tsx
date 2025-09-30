@@ -56,6 +56,118 @@ const mockDocuments: Document[] = [
     type: "data",
     owner: "yangyuwei",
     modified: "2:36 PM Sep 17"
+  },
+  {
+    id: "5",
+    name: "Q2 Financial Report",
+    type: "pdf",
+    owner: "johndoe",
+    modified: "11:23 AM Sep 16"
+  },
+  {
+    id: "6",
+    name: "Marketing Strategy 2024",
+    type: "text",
+    owner: "sarahsmith",
+    modified: "4:15 PM Sep 15"
+  },
+  {
+    id: "7",
+    name: "Product Roadmap",
+    type: "image",
+    owner: "yangyuwei",
+    modified: "9:30 AM Sep 15"
+  },
+  {
+    id: "8",
+    name: "Team Meeting Notes",
+    type: "text",
+    owner: "mikejohnson",
+    modified: "3:45 PM Sep 14"
+  },
+  {
+    id: "9",
+    name: "Customer Feedback Analysis",
+    type: "pdf",
+    owner: "emilybrown",
+    modified: "1:20 PM Sep 14"
+  },
+  {
+    id: "10",
+    name: "Design System Documentation",
+    type: "text",
+    owner: "yangyuwei",
+    modified: "10:05 AM Sep 13"
+  },
+  {
+    id: "11",
+    name: "API Integration Guide",
+    type: "pdf",
+    owner: "davidlee",
+    modified: "5:30 PM Sep 12"
+  },
+  {
+    id: "12",
+    name: "User Research Findings",
+    type: "data",
+    owner: "lisawang",
+    modified: "2:15 PM Sep 12"
+  },
+  {
+    id: "13",
+    name: "Brand Guidelines",
+    type: "pdf",
+    owner: "sarahsmith",
+    modified: "11:40 AM Sep 11"
+  },
+  {
+    id: "14",
+    name: "Sprint Planning Notes",
+    type: "text",
+    owner: "yangyuwei",
+    modified: "9:00 AM Sep 11"
+  },
+  {
+    id: "15",
+    name: "Performance Metrics Dashboard",
+    type: "data",
+    owner: "johndoe",
+    modified: "4:55 PM Sep 10"
+  },
+  {
+    id: "16",
+    name: "Training Materials",
+    type: "pdf",
+    owner: "mikejohnson",
+    modified: "1:30 PM Sep 10"
+  },
+  {
+    id: "17",
+    name: "Project Timeline",
+    type: "image",
+    owner: "emilybrown",
+    modified: "10:20 AM Sep 9"
+  },
+  {
+    id: "18",
+    name: "Budget Proposal 2024",
+    type: "pdf",
+    owner: "davidlee",
+    modified: "3:10 PM Sep 8"
+  },
+  {
+    id: "19",
+    name: "Content Calendar",
+    type: "text",
+    owner: "lisawang",
+    modified: "11:45 AM Sep 8"
+  },
+  {
+    id: "20",
+    name: "Competitive Analysis Report",
+    type: "pdf",
+    owner: "yangyuwei",
+    modified: "9:25 AM Sep 7"
   }
 ];
 
