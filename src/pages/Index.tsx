@@ -16,14 +16,16 @@ const Index = () => {
       <ResizablePanelGroup direction="horizontal" className="flex-1 h-[calc(100vh-4rem)]">
         {/* Left Sidebar - Document Library */}
         <ResizablePanel defaultSize={22} minSize={15} maxSize={35}>
-          <DocumentLibrary />
+          <div className="h-full overflow-hidden">
+            <DocumentLibrary />
+          </div>
         </ResizablePanel>
         
         <ResizableHandle />
 
         {/* Main Content - Document Management */}
         <ResizablePanel defaultSize={58} minSize={40}>
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full overflow-hidden">
             {/* Unified Header */}
             <div className="p-6 border-b bg-background flex-shrink-0">
               <div className="flex items-center justify-between mb-4">
@@ -105,7 +107,9 @@ const Index = () => {
 
         {/* Right Sidebar - AI Assistant */}
         <ResizablePanel defaultSize={20} minSize={15} maxSize={35}>
-          <AIAssistant />
+          <div className="h-full overflow-hidden">
+            <AIAssistant />
+          </div>
         </ResizablePanel>
       </ResizablePanelGroup>
     </div>
