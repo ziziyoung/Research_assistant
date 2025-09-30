@@ -1,6 +1,7 @@
-import { Search, Plus, Upload, Settings, User } from "lucide-react";
+import { Search, Plus, Upload, Settings, User, Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,6 +12,8 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 export const Header = () => {
+  const navigate = useNavigate();
+
   return (
     <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center justify-between px-6">
@@ -29,6 +32,15 @@ export const Header = () => {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            onClick={() => navigate('/ai-assistant')}
+            className="gap-2"
+          >
+            <Bot className="h-4 w-4" />
+            AI Assistant
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="relative h-8 w-8 rounded-full">
