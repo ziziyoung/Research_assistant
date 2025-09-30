@@ -26,6 +26,11 @@ interface DocumentIndex {
   literatureTime: string;
   createdAt: string;
   processingStatus: 'completed';
+  conferenceJournal: string;
+  datasets: string[];
+  networkArchitectures: string[];
+  innovation: string;
+  notes: string;
 }
 
 export const AIIndexing = () => {
@@ -43,7 +48,12 @@ export const AIIndexing = () => {
       codeAddress: "https://github.com/research/ml-analysis/blob/main/analysis.py",
       literatureTime: "2024-01-15",
       createdAt: "2024-01-15T10:30:00Z",
-      processingStatus: 'completed'
+      processingStatus: 'completed',
+      conferenceJournal: "NeurIPS 2024",
+      datasets: ["ImageNet", "COCO", "MNIST"],
+      networkArchitectures: ["ResNet-50", "Transformer", "CNN"],
+      innovation: "Novel attention mechanism that improves accuracy by 15% while reducing computational cost",
+      notes: "Experimental results validated across multiple datasets with consistent improvements"
     },
     {
       id: "doc_2", 
@@ -55,7 +65,12 @@ export const AIIndexing = () => {
       codeAddress: "https://github.com/project/docs/blob/main/technical-guide.md",
       literatureTime: "2024-01-20",
       createdAt: "2024-01-20T14:15:00Z",
-      processingStatus: 'completed'
+      processingStatus: 'completed',
+      conferenceJournal: "ICML 2024",
+      datasets: ["Custom Dataset", "OpenAI Gym"],
+      networkArchitectures: ["GAN", "VAE"],
+      innovation: "Introduces a hybrid architecture combining generative and discriminative models",
+      notes: "Code implementation available with detailed API documentation"
     },
     {
       id: "doc_3",
@@ -67,7 +82,12 @@ export const AIIndexing = () => {
       codeAddress: "https://github.com/research/market-analysis/blob/main/report.R",
       literatureTime: "2024-01-10",
       createdAt: "2024-01-10T09:45:00Z",
-      processingStatus: 'completed'
+      processingStatus: 'completed',
+      conferenceJournal: "CVPR 2024",
+      datasets: ["Market Data API", "Financial Reports"],
+      networkArchitectures: ["LSTM", "GRU"],
+      innovation: "Real-time market prediction using temporal attention mechanisms",
+      notes: "Includes comprehensive statistical analysis with R implementation"
     }
   ]);
 
@@ -78,7 +98,12 @@ export const AIIndexing = () => {
       doc.name.toLowerCase().includes(query) ||
       doc.summary.toLowerCase().includes(query) ||
       doc.keywords.some(keyword => keyword.toLowerCase().includes(query)) ||
-      doc.methodSummary.toLowerCase().includes(query)
+      doc.methodSummary.toLowerCase().includes(query) ||
+      doc.conferenceJournal.toLowerCase().includes(query) ||
+      doc.datasets.some(dataset => dataset.toLowerCase().includes(query)) ||
+      doc.networkArchitectures.some(arch => arch.toLowerCase().includes(query)) ||
+      doc.innovation.toLowerCase().includes(query) ||
+      doc.notes.toLowerCase().includes(query)
     );
   });
 
@@ -119,11 +144,16 @@ export const AIIndexing = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead className="min-w-[200px]">Name</TableHead>
+                  <TableHead className="min-w-[180px]">Conference/Journal</TableHead>
                   <TableHead className="min-w-[120px]">Literature Time</TableHead>
                   <TableHead className="min-w-[100px]">Status</TableHead>
                   <TableHead className="min-w-[400px]">Summary</TableHead>
                   <TableHead className="min-w-[300px]">Method Summary</TableHead>
                   <TableHead className="min-w-[250px]">Keywords</TableHead>
+                  <TableHead className="min-w-[200px]">Datasets</TableHead>
+                  <TableHead className="min-w-[250px]">Network Architectures</TableHead>
+                  <TableHead className="min-w-[350px]">Innovation</TableHead>
+                  <TableHead className="min-w-[300px]">Notes</TableHead>
                   <TableHead className="min-w-[300px]">Code Address</TableHead>
                   <TableHead className="min-w-[120px]">Thumbnail</TableHead>
                 </TableRow>
@@ -132,6 +162,7 @@ export const AIIndexing = () => {
                 {filteredDocuments.map((doc) => (
                   <TableRow key={doc.id}>
                     <TableCell className="font-medium">{doc.name}</TableCell>
+                    <TableCell className="text-sm">{doc.conferenceJournal}</TableCell>
                     <TableCell>{doc.literatureTime}</TableCell>
                     <TableCell>
                       <Badge variant="secondary">{doc.processingStatus}</Badge>
@@ -150,6 +181,30 @@ export const AIIndexing = () => {
                           </Badge>
                         ))}
                       </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-1">
+                        {doc.datasets.map((dataset, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {dataset}
+                          </Badge>
+                        ))}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-1">
+                        {doc.networkArchitectures.map((arch, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {arch}
+                          </Badge>
+                        ))}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {doc.innovation}
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {doc.notes}
                     </TableCell>
                     <TableCell>
                       <a 
