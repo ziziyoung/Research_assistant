@@ -15,8 +15,10 @@ const Index = () => {
       
       <ResizablePanelGroup direction="horizontal" className="flex-1 h-[calc(100vh-4rem)]">
         {/* Left Sidebar - Document Library */}
+              
+
         <ResizablePanel defaultSize={22} minSize={15} maxSize={35}>
-          <div className="h-full min-h-0">
+          <div className="h-full min-h-0 overflow-y-auto">
             <DocumentLibrary />
           </div>
         </ResizablePanel>
@@ -83,7 +85,7 @@ const Index = () => {
                   </TabsTrigger>
                 </TabsList>
                 
-                <TabsContent value="documents" className="flex-1 min-h-0 px-6 scrollbar-visible">
+                <TabsContent value="documents" className="flex-1 min-h-0 overflow-y-auto px-6">
                   <DocumentTable />
                 </TabsContent>
                 
@@ -107,7 +109,7 @@ const Index = () => {
 
         {/* Right Sidebar - AI Assistant */}
         <ResizablePanel defaultSize={20} minSize={15} maxSize={35}>
-          <div className="h-full min-h-0">
+          <div className="h-full min-h-0 overflow-y-auto flex flex-col">
             <AIAssistant />
           </div>
         </ResizablePanel>
