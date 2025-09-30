@@ -3,7 +3,6 @@ import { DocumentLibrary } from "@/components/DocumentLibrary";
 import { DocumentTable } from "@/components/DocumentTable";
 import { AIAssistant } from "@/components/AIAssistant";
 import { AIIndexing } from "@/components/AIIndexing";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { Plus, Upload, FileText, Bot, Sparkles } from "lucide-react";
@@ -11,21 +10,21 @@ import { Plus, Upload, FileText, Bot, Sparkles } from "lucide-react";
 const Index = () => {
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {/* Global Header */}
       <Header />
-      
+
+      {/* 3-Column Resizable Layout */}
       <ResizablePanelGroup direction="horizontal" className="flex-1 h-[calc(100vh-4rem)]">
         {/* Left Sidebar - Document Library */}
-              
-
         <ResizablePanel defaultSize={22} minSize={15} maxSize={35}>
           <div className="h-full min-h-0 overflow-y-auto">
             <DocumentLibrary />
           </div>
         </ResizablePanel>
-        
+
         <ResizableHandle />
 
-        {/* Main Content - Document Management */}
+        {/* Middle Panel - Document Management */}
         <ResizablePanel defaultSize={58} minSize={40}>
           <div className="flex flex-col h-full min-h-0">
             {/* Unified Header */}
@@ -33,11 +32,13 @@ const Index = () => {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h1 className="text-2xl font-bold text-foreground">Document Management</h1>
-                  <p className="text-muted-foreground">Manage your documents with AI-powered indexing and organization</p>
+                  <p className="text-muted-foreground">
+                    Manage your documents with AI-powered indexing and organization
+                  </p>
                 </div>
                 <Bot className="h-8 w-8 text-primary" />
               </div>
-              
+
               {/* Action Cards */}
               <div className="grid grid-cols-3 gap-4">
                 <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
@@ -49,7 +50,7 @@ const Index = () => {
                     <p className="text-sm text-muted-foreground">Create a new document</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
                   <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
                     <Upload className="h-5 w-5 text-orange-600" />
@@ -59,7 +60,7 @@ const Index = () => {
                     <p className="text-sm text-muted-foreground">Upload local files</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
                   <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
                     <FileText className="h-5 w-5 text-red-600" />
@@ -71,7 +72,7 @@ const Index = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Main Content Tabs */}
             <div className="flex-1 min-h-0">
               <Tabs defaultValue="documents" className="w-full h-full flex flex-col">
@@ -79,25 +80,42 @@ const Index = () => {
                   <TabsTrigger value="documents">Documents</TabsTrigger>
                   <TabsTrigger value="recent">Recent</TabsTrigger>
                   <TabsTrigger value="shared">Shared</TabsTrigger>
-                  <TabsTrigger value="ai-indexes" className="gap-1.5 bg-gradient-to-r from-primary/10 to-primary/5 data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground">
+                  <TabsTrigger
+                    value="ai-indexes"
+                    className="gap-1.5 bg-gradient-to-r from-primary/10 to-primary/5
+                               data-[state=active]:from-primary data-[state=active]:to-primary/80
+                               data-[state=active]:text-primary-foreground"
+                  >
                     <Sparkles className="h-4 w-4" />
                     AI Indexes
                   </TabsTrigger>
                 </TabsList>
-                
-                <TabsContent value="documents" className="flex-1 min-h-0 overflow-y-auto px-6">
+
+                <TabsContent
+                  value="documents"
+                  className="flex-1 min-h-0 overflow-y-auto px-6"
+                >
                   <DocumentTable />
                 </TabsContent>
-                
-                <TabsContent value="recent" className="flex-1 min-h-0 px-6 scrollbar-visible">
+
+                <TabsContent
+                  value="recent"
+                  className="flex-1 min-h-0 overflow-y-auto px-6"
+                >
                   <DocumentTable />
                 </TabsContent>
-                
-                <TabsContent value="shared" className="flex-1 min-h-0 px-6 scrollbar-visible">
+
+                <TabsContent
+                  value="shared"
+                  className="flex-1 min-h-0 overflow-y-auto px-6"
+                >
                   <DocumentTable />
                 </TabsContent>
-                
-                <TabsContent value="ai-indexes" className="flex-1 min-h-0 scrollbar-visible">
+
+                <TabsContent
+                  value="ai-indexes"
+                  className="flex-1 min-h-0 overflow-y-auto"
+                >
                   <AIIndexing />
                 </TabsContent>
               </Tabs>
