@@ -17,7 +17,67 @@ const initialMessages: Message[] = [
     id: "1",
     type: "assistant",
     content: "Hello! I'm your AI research assistant. I can help you analyze documents, generate summaries, create indexes, and answer questions about your research. How can I assist you today?",
-    timestamp: new Date()
+    timestamp: new Date(Date.now() - 3600000)
+  },
+  {
+    id: "2",
+    type: "user",
+    content: "Can you help me analyze the Q2 Financial Report?",
+    timestamp: new Date(Date.now() - 3500000)
+  },
+  {
+    id: "3",
+    type: "assistant",
+    content: "Of course! I'd be happy to help you analyze the Q2 Financial Report. I can extract key metrics, identify trends, and provide insights on revenue growth, expenses, and profitability. Would you like me to focus on any specific section?",
+    timestamp: new Date(Date.now() - 3400000)
+  },
+  {
+    id: "4",
+    type: "user",
+    content: "Focus on the revenue trends and compare them with Q1.",
+    timestamp: new Date(Date.now() - 3300000)
+  },
+  {
+    id: "5",
+    type: "assistant",
+    content: "Based on my analysis, Q2 revenue shows a 15% increase compared to Q1. The main growth drivers include:\n\n• Product sales up 22%\n• Service revenue up 12%\n• Subscription revenue up 8%\n\nThe growth is particularly strong in the enterprise segment, which saw a 28% increase.",
+    timestamp: new Date(Date.now() - 3200000)
+  },
+  {
+    id: "6",
+    type: "user",
+    content: "What about the Marketing Strategy document? Any insights?",
+    timestamp: new Date(Date.now() - 3100000)
+  },
+  {
+    id: "7",
+    type: "assistant",
+    content: "The Marketing Strategy 2024 document outlines several key initiatives:\n\n1. Digital transformation focus\n2. Customer acquisition cost reduction\n3. Brand awareness campaigns\n4. Content marketing expansion\n5. Social media engagement optimization\n\nWould you like me to elaborate on any of these strategies?",
+    timestamp: new Date(Date.now() - 3000000)
+  },
+  {
+    id: "8",
+    type: "user",
+    content: "Can you summarize the Customer Feedback Analysis?",
+    timestamp: new Date(Date.now() - 2900000)
+  },
+  {
+    id: "9",
+    type: "assistant",
+    content: "Here's a summary of the Customer Feedback Analysis:\n\n**Positive Feedback (72%):**\n• Product quality and reliability\n• Customer support responsiveness\n• User-friendly interface\n\n**Areas for Improvement (28%):**\n• Onboarding process complexity\n• Feature documentation clarity\n• Mobile app performance\n\nOverall satisfaction score: 4.2/5.0",
+    timestamp: new Date(Date.now() - 2800000)
+  },
+  {
+    id: "10",
+    type: "user",
+    content: "What's in the Product Roadmap?",
+    timestamp: new Date(Date.now() - 2700000)
+  },
+  {
+    id: "11",
+    type: "assistant",
+    content: "The Product Roadmap highlights these upcoming features:\n\n**Q3 2024:**\n• Advanced analytics dashboard\n• AI-powered recommendations\n• Mobile app redesign\n\n**Q4 2024:**\n• API v2.0 release\n• Integration marketplace\n• Enhanced security features\n\n**Q1 2025:**\n• Enterprise features suite\n• Multi-language support",
+    timestamp: new Date(Date.now() - 2600000)
   }
 ];
 
@@ -117,7 +177,7 @@ export const AIAssistant = () => {
 
       {/* Messages - Scrollable chat history fills remaining space */}
       <div 
-        className="flex-1 min-h-0 overflow-y-scroll overflow-x-hidden p-4" 
+        className="flex-1 min-h-0 scrollbar-visible overflow-x-hidden p-4" 
         ref={scrollAreaRef}
       >
         <div className="space-y-4">
