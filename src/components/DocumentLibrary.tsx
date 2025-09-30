@@ -167,7 +167,7 @@ export const DocumentLibrary = () => {
       </div>
 
       {/* Categories */}
-      <div className="flex-1 scrollbar-visible">{/* Independent vertical scrolling */}
+      <div className="flex-1 overflow-y-scroll">{/* Independent vertical scrolling */}
         {filteredCategories.map((category) => (
           <div key={category.id} className="border-b border-border/50 last:border-b-0">
             <Collapsible
