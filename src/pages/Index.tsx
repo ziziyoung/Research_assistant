@@ -6,7 +6,7 @@ import { AIIndexing } from "@/components/AIIndexing";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
-import { Plus, Upload, FileText, Bot } from "lucide-react";
+import { Plus, Upload, FileText, Bot, Sparkles } from "lucide-react";
 
 const Index = () => {
   return (
@@ -75,7 +75,10 @@ const Index = () => {
                   <TabsTrigger value="documents">Documents</TabsTrigger>
                   <TabsTrigger value="recent">Recent</TabsTrigger>
                   <TabsTrigger value="shared">Shared</TabsTrigger>
-                  <TabsTrigger value="ai-indexes">AI Indexes</TabsTrigger>
+                  <TabsTrigger value="ai-indexes" className="gap-1.5 bg-gradient-to-r from-primary/10 to-primary/5 data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground">
+                    <Sparkles className="h-4 w-4" />
+                    AI Indexes
+                  </TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="documents" className="flex-1 min-h-0 px-6 overflow-y-scroll">
