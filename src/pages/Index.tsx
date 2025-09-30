@@ -83,19 +83,19 @@ const Index = () => {
                   </TabsTrigger>
                 </TabsList>
                 
-                <TabsContent value="documents" className="flex-1 min-h-0 px-6 overflow-y-scroll">
+                <TabsContent value="documents" className="flex-1 min-h-0 px-6 scrollbar-visible">
                   <DocumentTable />
                 </TabsContent>
                 
-                <TabsContent value="recent" className="flex-1 min-h-0 px-6 overflow-y-scroll">
+                <TabsContent value="recent" className="flex-1 min-h-0 px-6 scrollbar-visible">
                   <DocumentTable />
                 </TabsContent>
                 
-                <TabsContent value="shared" className="flex-1 min-h-0 px-6 overflow-y-scroll">
+                <TabsContent value="shared" className="flex-1 min-h-0 px-6 scrollbar-visible">
                   <DocumentTable />
                 </TabsContent>
                 
-                <TabsContent value="ai-indexes" className="flex-1 min-h-0 overflow-y-scroll">
+                <TabsContent value="ai-indexes" className="flex-1 min-h-0 scrollbar-visible">
                   <AIIndexing />
                 </TabsContent>
               </Tabs>
