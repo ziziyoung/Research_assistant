@@ -1,14 +1,18 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { 
-  FileText, 
-  Hash, 
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { 
   Image, 
-  Code, 
-  Clock,
-  Search
+  Search,
+  ExternalLink
 } from "lucide-react";
 
 interface DocumentIndex {
@@ -100,108 +104,75 @@ export const AIIndexing = () => {
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto">{/* Both horizontal and vertical scroll */}
-        <div className="p-6 space-y-6">
-          {filteredDocuments.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <Search className="h-12 w-12 text-muted-foreground/50 mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">No results found</h3>
-              <p className="text-sm text-muted-foreground">
-                Try adjusting your search query
-              </p>
-            </div>
-          ) : (
-            filteredDocuments.map((doc) => (
-            <Card key={doc.id} className="overflow-hidden">
-              <CardHeader className="pb-4 bg-muted/30">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-1 min-w-0">
-                    <CardTitle className="text-lg font-semibold truncate">{doc.name}</CardTitle>
-                    <div className="flex items-center gap-2 mt-2 text-xs text-muted-foreground">
-                      <Clock className="h-3 w-3" />
-                      <span>{doc.literatureTime}</span>
-                    </div>
-                  </div>
-                  <Badge variant="secondary" className="shrink-0">
-                    {doc.processingStatus}
-                  </Badge>
-                </div>
-              </CardHeader>
-              
-              <CardContent className="pt-6">
-                <div className="grid grid-cols-1 lg:grid-cols-[1fr,200px] gap-6">
-                  {/* Main Content */}
-                  <div className="space-y-6">
-                    {/* Summary */}
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <FileText className="h-4 w-4 text-primary" />
-                        <h4 className="font-semibold text-sm text-foreground">Summary</h4>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {doc.summary}
-                      </p>
-                    </div>
-
-                    {/* Method Summary */}
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Code className="h-4 w-4 text-primary" />
-                        <h4 className="font-semibold text-sm text-foreground">Method Summary</h4>
-                      </div>
-                      <p className="text-sm text-muted-foreground leading-relaxed">
-                        {doc.methodSummary}
-                      </p>
-                    </div>
-
-                    {/* Keywords */}
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Hash className="h-4 w-4 text-primary" />
-                        <h4 className="font-semibold text-sm text-foreground">Keywords</h4>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
+      <div className="flex-1 overflow-auto">
+        {filteredDocuments.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <Search className="h-12 w-12 text-muted-foreground/50 mb-4" />
+            <h3 className="text-lg font-semibold text-foreground mb-2">No results found</h3>
+            <p className="text-sm text-muted-foreground">
+              Try adjusting your search query
+            </p>
+          </div>
+        ) : (
+          <div className="overflow-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="min-w-[200px]">Name</TableHead>
+                  <TableHead className="min-w-[120px]">Literature Time</TableHead>
+                  <TableHead className="min-w-[100px]">Status</TableHead>
+                  <TableHead className="min-w-[400px]">Summary</TableHead>
+                  <TableHead className="min-w-[300px]">Method Summary</TableHead>
+                  <TableHead className="min-w-[250px]">Keywords</TableHead>
+                  <TableHead className="min-w-[300px]">Code Address</TableHead>
+                  <TableHead className="min-w-[120px]">Thumbnail</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredDocuments.map((doc) => (
+                  <TableRow key={doc.id}>
+                    <TableCell className="font-medium">{doc.name}</TableCell>
+                    <TableCell>{doc.literatureTime}</TableCell>
+                    <TableCell>
+                      <Badge variant="secondary">{doc.processingStatus}</Badge>
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {doc.summary}
+                    </TableCell>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {doc.methodSummary}
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-1">
                         {doc.keywords.map((keyword, index) => (
-                          <Badge key={index} variant="outline" className="text-xs font-normal">
+                          <Badge key={index} variant="outline" className="text-xs">
                             {keyword}
                           </Badge>
                         ))}
                       </div>
-                    </div>
-
-                    {/* Code Address */}
-                    <div>
-                      <div className="flex items-center gap-2 mb-2">
-                        <Code className="h-4 w-4 text-primary" />
-                        <h4 className="font-semibold text-sm text-foreground">Code Address</h4>
-                      </div>
+                    </TableCell>
+                    <TableCell>
                       <a 
                         href={doc.codeAddress} 
-                        className="text-sm text-primary hover:underline break-all"
+                        className="text-sm text-primary hover:underline flex items-center gap-1"
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {doc.codeAddress}
+                        <span className="truncate max-w-[250px]">{doc.codeAddress}</span>
+                        <ExternalLink className="h-3 w-3 shrink-0" />
                       </a>
-                    </div>
-                  </div>
-
-                  {/* Thumbnail Sidebar */}
-                  <div className="flex flex-col items-center">
-                    <div className="flex items-center gap-2 mb-3 self-start">
-                      <Image className="h-4 w-4 text-primary" />
-                      <h4 className="font-semibold text-sm text-foreground">Thumbnail</h4>
-                    </div>
-                    <div className="w-full aspect-[3/4] bg-muted/50 rounded-lg border-2 border-border flex items-center justify-center">
-                      <Image className="h-12 w-12 text-muted-foreground/50" />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            ))
-          )}
-        </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="w-20 h-24 bg-muted/50 rounded border flex items-center justify-center">
+                        <Image className="h-6 w-6 text-muted-foreground/50" />
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        )}
       </div>
     </div>
   );
