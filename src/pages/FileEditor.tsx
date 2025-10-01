@@ -2,9 +2,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ArrowLeft, ChevronRight, ChevronLeft } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
 import { AIAssistant } from "@/components/AIAssistant";
+import { DocumentEditor } from "@/components/DocumentEditor";
+import { sampleThesisContent } from "@/data/sampleThesis";
 
 const FileEditor = () => {
   const { fileId } = useParams();
@@ -76,23 +77,11 @@ const FileEditor = () => {
 
         {/* Main Content - File Editing Area */}
         <div className={`flex-1 flex flex-col ${isAIVisible ? 'mr-80' : ''} transition-all duration-300`}>
-          <div className="p-6 border-b">
-            <h2 className="text-lg font-semibold text-foreground">
-              File editing page: {fileType}/{fileName.toLowerCase().replace(/\s+/g, '/')}/draft
-            </h2>
-          </div>
-          
-          <div className="flex-1 p-6">
-            <Card className="h-full p-8">
-              <div className="text-center text-muted-foreground">
-                <h3 className="text-xl font-semibold mb-4">File Editor</h3>
-                <p className="mb-6">Editing: {fileName}</p>
-                <p className="text-sm">
-                  This is where the document content would be displayed and edited.
-                  The AI assistant can help with analysis, suggestions, and improvements.
-                </p>
-              </div>
-            </Card>
+          <div className="flex-1 overflow-hidden">
+            <DocumentEditor 
+              initialContent={sampleThesisContent}
+              fileName={fileName}
+            />
           </div>
         </div>
 
