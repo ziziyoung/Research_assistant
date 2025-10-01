@@ -355,7 +355,9 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
         <div 
           className="flex-1 overflow-y-auto scrollbar-visible p-8 transition-all duration-300"
           style={{ 
-            marginRight: isNotesVisible ? '400px' : '0px'
+            marginRight: isNotesVisible && isAIVisible ? '720px' : 
+                        isNotesVisible ? '400px' : 
+                        isAIVisible ? '320px' : '0px'
           }}
         >
           <div className="max-w-4xl mx-auto bg-background shadow-lg min-h-full relative">
@@ -395,7 +397,7 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
         {isNotesVisible && (
           <div 
             className="w-[400px] border-l bg-background fixed top-[64px] h-[calc(100vh-64px)] overflow-hidden flex flex-col z-5 transition-all duration-300"
-            style={{ right: '0px' }}
+            style={{ right: isAIVisible ? '320px' : '0px' }}
           >
             <div className="border-b p-3 flex items-center justify-between bg-card">
               <h3 className="font-semibold text-sm flex items-center gap-2">
