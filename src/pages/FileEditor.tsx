@@ -6,6 +6,11 @@ import { DocumentLibrary } from "@/components/DocumentLibrary";
 import { AIAssistant } from "@/components/AIAssistant";
 import { DocumentEditor } from "@/components/DocumentEditor";
 import { sampleThesisContent } from "@/data/sampleThesis";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 
 const FileEditor = () => {
   const { fileId } = useParams();
@@ -69,39 +74,39 @@ const FileEditor = () => {
         </div>
       </header>
       
-      <div className="flex h-[calc(100vh-4rem)]">
+      <ResizablePanelGroup direction="horizontal" className="h-[calc(100vh-4rem)]">
         {/* Left Sidebar - Document Library */}
-        <div className="w-80 border-r bg-card">
-          <DocumentLibrary />
-        </div>
+        <ResizablePanel defaultSize={20} minSize={15} maxSize={30}>
+          <div className="h-full border-r bg-card">
+            <DocumentLibrary />
+          </div>
+        </ResizablePanel>
+
+        <ResizableHandle withHandle />
 
         {/* Main Content - File Editing Area */}
-        <div className={`flex-1 flex flex-col transition-all duration-300`} style={{ 
-          marginRight: isAIVisible ? '320px' : '0px' 
-        }}>
-          <div className="flex-1 overflow-hidden">
+        <ResizablePanel defaultSize={isAIVisible ? 60 : 80} minSize={30}>
+          <div className="h-full overflow-hidden">
             <DocumentEditor 
               initialContent={sampleThesisContent}
               fileName={fileName}
               isAIVisible={isAIVisible}
             />
           </div>
-        </div>
+        </ResizablePanel>
 
-        {/* Right Sidebar - AI Assistant (Collapsible) */}
+        {/* Right Sidebar - AI Assistant (Resizable) */}
         {isAIVisible && (
-          <div className="w-80 border-l p-4 fixed right-0 top-16 h-[calc(100vh-4rem)] bg-background z-20">
-            <AIAssistant />
-          </div>
+          <>
+            <ResizableHandle withHandle />
+            <ResizablePanel defaultSize={20} minSize={15} maxSize={40}>
+              <div className="h-full border-l p-4 bg-background overflow-y-auto">
+                <AIAssistant />
+              </div>
+            </ResizablePanel>
+          </>
         )}
-      </div>
-      
-      {/* Note at bottom about AI capabilities */}
-      {isAIVisible && (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-ai-secondary/90 text-ai-primary px-4 py-2 rounded-lg text-sm backdrop-blur-sm">
-          AI can be hidden - Toggle with the button above
-        </div>
-      )}
+      </ResizablePanelGroup>
     </div>
   );
 };
