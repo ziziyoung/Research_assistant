@@ -31,6 +31,8 @@ interface DocumentIndex {
   networkArchitectures: string[];
   innovation: string;
   notes: string;
+  author: string;
+  citation: string;
 }
 
 export const AIIndexing = () => {
@@ -53,7 +55,9 @@ export const AIIndexing = () => {
       datasets: ["ImageNet", "COCO", "MNIST"],
       networkArchitectures: ["ResNet-50", "Transformer", "CNN"],
       innovation: "Novel attention mechanism that improves accuracy by 15% while reducing computational cost",
-      notes: "Experimental results validated across multiple datasets with consistent improvements"
+      notes: "Experimental results validated across multiple datasets with consistent improvements",
+      author: "Smith, J., Johnson, A., & Wang, L.",
+      citation: "Smith, J., Johnson, A., & Wang, L. (2024). Research Paper Analysis. NeurIPS 2024."
     },
     {
       id: "doc_2", 
@@ -70,7 +74,9 @@ export const AIIndexing = () => {
       datasets: ["Custom Dataset", "OpenAI Gym"],
       networkArchitectures: ["GAN", "VAE"],
       innovation: "Introduces a hybrid architecture combining generative and discriminative models",
-      notes: "Code implementation available with detailed API documentation"
+      notes: "Code implementation available with detailed API documentation",
+      author: "Chen, M., & Rodriguez, P.",
+      citation: "Chen, M., & Rodriguez, P. (2024). Technical Documentation. ICML 2024."
     },
     {
       id: "doc_3",
@@ -87,7 +93,9 @@ export const AIIndexing = () => {
       datasets: ["Market Data API", "Financial Reports"],
       networkArchitectures: ["LSTM", "GRU"],
       innovation: "Real-time market prediction using temporal attention mechanisms",
-      notes: "Includes comprehensive statistical analysis with R implementation"
+      notes: "Includes comprehensive statistical analysis with R implementation",
+      author: "Thompson, R., & Lee, K.",
+      citation: "Thompson, R., & Lee, K. (2024). Market Research Report. CVPR 2024."
     }
   ]);
 
@@ -103,7 +111,9 @@ export const AIIndexing = () => {
       doc.datasets.some(dataset => dataset.toLowerCase().includes(query)) ||
       doc.networkArchitectures.some(arch => arch.toLowerCase().includes(query)) ||
       doc.innovation.toLowerCase().includes(query) ||
-      doc.notes.toLowerCase().includes(query)
+      doc.notes.toLowerCase().includes(query) ||
+      doc.author.toLowerCase().includes(query) ||
+      doc.citation.toLowerCase().includes(query)
     );
   });
 
@@ -144,6 +154,8 @@ export const AIIndexing = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead className="min-w-[200px]">Name</TableHead>
+                  <TableHead className="min-w-[250px]">Author</TableHead>
+                  <TableHead className="min-w-[400px]">Citation</TableHead>
                   <TableHead className="min-w-[180px]">Conference/Journal</TableHead>
                   <TableHead className="min-w-[120px]">Literature Time</TableHead>
                   <TableHead className="min-w-[100px]">Status</TableHead>
@@ -162,6 +174,10 @@ export const AIIndexing = () => {
                 {filteredDocuments.map((doc) => (
                   <TableRow key={doc.id}>
                     <TableCell className="font-medium">{doc.name}</TableCell>
+                    <TableCell className="text-sm">{doc.author}</TableCell>
+                    <TableCell className="text-sm text-muted-foreground italic">
+                      {doc.citation}
+                    </TableCell>
                     <TableCell className="text-sm">{doc.conferenceJournal}</TableCell>
                     <TableCell>{doc.literatureTime}</TableCell>
                     <TableCell>
