@@ -3,10 +3,11 @@ import { DocumentLibrary } from "@/components/DocumentLibrary";
 import { DocumentTable } from "@/components/DocumentTable";
 import { AIAssistant } from "@/components/AIAssistant";
 import { AIIndexing } from "@/components/AIIndexing";
+import { AIKnowledgeGraph } from "@/components/AIKnowledgeGraph";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
-import { Plus, Upload, FileText, Bot, Sparkles } from "lucide-react";
+import { Plus, Upload, FileText, Bot, Sparkles, Network } from "lucide-react";
 
 const Index = () => {
   return (
@@ -63,13 +64,17 @@ const Index = () => {
             {/* Main Content Tabs */}
             <div className="flex-1 min-h-0">
               <Tabs defaultValue="documents" className="w-full h-full flex flex-col">
-                <TabsList className="grid w-fit grid-cols-4 mx-6 mt-4 mb-4 flex-shrink-0">
+                <TabsList className="grid w-fit grid-cols-5 mx-6 mt-4 mb-4 flex-shrink-0">
                   <TabsTrigger value="documents">Documents</TabsTrigger>
                   <TabsTrigger value="recent">Recent</TabsTrigger>
                   <TabsTrigger value="shared">Shared</TabsTrigger>
                   <TabsTrigger value="ai-indexes" className="gap-1.5 bg-gradient-to-r from-primary/10 to-primary/5 data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground">
                     <Sparkles className="h-4 w-4" />
                     AI Indexes
+                  </TabsTrigger>
+                  <TabsTrigger value="knowledge-graph" className="gap-1.5 bg-gradient-to-r from-primary/10 to-primary/5 data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground">
+                    <Network className="h-4 w-4" />
+                    Knowledge Graph
                   </TabsTrigger>
                 </TabsList>
                 
@@ -87,6 +92,10 @@ const Index = () => {
                 
                 <TabsContent value="ai-indexes" className="flex-1 min-h-0 scrollbar-visible">
                   <AIIndexing />
+                </TabsContent>
+                
+                <TabsContent value="knowledge-graph" className="flex-1 min-h-0 scrollbar-visible">
+                  <AIKnowledgeGraph />
                 </TabsContent>
               </Tabs>
             </div>
