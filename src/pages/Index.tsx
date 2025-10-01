@@ -28,35 +28,26 @@ const Index = () => {
         <ResizablePanel defaultSize={58} minSize={40}>
           <div className="flex flex-col h-full min-h-0">
             {/* Unified Header */}
-            <div className="p-6 border-b bg-background flex-shrink-0">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h1 className="text-2xl font-bold text-foreground">Document Management</h1>
-                  <p className="text-muted-foreground">Manage your documents with AI-powered indexing and organization</p>
-                </div>
-                <Bot className="h-8 w-8 text-primary" />
-              </div>
-              
-              {/* Action Cards */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Plus className="h-5 w-5 text-blue-600" />
-                  </div>
+            <div className="px-6 pt-4 pb-3 border-b bg-background flex-shrink-0">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Bot className="h-6 w-6 text-primary flex-shrink-0" />
                   <div>
-                    <h3 className="font-medium text-foreground">New</h3>
-                    <p className="text-sm text-muted-foreground">Create a new document</p>
+                    <h1 className="text-xl font-bold text-foreground">Document Management</h1>
+                    <p className="text-xs text-muted-foreground">AI-powered indexing and organization</p>
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
-                  <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                    <Upload className="h-5 w-5 text-orange-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-foreground">Upload</h3>
-                    <p className="text-sm text-muted-foreground">Upload local files</p>
-                  </div>
+                {/* Compact Action Buttons */}
+                <div className="flex items-center gap-2">
+                  <Button variant="default" size="sm" className="gap-2 h-8">
+                    <Plus className="h-4 w-4" />
+                    New
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-2 h-8">
+                    <Upload className="h-4 w-4" />
+                    Upload
+                  </Button>
                 </div>
               </div>
             </div>
