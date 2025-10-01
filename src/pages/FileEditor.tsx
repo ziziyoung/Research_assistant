@@ -1,11 +1,12 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, ChevronRight, ChevronLeft } from "lucide-react";
+import { ArrowLeft, ChevronRight, ChevronLeft, GripVertical } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
 import { AIAssistant } from "@/components/AIAssistant";
 import { DocumentEditor } from "@/components/DocumentEditor";
 import { sampleThesisContent } from "@/data/sampleThesis";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 const FileEditor = () => {
   const { fileId } = useParams();
@@ -75,31 +76,37 @@ const FileEditor = () => {
           <DocumentLibrary />
         </div>
 
-        {/* Main Content - File Editing Area */}
-        <div className={`flex-1 flex flex-col transition-all duration-300`} style={{ 
-          marginRight: isAIVisible ? '320px' : '0px' 
-        }}>
-          <div className="flex-1 overflow-hidden">
+        {/* Main Content Area with Resizable AI Assistant */}
+        <ResizablePanelGroup direction="horizontal" className="flex-1">
+          {/* Document Editor Panel */}
+          <ResizablePanel defaultSize={isAIVisible ? 70 : 100} minSize={30}>
             <DocumentEditor 
               initialContent={sampleThesisContent}
               fileName={fileName}
               isAIVisible={isAIVisible}
             />
-          </div>
-        </div>
+          </ResizablePanel>
 
-        {/* Right Sidebar - AI Assistant (Collapsible) */}
-        {isAIVisible && (
-          <div className="w-80 border-l p-4 fixed right-0 top-16 h-[calc(100vh-4rem)] bg-background z-20">
-            <AIAssistant />
-          </div>
-        )}
+          {/* AI Assistant Panel - Resizable */}
+          {isAIVisible && (
+            <>
+              <ResizableHandle className="w-1 bg-border hover:bg-primary/30 active:bg-primary/50 transition-colors cursor-col-resize" />
+              <ResizablePanel defaultSize={30} minSize={20} maxSize={50}>
+                <div className="h-full bg-background border-l overflow-y-auto">
+                  <div className="p-4">
+                    <AIAssistant />
+                  </div>
+                </div>
+              </ResizablePanel>
+            </>
+          )}
+        </ResizablePanelGroup>
       </div>
       
       {/* Note at bottom about AI capabilities */}
       {isAIVisible && (
-        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-ai-secondary/90 text-ai-primary px-4 py-2 rounded-lg text-sm backdrop-blur-sm">
-          AI can be hidden - Toggle with the button above
+        <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-ai-secondary/90 text-ai-primary px-4 py-2 rounded-lg text-sm backdrop-blur-sm z-30">
+          Drag the handle to resize AI Assistant panel
         </div>
       )}
     </div>
