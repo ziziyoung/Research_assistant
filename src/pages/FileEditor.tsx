@@ -6,6 +6,7 @@ import { DocumentLibrary } from "@/components/DocumentLibrary";
 import { AIAssistant } from "@/components/AIAssistant";
 import { DocumentEditor } from "@/components/DocumentEditor";
 import { sampleThesisContent } from "@/data/sampleThesis";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 
 const FileEditor = () => {
   const { fileId } = useParams();
@@ -69,31 +70,40 @@ const FileEditor = () => {
         </div>
       </header>
       
-      <div className="flex h-[calc(100vh-4rem)]">
-        {/* Left Sidebar - Document Library */}
-        <div className="w-80 border-r bg-card">
-          <DocumentLibrary />
-        </div>
+      <div className="h-[calc(100vh-4rem)]">
+        <ResizablePanelGroup direction="horizontal">
+          {/* Left Sidebar - Document Library */}
+          <ResizablePanel defaultSize={20} minSize={15} maxSize={30}>
+            <div className="h-full border-r bg-card">
+              <DocumentLibrary />
+            </div>
+          </ResizablePanel>
+          
+          <ResizableHandle withHandle />
 
-        {/* Main Content - File Editing Area */}
-        <div className={`flex-1 flex flex-col transition-all duration-300`} style={{ 
-          marginRight: isAIVisible ? '320px' : '0px' 
-        }}>
-          <div className="flex-1 overflow-hidden">
-            <DocumentEditor 
-              initialContent={sampleThesisContent}
-              fileName={fileName}
-              isAIVisible={isAIVisible}
-            />
-          </div>
-        </div>
+          {/* Main Content - File Editing Area */}
+          <ResizablePanel defaultSize={isAIVisible ? 55 : 80} minSize={30}>
+            <div className="h-full flex flex-col">
+              <DocumentEditor 
+                initialContent={sampleThesisContent}
+                fileName={fileName}
+                isAIVisible={isAIVisible}
+              />
+            </div>
+          </ResizablePanel>
 
-        {/* Right Sidebar - AI Assistant (Collapsible) */}
-        {isAIVisible && (
-          <div className="w-80 border-l p-4 fixed right-0 top-16 h-[calc(100vh-4rem)] bg-background z-20">
-            <AIAssistant />
-          </div>
-        )}
+          {/* Right Sidebar - AI Assistant (Collapsible & Resizable) */}
+          {isAIVisible && (
+            <>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
+                <div className="h-full border-l p-4 bg-background">
+                  <AIAssistant />
+                </div>
+              </ResizablePanel>
+            </>
+          )}
+        </ResizablePanelGroup>
       </div>
       
       {/* Note at bottom about AI capabilities */}
