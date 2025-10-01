@@ -31,22 +31,29 @@ const Index = () => {
             <div className="px-6 pt-4 pb-3 border-b bg-background flex-shrink-0">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Bot className="h-6 w-6 text-primary flex-shrink-0" />
+                  <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-md">
+                    <Bot className="h-5 w-5 text-primary-foreground" />
+                  </div>
                   <div>
                     <h1 className="text-xl font-bold text-foreground">Document Management</h1>
                     <p className="text-xs text-muted-foreground">AI-powered indexing and organization</p>
                   </div>
                 </div>
                 
-                {/* Compact Action Buttons */}
+                {/* Modern Action Buttons */}
                 <div className="flex items-center gap-2">
-                  <Button variant="default" size="sm" className="gap-2 h-8">
+                  <Button 
+                    className="gap-2 h-9 px-4 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105"
+                  >
                     <Plus className="h-4 w-4" />
-                    New
+                    <span className="font-medium">New</span>
                   </Button>
-                  <Button variant="outline" size="sm" className="gap-2 h-8">
+                  <Button 
+                    variant="outline" 
+                    className="gap-2 h-9 px-4 border-2 hover:border-primary/50 hover:bg-primary/5 transition-all duration-200 hover:scale-105 hover:shadow-md"
+                  >
                     <Upload className="h-4 w-4" />
-                    Upload
+                    <span className="font-medium">Upload</span>
                   </Button>
                 </div>
               </div>
