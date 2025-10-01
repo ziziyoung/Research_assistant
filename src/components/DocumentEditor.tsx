@@ -32,7 +32,7 @@ interface DocumentEditorProps {
 
 export const DocumentEditor = ({ initialContent = "", fileName }: DocumentEditorProps) => {
   const [content, setContent] = useState(initialContent);
-  const [editMode, setEditMode] = useState<"richtext" | "markdown">("richtext");
+  const [isNotesVisible, setIsNotesVisible] = useState(true);
   const [markdownContent, setMarkdownContent] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -130,13 +130,15 @@ export const DocumentEditor = ({ initialContent = "", fileName }: DocumentEditor
   };
 
   const handleSave = () => {
-    if (editMode === "richtext" && editorRef.current) {
+    if (editorRef.current) {
       const savedContent = editorRef.current.innerHTML;
       setContent(savedContent);
       toast.success("Document saved successfully!");
-    } else if (editMode === "markdown") {
-      toast.success("Markdown saved successfully!");
     }
+  };
+
+  const handleSaveNotes = () => {
+    toast.success("Notes saved successfully!");
   };
 
   const handleInput = () => {
@@ -150,29 +152,21 @@ export const DocumentEditor = ({ initialContent = "", fileName }: DocumentEditor
       {/* Toolbar */}
       <div className="border-b bg-card p-2">
         <div className="flex items-center gap-1 flex-wrap">
-          {/* Edit Mode Toggle */}
+          {/* Notes Toggle */}
           <Button
-            variant={editMode === "richtext" ? "default" : "ghost"}
+            variant={isNotesVisible ? "default" : "ghost"}
             size="sm"
-            onClick={() => setEditMode("richtext")}
-            title="Rich Text Editor"
+            onClick={() => setIsNotesVisible(!isNotesVisible)}
+            title="Toggle Markdown Notes"
           >
-            <FileText className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={editMode === "markdown" ? "default" : "ghost"}
-            size="sm"
-            onClick={() => setEditMode("markdown")}
-            title="Markdown Editor"
-          >
-            <Code className="h-4 w-4" />
+            <Code className="h-4 w-4 mr-2" />
+            Notes
           </Button>
 
           <Separator orientation="vertical" className="h-6 mx-1" />
 
-          {/* Drawing Tools - Only in Rich Text Mode */}
-          {editMode === "richtext" && (
-            <>
+          {/* Drawing Tools */}
+          <>
               <Button
                 variant={drawMode === "select" ? "default" : "ghost"}
                 size="sm"
@@ -229,122 +223,117 @@ export const DocumentEditor = ({ initialContent = "", fileName }: DocumentEditor
 
               <Separator orientation="vertical" className="h-6 mx-1" />
             </>
-          )}
           
-          {/* Text Formatting - Only in Rich Text Mode */}
-          {editMode === "richtext" && (
-            <>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => executeCommand("bold")}
-                title="Bold (Ctrl+B)"
-              >
-                <Bold className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => executeCommand("italic")}
-                title="Italic (Ctrl+I)"
-              >
-                <Italic className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => executeCommand("underline")}
-                title="Underline (Ctrl+U)"
-              >
-                <Underline className="h-4 w-4" />
-              </Button>
+          {/* Text Formatting */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => executeCommand("bold")}
+            title="Bold (Ctrl+B)"
+          >
+            <Bold className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => executeCommand("italic")}
+            title="Italic (Ctrl+I)"
+          >
+            <Italic className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => executeCommand("underline")}
+            title="Underline (Ctrl+U)"
+          >
+            <Underline className="h-4 w-4" />
+          </Button>
 
-              <Separator orientation="vertical" className="h-6 mx-1" />
+          <Separator orientation="vertical" className="h-6 mx-1" />
 
-              {/* Alignment */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => executeCommand("justifyLeft")}
-                title="Align Left"
-              >
-                <AlignLeft className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => executeCommand("justifyCenter")}
-                title="Align Center"
-              >
-                <AlignCenter className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => executeCommand("justifyRight")}
-                title="Align Right"
-              >
-                <AlignRight className="h-4 w-4" />
-              </Button>
+          {/* Alignment */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => executeCommand("justifyLeft")}
+            title="Align Left"
+          >
+            <AlignLeft className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => executeCommand("justifyCenter")}
+            title="Align Center"
+          >
+            <AlignCenter className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => executeCommand("justifyRight")}
+            title="Align Right"
+          >
+            <AlignRight className="h-4 w-4" />
+          </Button>
 
-              <Separator orientation="vertical" className="h-6 mx-1" />
+          <Separator orientation="vertical" className="h-6 mx-1" />
 
-              {/* Lists */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => executeCommand("insertUnorderedList")}
-                title="Bullet List"
-              >
-                <List className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => executeCommand("insertOrderedList")}
-                title="Numbered List"
-              >
-                <ListOrdered className="h-4 w-4" />
-              </Button>
+          {/* Lists */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => executeCommand("insertUnorderedList")}
+            title="Bullet List"
+          >
+            <List className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => executeCommand("insertOrderedList")}
+            title="Numbered List"
+          >
+            <ListOrdered className="h-4 w-4" />
+          </Button>
 
-              <Separator orientation="vertical" className="h-6 mx-1" />
+          <Separator orientation="vertical" className="h-6 mx-1" />
 
-              {/* Heading Styles */}
-              <select
-                className="h-8 text-sm border rounded px-2 bg-background"
-                onChange={(e) => executeCommand("formatBlock", e.target.value)}
-                defaultValue=""
-              >
-                <option value="">Normal</option>
-                <option value="h1">Heading 1</option>
-                <option value="h2">Heading 2</option>
-                <option value="h3">Heading 3</option>
-                <option value="p">Paragraph</option>
-              </select>
+          {/* Heading Styles */}
+          <select
+            className="h-8 text-sm border rounded px-2 bg-background"
+            onChange={(e) => executeCommand("formatBlock", e.target.value)}
+            defaultValue=""
+          >
+            <option value="">Normal</option>
+            <option value="h1">Heading 1</option>
+            <option value="h2">Heading 2</option>
+            <option value="h3">Heading 3</option>
+            <option value="p">Paragraph</option>
+          </select>
 
-              <Separator orientation="vertical" className="h-6 mx-1" />
+          <Separator orientation="vertical" className="h-6 mx-1" />
 
-              {/* Undo/Redo */}
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => executeCommand("undo")}
-                title="Undo (Ctrl+Z)"
-              >
-                <Undo className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => executeCommand("redo")}
-                title="Redo (Ctrl+Y)"
-              >
-                <Redo className="h-4 w-4" />
-              </Button>
+          {/* Undo/Redo */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => executeCommand("undo")}
+            title="Undo (Ctrl+Z)"
+          >
+            <Undo className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => executeCommand("redo")}
+            title="Redo (Ctrl+Y)"
+          >
+            <Redo className="h-4 w-4" />
+          </Button>
 
-              <Separator orientation="vertical" className="h-6 mx-1" />
-            </>
-          )}
+          <Separator orientation="vertical" className="h-6 mx-1" />
 
           {/* Save */}
           <Button
@@ -359,74 +348,94 @@ export const DocumentEditor = ({ initialContent = "", fileName }: DocumentEditor
         </div>
       </div>
 
-      {/* Editor Area */}
-      <div className="flex-1 overflow-y-auto scrollbar-visible bg-muted/30 p-8">
-        <div className="max-w-4xl mx-auto bg-background shadow-lg min-h-full relative">
-          {editMode === "richtext" ? (
-            <>
-              {/* Text Editor */}
-              <div
-                ref={editorRef}
-                contentEditable={drawMode === "select"}
-                onInput={handleInput}
-                className="p-16 outline-none min-h-full prose prose-slate max-w-none relative z-10
-                         [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mb-4 [&_h1]:mt-6
-                         [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-3 [&_h2]:mt-5
-                         [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-2 [&_h3]:mt-4
-                         [&_p]:mb-4 [&_p]:leading-relaxed
-                         [&_ul]:mb-4 [&_ul]:ml-6 [&_ul]:list-disc
-                         [&_ol]:mb-4 [&_ol]:ml-6 [&_ol]:list-decimal
-                         [&_li]:mb-2"
-                style={{ pointerEvents: drawMode === "select" ? "auto" : "none" }}
-                suppressContentEditableWarning
-              />
-              {/* Drawing Canvas Overlay */}
-              <canvas
-                ref={canvasRef}
-                className="absolute top-0 left-0 w-full h-full"
-                style={{ 
-                  pointerEvents: drawMode === "select" ? "none" : "auto",
-                  cursor: drawMode === "draw" ? "crosshair" : drawMode === "erase" ? "pointer" : "default"
-                }}
-                onMouseDown={startDrawing}
-                onMouseMove={draw}
-                onMouseUp={stopDrawing}
-                onMouseLeave={stopDrawing}
-              />
-            </>
-          ) : (
-            <Tabs defaultValue="write" className="w-full h-full">
-              <TabsList className="m-4">
+      {/* Editor Area with Side-by-Side Layout */}
+      <div className="flex-1 overflow-hidden flex bg-muted/30">
+        {/* Main Document Editor */}
+        <div className={`flex-1 overflow-y-auto scrollbar-visible p-8 transition-all duration-300 ${isNotesVisible ? 'mr-[400px]' : ''}`}>
+          <div className="max-w-4xl mx-auto bg-background shadow-lg min-h-full relative">
+            {/* Text Editor */}
+            <div
+              ref={editorRef}
+              contentEditable={drawMode === "select"}
+              onInput={handleInput}
+              className="p-16 outline-none min-h-full prose prose-slate max-w-none relative z-10
+                       [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mb-4 [&_h1]:mt-6
+                       [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-3 [&_h2]:mt-5
+                       [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-2 [&_h3]:mt-4
+                       [&_p]:mb-4 [&_p]:leading-relaxed
+                       [&_ul]:mb-4 [&_ul]:ml-6 [&_ul]:list-disc
+                       [&_ol]:mb-4 [&_ol]:ml-6 [&_ol]:list-decimal
+                       [&_li]:mb-2"
+              style={{ pointerEvents: drawMode === "select" ? "auto" : "none" }}
+              suppressContentEditableWarning
+            />
+            {/* Drawing Canvas Overlay */}
+            <canvas
+              ref={canvasRef}
+              className="absolute top-0 left-0 w-full h-full"
+              style={{ 
+                pointerEvents: drawMode === "select" ? "none" : "auto",
+                cursor: drawMode === "draw" ? "crosshair" : drawMode === "erase" ? "pointer" : "default"
+              }}
+              onMouseDown={startDrawing}
+              onMouseMove={draw}
+              onMouseUp={stopDrawing}
+              onMouseLeave={stopDrawing}
+            />
+          </div>
+        </div>
+
+        {/* Markdown Notes Panel - Right Side */}
+        {isNotesVisible && (
+          <div className="w-[400px] border-l bg-background fixed right-0 top-0 h-full overflow-hidden flex flex-col">
+            <div className="border-b p-3 flex items-center justify-between bg-card">
+              <h3 className="font-semibold text-sm flex items-center gap-2">
+                <FileText className="h-4 w-4" />
+                Markdown Notes
+              </h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleSaveNotes}
+              >
+                <Save className="h-4 w-4 mr-2" />
+                Save Notes
+              </Button>
+            </div>
+            <Tabs defaultValue="write" className="flex-1 flex flex-col overflow-hidden">
+              <TabsList className="mx-3 mt-3 w-auto self-start">
                 <TabsTrigger value="write">Write</TabsTrigger>
                 <TabsTrigger value="preview">Preview</TabsTrigger>
               </TabsList>
-              <TabsContent value="write" className="p-4 h-full">
+              <TabsContent value="write" className="flex-1 p-3 overflow-hidden">
                 <Textarea
                   value={markdownContent}
                   onChange={(e) => setMarkdownContent(e.target.value)}
-                  placeholder="Write your markdown here..."
-                  className="min-h-[600px] font-mono"
+                  placeholder="Write your markdown notes here...&#10;&#10;# Heading&#10;- Bullet point&#10;**Bold text**&#10;*Italic text*&#10;&#10;You can reference your document while taking notes!"
+                  className="h-full font-mono resize-none"
                 />
               </TabsContent>
-              <TabsContent value="preview" className="p-16 h-full">
-                <div className="prose prose-slate max-w-none">
+              <TabsContent value="preview" className="flex-1 p-6 overflow-y-auto">
+                <div className="prose prose-slate prose-sm max-w-none">
                   <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {markdownContent}
+                    {markdownContent || "*No notes yet. Switch to Write tab to add notes.*"}
                   </ReactMarkdown>
                 </div>
               </TabsContent>
             </Tabs>
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {/* Status Bar */}
       <div className="border-t bg-card p-2 text-sm text-muted-foreground flex items-center justify-between">
-        <span>Editing: {fileName} ({editMode === "richtext" ? "Rich Text" : "Markdown"})</span>
-        <span>Words: {editMode === "richtext" 
-          ? content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length
-          : markdownContent.split(/\s+/).filter(Boolean).length
-        }</span>
+        <span>Editing: {fileName}</span>
+        <div className="flex items-center gap-4">
+          <span>Document Words: {content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length}</span>
+          {isNotesVisible && (
+            <span>Notes Words: {markdownContent.split(/\s+/).filter(Boolean).length}</span>
+          )}
+        </div>
       </div>
     </div>
   );
