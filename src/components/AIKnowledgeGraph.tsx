@@ -244,110 +244,90 @@ export const AIKnowledgeGraph = () => {
   );
 
   return (
-    <div className="h-full flex flex-col p-6">
-      <div className="mb-4">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h2 className="text-2xl font-bold text-foreground flex items-center gap-2">
-              <Network className="h-6 w-6 text-primary" />
-              AI Knowledge Graph
-            </h2>
-            <p className="text-muted-foreground">
-              Visualize article relationships and discover optimization opportunities
-            </p>
+    <div className="h-full flex flex-col gap-3 p-4">
+      {/* Compact Header with Stats */}
+      <div className="flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2">
+          <Network className="h-5 w-5 text-primary" />
+          <h2 className="text-xl font-bold text-foreground">Knowledge Graph</h2>
+        </div>
+        
+        <div className="flex items-center gap-3 text-sm">
+          <div className="flex items-center gap-1.5">
+            <span className="text-muted-foreground">Articles:</span>
+            <span className="font-semibold">{nodes.length}</span>
+          </div>
+          <div className="h-4 w-px bg-border" />
+          <div className="flex items-center gap-1.5">
+            <span className="text-muted-foreground">Connections:</span>
+            <span className="font-semibold">{edges.length}</span>
+          </div>
+          <div className="h-4 w-px bg-border" />
+          <div className="flex items-center gap-1.5">
+            <span className="text-muted-foreground">Clusters:</span>
+            <span className="font-semibold">3</span>
+          </div>
+          <div className="h-4 w-px bg-border" />
+          <div className="flex items-center gap-1.5">
+            <AlertCircle className="h-3.5 w-3.5 text-destructive" />
+            <span className="font-semibold text-destructive">1</span>
           </div>
         </div>
+      </div>
 
-        <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+      {/* Compact Search and Filters */}
+      <div className="flex items-center gap-2">
+        <div className="relative flex-1 max-w-xs">
+          <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-muted-foreground h-3.5 w-3.5" />
           <Input
-            placeholder="Search articles in graph..."
+            placeholder="Search articles..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
+            className="pl-8 h-9 text-sm"
           />
         </div>
-
-        <div className="grid grid-cols-4 gap-4 mb-4">
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Total Articles</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{nodes.length}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Connections</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{edges.length}</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium">Clusters</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">3</div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium text-destructive">Optimization Points</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-destructive">1</div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="flex gap-2 mb-4">
-          <Badge variant="secondary">Computer Vision</Badge>
-          <Badge variant="secondary">Neural Networks</Badge>
-          <Badge variant="secondary">Machine Learning</Badge>
-          <Badge variant="secondary">NLP</Badge>
-          <Badge variant="destructive">
+        <div className="flex gap-1.5 flex-wrap">
+          <Badge variant="secondary" className="text-xs">Computer Vision</Badge>
+          <Badge variant="secondary" className="text-xs">Neural Networks</Badge>
+          <Badge variant="secondary" className="text-xs">Machine Learning</Badge>
+          <Badge variant="secondary" className="text-xs">NLP</Badge>
+          <Badge variant="destructive" className="text-xs">
             <AlertCircle className="w-3 h-3 mr-1" />
-            Needs Optimization
+            Optimize
           </Badge>
         </div>
       </div>
 
-      <Card className="flex-1 min-h-0">
+      {/* Maximized Graph */}
+      <Card className="flex-1 min-h-0 border-2">
         <CardContent className="p-0 h-full">
-          <div style={{ height: '600px' }}>
-            <ReactFlow
-              nodes={nodes}
-              edges={edges}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={onConnect}
-              fitView
-              attributionPosition="bottom-left"
-            >
-              <Controls />
-              <Background />
-            </ReactFlow>
-          </div>
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
+            fitView
+            attributionPosition="bottom-left"
+          >
+            <Controls />
+            <Background />
+          </ReactFlow>
         </CardContent>
       </Card>
 
-      <div className="mt-4 p-4 bg-muted rounded-lg">
-        <h3 className="font-semibold mb-2 flex items-center gap-2">
-          <AlertCircle className="h-4 w-4 text-destructive" />
-          Process Structure Test Results
-        </h3>
-        <p className="text-sm text-muted-foreground mb-2">
-          Graph analysis indicates 1 optimization opportunity:
-        </p>
-        <ul className="list-disc list-inside text-sm space-y-1">
-          <li>
-            <span className="font-medium">Attention Mechanisms</span> - High citation count but weak connections. 
-            Recommend linking to related transformer architectures.
-          </li>
-        </ul>
+      {/* Compact Analysis Footer */}
+      <div className="px-3 py-2 bg-muted/50 rounded-md border border-muted-foreground/20">
+        <div className="flex items-start gap-2">
+          <AlertCircle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
+          <div className="flex-1 text-sm">
+            <span className="font-medium">Analysis:</span>
+            <span className="text-muted-foreground ml-1.5">
+              <span className="font-medium text-foreground">Attention Mechanisms</span> shows weak connections despite high citations. 
+              Link to transformer architectures for optimization.
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );
