@@ -76,18 +76,21 @@ const FileEditor = () => {
         </div>
 
         {/* Main Content - File Editing Area */}
-        <div className={`flex-1 flex flex-col ${isAIVisible ? 'mr-80' : ''} transition-all duration-300`}>
+        <div className={`flex-1 flex flex-col transition-all duration-300`} style={{ 
+          marginRight: isAIVisible ? '320px' : '0px' 
+        }}>
           <div className="flex-1 overflow-hidden">
             <DocumentEditor 
               initialContent={sampleThesisContent}
               fileName={fileName}
+              isAIVisible={isAIVisible}
             />
           </div>
         </div>
 
         {/* Right Sidebar - AI Assistant (Collapsible) */}
         {isAIVisible && (
-          <div className="w-80 border-l p-4 fixed right-0 top-16 h-[calc(100vh-4rem)] bg-background z-10">
+          <div className="w-80 border-l p-4 fixed right-0 top-16 h-[calc(100vh-4rem)] bg-background z-20">
             <AIAssistant />
           </div>
         )}
