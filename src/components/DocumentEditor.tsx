@@ -352,14 +352,7 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
       {/* Editor Area with Side-by-Side Layout */}
       <div className="flex-1 overflow-hidden flex bg-muted/30">
         {/* Main Document Editor */}
-        <div 
-          className="flex-1 overflow-y-auto scrollbar-visible p-8 transition-all duration-300"
-          style={{ 
-            marginRight: isNotesVisible && isAIVisible ? '720px' : 
-                        isNotesVisible ? '400px' : 
-                        isAIVisible ? '320px' : '0px'
-          }}
-        >
+        <div className="flex-1 overflow-y-auto scrollbar-visible p-8">
           <div className="max-w-4xl mx-auto bg-background shadow-lg min-h-full relative">
             {/* Text Editor */}
             <div
@@ -395,10 +388,7 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
 
         {/* Markdown Notes Panel - Right Side */}
         {isNotesVisible && (
-          <div 
-            className="w-[400px] border-l bg-background fixed top-[64px] h-[calc(100vh-64px)] overflow-hidden flex flex-col z-5 transition-all duration-300"
-            style={{ right: isAIVisible ? '320px' : '0px' }}
-          >
+          <div className="w-[400px] border-l bg-background overflow-hidden flex flex-col">
             <div className="border-b p-3 flex items-center justify-between bg-card">
               <h3 className="font-semibold text-sm flex items-center gap-2">
                 <FileText className="h-4 w-4" />
