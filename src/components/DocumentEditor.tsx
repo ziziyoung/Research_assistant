@@ -1,6 +1,10 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { 
   Bold, 
   Italic, 
@@ -15,7 +19,9 @@ import {
   Save,
   Pencil,
   Eraser,
-  MousePointer
+  MousePointer,
+  FileText,
+  Code
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -26,6 +32,8 @@ interface DocumentEditorProps {
 
 export const DocumentEditor = ({ initialContent = "", fileName }: DocumentEditorProps) => {
   const [content, setContent] = useState(initialContent);
+  const [editMode, setEditMode] = useState<"richtext" | "markdown">("richtext");
+  const [markdownContent, setMarkdownContent] = useState("");
   const editorRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -122,10 +130,12 @@ export const DocumentEditor = ({ initialContent = "", fileName }: DocumentEditor
   };
 
   const handleSave = () => {
-    if (editorRef.current) {
+    if (editMode === "richtext" && editorRef.current) {
       const savedContent = editorRef.current.innerHTML;
       setContent(savedContent);
       toast.success("Document saved successfully!");
+    } else if (editMode === "markdown") {
+      toast.success("Markdown saved successfully!");
     }
   };
 
@@ -140,172 +150,201 @@ export const DocumentEditor = ({ initialContent = "", fileName }: DocumentEditor
       {/* Toolbar */}
       <div className="border-b bg-card p-2">
         <div className="flex items-center gap-1 flex-wrap">
-          {/* Drawing Tools */}
+          {/* Edit Mode Toggle */}
           <Button
-            variant={drawMode === "select" ? "default" : "ghost"}
+            variant={editMode === "richtext" ? "default" : "ghost"}
             size="sm"
-            onClick={() => setDrawMode("select")}
-            title="Select/Edit Text"
+            onClick={() => setEditMode("richtext")}
+            title="Rich Text Editor"
           >
-            <MousePointer className="h-4 w-4" />
+            <FileText className="h-4 w-4" />
           </Button>
           <Button
-            variant={drawMode === "draw" ? "default" : "ghost"}
+            variant={editMode === "markdown" ? "default" : "ghost"}
             size="sm"
-            onClick={() => setDrawMode("draw")}
-            title="Draw"
+            onClick={() => setEditMode("markdown")}
+            title="Markdown Editor"
           >
-            <Pencil className="h-4 w-4" />
-          </Button>
-          <Button
-            variant={drawMode === "erase" ? "default" : "ghost"}
-            size="sm"
-            onClick={() => setDrawMode("erase")}
-            title="Eraser"
-          >
-            <Eraser className="h-4 w-4" />
+            <Code className="h-4 w-4" />
           </Button>
 
-          {drawMode !== "select" && (
+          <Separator orientation="vertical" className="h-6 mx-1" />
+
+          {/* Drawing Tools - Only in Rich Text Mode */}
+          {editMode === "richtext" && (
             <>
-              <input
-                type="color"
-                value={drawColor}
-                onChange={(e) => setDrawColor(e.target.value)}
-                className="h-8 w-12 border rounded cursor-pointer"
-                title="Drawing Color"
-              />
-              <input
-                type="range"
-                min="1"
-                max="10"
-                value={lineWidth}
-                onChange={(e) => setLineWidth(Number(e.target.value))}
-                className="w-20"
-                title="Line Width"
-              />
+              <Button
+                variant={drawMode === "select" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setDrawMode("select")}
+                title="Select/Edit Text"
+              >
+                <MousePointer className="h-4 w-4" />
+              </Button>
+              <Button
+                variant={drawMode === "draw" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setDrawMode("draw")}
+                title="Draw"
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+              <Button
+                variant={drawMode === "erase" ? "default" : "ghost"}
+                size="sm"
+                onClick={() => setDrawMode("erase")}
+                title="Eraser"
+              >
+                <Eraser className="h-4 w-4" />
+              </Button>
+
+              {drawMode !== "select" && (
+                <>
+                  <input
+                    type="color"
+                    value={drawColor}
+                    onChange={(e) => setDrawColor(e.target.value)}
+                    className="h-8 w-12 border rounded cursor-pointer"
+                    title="Drawing Color"
+                  />
+                  <input
+                    type="range"
+                    min="1"
+                    max="10"
+                    value={lineWidth}
+                    onChange={(e) => setLineWidth(Number(e.target.value))}
+                    className="w-20"
+                    title="Line Width"
+                  />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearCanvas}
+                    title="Clear Drawing"
+                  >
+                    Clear
+                  </Button>
+                </>
+              )}
+
+              <Separator orientation="vertical" className="h-6 mx-1" />
+            </>
+          )}
+          
+          {/* Text Formatting - Only in Rich Text Mode */}
+          {editMode === "richtext" && (
+            <>
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={clearCanvas}
-                title="Clear Drawing"
+                onClick={() => executeCommand("bold")}
+                title="Bold (Ctrl+B)"
               >
-                Clear
+                <Bold className="h-4 w-4" />
               </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("italic")}
+                title="Italic (Ctrl+I)"
+              >
+                <Italic className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("underline")}
+                title="Underline (Ctrl+U)"
+              >
+                <Underline className="h-4 w-4" />
+              </Button>
+
+              <Separator orientation="vertical" className="h-6 mx-1" />
+
+              {/* Alignment */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("justifyLeft")}
+                title="Align Left"
+              >
+                <AlignLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("justifyCenter")}
+                title="Align Center"
+              >
+                <AlignCenter className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("justifyRight")}
+                title="Align Right"
+              >
+                <AlignRight className="h-4 w-4" />
+              </Button>
+
+              <Separator orientation="vertical" className="h-6 mx-1" />
+
+              {/* Lists */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("insertUnorderedList")}
+                title="Bullet List"
+              >
+                <List className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("insertOrderedList")}
+                title="Numbered List"
+              >
+                <ListOrdered className="h-4 w-4" />
+              </Button>
+
+              <Separator orientation="vertical" className="h-6 mx-1" />
+
+              {/* Heading Styles */}
+              <select
+                className="h-8 text-sm border rounded px-2 bg-background"
+                onChange={(e) => executeCommand("formatBlock", e.target.value)}
+                defaultValue=""
+              >
+                <option value="">Normal</option>
+                <option value="h1">Heading 1</option>
+                <option value="h2">Heading 2</option>
+                <option value="h3">Heading 3</option>
+                <option value="p">Paragraph</option>
+              </select>
+
+              <Separator orientation="vertical" className="h-6 mx-1" />
+
+              {/* Undo/Redo */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("undo")}
+                title="Undo (Ctrl+Z)"
+              >
+                <Undo className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("redo")}
+                title="Redo (Ctrl+Y)"
+              >
+                <Redo className="h-4 w-4" />
+              </Button>
+
+              <Separator orientation="vertical" className="h-6 mx-1" />
             </>
           )}
-
-          <Separator orientation="vertical" className="h-6 mx-1" />
-          {/* Text Formatting */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("bold")}
-            title="Bold (Ctrl+B)"
-          >
-            <Bold className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("italic")}
-            title="Italic (Ctrl+I)"
-          >
-            <Italic className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("underline")}
-            title="Underline (Ctrl+U)"
-          >
-            <Underline className="h-4 w-4" />
-          </Button>
-
-          <Separator orientation="vertical" className="h-6 mx-1" />
-
-          {/* Alignment */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("justifyLeft")}
-            title="Align Left"
-          >
-            <AlignLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("justifyCenter")}
-            title="Align Center"
-          >
-            <AlignCenter className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("justifyRight")}
-            title="Align Right"
-          >
-            <AlignRight className="h-4 w-4" />
-          </Button>
-
-          <Separator orientation="vertical" className="h-6 mx-1" />
-
-          {/* Lists */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("insertUnorderedList")}
-            title="Bullet List"
-          >
-            <List className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("insertOrderedList")}
-            title="Numbered List"
-          >
-            <ListOrdered className="h-4 w-4" />
-          </Button>
-
-          <Separator orientation="vertical" className="h-6 mx-1" />
-
-          {/* Heading Styles */}
-          <select
-            className="h-8 text-sm border rounded px-2 bg-background"
-            onChange={(e) => executeCommand("formatBlock", e.target.value)}
-            defaultValue=""
-          >
-            <option value="">Normal</option>
-            <option value="h1">Heading 1</option>
-            <option value="h2">Heading 2</option>
-            <option value="h3">Heading 3</option>
-            <option value="p">Paragraph</option>
-          </select>
-
-          <Separator orientation="vertical" className="h-6 mx-1" />
-
-          {/* Undo/Redo */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("undo")}
-            title="Undo (Ctrl+Z)"
-          >
-            <Undo className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("redo")}
-            title="Redo (Ctrl+Y)"
-          >
-            <Redo className="h-4 w-4" />
-          </Button>
-
-          <Separator orientation="vertical" className="h-6 mx-1" />
 
           {/* Save */}
           <Button
@@ -323,42 +362,71 @@ export const DocumentEditor = ({ initialContent = "", fileName }: DocumentEditor
       {/* Editor Area */}
       <div className="flex-1 overflow-y-auto scrollbar-visible bg-muted/30 p-8">
         <div className="max-w-4xl mx-auto bg-background shadow-lg min-h-full relative">
-          {/* Text Editor */}
-          <div
-            ref={editorRef}
-            contentEditable={drawMode === "select"}
-            onInput={handleInput}
-            className="p-16 outline-none min-h-full prose prose-slate max-w-none relative z-10
-                     [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mb-4 [&_h1]:mt-6
-                     [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-3 [&_h2]:mt-5
-                     [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-2 [&_h3]:mt-4
-                     [&_p]:mb-4 [&_p]:leading-relaxed
-                     [&_ul]:mb-4 [&_ul]:ml-6 [&_ul]:list-disc
-                     [&_ol]:mb-4 [&_ol]:ml-6 [&_ol]:list-decimal
-                     [&_li]:mb-2"
-            style={{ pointerEvents: drawMode === "select" ? "auto" : "none" }}
-            suppressContentEditableWarning
-          />
-          {/* Drawing Canvas Overlay */}
-          <canvas
-            ref={canvasRef}
-            className="absolute top-0 left-0 w-full h-full"
-            style={{ 
-              pointerEvents: drawMode === "select" ? "none" : "auto",
-              cursor: drawMode === "draw" ? "crosshair" : drawMode === "erase" ? "pointer" : "default"
-            }}
-            onMouseDown={startDrawing}
-            onMouseMove={draw}
-            onMouseUp={stopDrawing}
-            onMouseLeave={stopDrawing}
-          />
+          {editMode === "richtext" ? (
+            <>
+              {/* Text Editor */}
+              <div
+                ref={editorRef}
+                contentEditable={drawMode === "select"}
+                onInput={handleInput}
+                className="p-16 outline-none min-h-full prose prose-slate max-w-none relative z-10
+                         [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mb-4 [&_h1]:mt-6
+                         [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-3 [&_h2]:mt-5
+                         [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-2 [&_h3]:mt-4
+                         [&_p]:mb-4 [&_p]:leading-relaxed
+                         [&_ul]:mb-4 [&_ul]:ml-6 [&_ul]:list-disc
+                         [&_ol]:mb-4 [&_ol]:ml-6 [&_ol]:list-decimal
+                         [&_li]:mb-2"
+                style={{ pointerEvents: drawMode === "select" ? "auto" : "none" }}
+                suppressContentEditableWarning
+              />
+              {/* Drawing Canvas Overlay */}
+              <canvas
+                ref={canvasRef}
+                className="absolute top-0 left-0 w-full h-full"
+                style={{ 
+                  pointerEvents: drawMode === "select" ? "none" : "auto",
+                  cursor: drawMode === "draw" ? "crosshair" : drawMode === "erase" ? "pointer" : "default"
+                }}
+                onMouseDown={startDrawing}
+                onMouseMove={draw}
+                onMouseUp={stopDrawing}
+                onMouseLeave={stopDrawing}
+              />
+            </>
+          ) : (
+            <Tabs defaultValue="write" className="w-full h-full">
+              <TabsList className="m-4">
+                <TabsTrigger value="write">Write</TabsTrigger>
+                <TabsTrigger value="preview">Preview</TabsTrigger>
+              </TabsList>
+              <TabsContent value="write" className="p-4 h-full">
+                <Textarea
+                  value={markdownContent}
+                  onChange={(e) => setMarkdownContent(e.target.value)}
+                  placeholder="Write your markdown here..."
+                  className="min-h-[600px] font-mono"
+                />
+              </TabsContent>
+              <TabsContent value="preview" className="p-16 h-full">
+                <div className="prose prose-slate max-w-none">
+                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                    {markdownContent}
+                  </ReactMarkdown>
+                </div>
+              </TabsContent>
+            </Tabs>
+          )}
         </div>
       </div>
 
       {/* Status Bar */}
       <div className="border-t bg-card p-2 text-sm text-muted-foreground flex items-center justify-between">
-        <span>Editing: {fileName}</span>
-        <span>Words: {content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length}</span>
+        <span>Editing: {fileName} ({editMode === "richtext" ? "Rich Text" : "Markdown"})</span>
+        <span>Words: {editMode === "richtext" 
+          ? content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length
+          : markdownContent.split(/\s+/).filter(Boolean).length
+        }</span>
       </div>
     </div>
   );
