@@ -12,7 +12,8 @@ import {
 import { 
   Image, 
   Search,
-  ExternalLink
+  ExternalLink,
+  Download
 } from "lucide-react";
 
 interface DocumentIndex {
@@ -23,6 +24,7 @@ interface DocumentIndex {
   thumbnail: string;
   methodSummary: string;
   codeAddress: string;
+  downloadUrl: string;
   literatureTime: string;
   createdAt: string;
   processingStatus: 'completed';
@@ -48,6 +50,7 @@ export const AIIndexing = () => {
       thumbnail: "/api/placeholder/150/200",
       methodSummary: "Quantitative analysis using statistical methods and experimental validation with cross-validation techniques.",
       codeAddress: "https://github.com/research/ml-analysis/blob/main/analysis.py",
+      downloadUrl: "https://arxiv.org/pdf/2024.12345.pdf",
       literatureTime: "2024-01-15",
       createdAt: "2024-01-15T10:30:00Z",
       processingStatus: 'completed',
@@ -67,6 +70,7 @@ export const AIIndexing = () => {
       thumbnail: "/api/placeholder/150/200",
       methodSummary: "Systematic documentation approach with structured content organization and practical examples.",
       codeAddress: "https://github.com/project/docs/blob/main/technical-guide.md",
+      downloadUrl: "https://arxiv.org/pdf/2024.67890.pdf",
       literatureTime: "2024-01-20",
       createdAt: "2024-01-20T14:15:00Z",
       processingStatus: 'completed',
@@ -86,6 +90,7 @@ export const AIIndexing = () => {
       thumbnail: "/api/placeholder/150/200",
       methodSummary: "Mixed-methods research combining quantitative market data analysis with qualitative stakeholder interviews.",
       codeAddress: "https://github.com/research/market-analysis/blob/main/report.R",
+      downloadUrl: "https://arxiv.org/pdf/2024.11223.pdf",
       literatureTime: "2024-01-10",
       createdAt: "2024-01-10T09:45:00Z",
       processingStatus: 'completed',
@@ -167,6 +172,7 @@ export const AIIndexing = () => {
                   <TableHead className="min-w-[350px]">Innovation</TableHead>
                   <TableHead className="min-w-[300px]">Notes</TableHead>
                   <TableHead className="min-w-[300px]">Code Address</TableHead>
+                  <TableHead className="min-w-[200px]">Download URL</TableHead>
                   <TableHead className="min-w-[120px]">Thumbnail</TableHead>
                 </TableRow>
               </TableHeader>
@@ -231,6 +237,18 @@ export const AIIndexing = () => {
                       >
                         <span className="truncate max-w-[250px]">{doc.codeAddress}</span>
                         <ExternalLink className="h-3 w-3 shrink-0" />
+                      </a>
+                    </TableCell>
+                    <TableCell>
+                      <a 
+                        href={doc.downloadUrl} 
+                        className="text-sm text-primary hover:underline flex items-center gap-1"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        download
+                      >
+                        <Download className="h-4 w-4 shrink-0" />
+                        <span>Download PDF</span>
                       </a>
                     </TableCell>
                     <TableCell>
