@@ -119,34 +119,87 @@ export const AIIndexing = () => {
 
   return (
     <div className="h-full flex flex-col bg-background">
-      <div className="p-6 border-b bg-card space-y-4">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">AI Indexes</h2>
-          <p className="text-sm text-muted-foreground">
-            AI-generated document indexes with automatic summaries and metadata
-          </p>
+      <div className="px-6 py-4 border-b bg-card">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h2 className="text-xl font-bold text-foreground">AI Indexes</h2>
+            <p className="text-xs text-muted-foreground">
+              {filteredDocuments.length} {filteredDocuments.length === 1 ? 'document' : 'documents'}
+            </p>
+          </div>
         </div>
         
-        <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+        {/* Modern Search Bar */}
+        <div className="relative group">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
           <Input
             type="text"
-            placeholder="Search documents by name, summary, or keywords..."
+            placeholder="Search anything..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
+            className="pl-10 pr-20 h-10 border-2 focus:border-primary/50 transition-all"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+
+        {/* Quick Filter Tags */}
+        <div className="flex flex-wrap gap-2 mt-3">
+          <Badge 
+            variant="secondary" 
+            className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all text-xs"
+            onClick={() => setSearchQuery("NeurIPS")}
+          >
+            NeurIPS
+          </Badge>
+          <Badge 
+            variant="secondary" 
+            className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all text-xs"
+            onClick={() => setSearchQuery("CVPR")}
+          >
+            CVPR
+          </Badge>
+          <Badge 
+            variant="secondary" 
+            className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all text-xs"
+            onClick={() => setSearchQuery("Transformer")}
+          >
+            Transformer
+          </Badge>
+          <Badge 
+            variant="secondary" 
+            className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-all text-xs"
+            onClick={() => setSearchQuery("CNN")}
+          >
+            CNN
+          </Badge>
         </div>
       </div>
 
       <div className="flex-1 overflow-auto">
         {filteredDocuments.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <Search className="h-12 w-12 text-muted-foreground/50 mb-4" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">No results found</h3>
-            <p className="text-sm text-muted-foreground">
-              Try adjusting your search query
+          <div className="flex flex-col items-center justify-center py-16 text-center animate-fade-in">
+            <div className="w-16 h-16 rounded-full bg-muted/50 flex items-center justify-center mb-4">
+              <Search className="h-8 w-8 text-muted-foreground/50" />
+            </div>
+            <h3 className="text-lg font-semibold text-foreground mb-1">No results found</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Try different keywords or clear filters
             </p>
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="text-sm text-primary hover:underline font-medium"
+              >
+                Clear search
+              </button>
+            )}
           </div>
         ) : (
           <div className="overflow-auto">
