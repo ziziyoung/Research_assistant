@@ -37,7 +37,7 @@ const Index = () => {
               </div>
               
               {/* Action Cards */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
                   <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
                     <Plus className="h-5 w-5 text-blue-600" />
@@ -55,16 +55,6 @@ const Index = () => {
                   <div>
                     <h3 className="font-medium text-foreground">Upload</h3>
                     <p className="text-sm text-muted-foreground">Upload local files</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center gap-3 p-4 bg-card rounded-lg border hover:shadow-md transition-shadow cursor-pointer">
-                  <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                    <FileText className="h-5 w-5 text-red-600" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-foreground">Templates</h3>
-                    <p className="text-sm text-muted-foreground">Go to template gallery</p>
                   </div>
                 </div>
               </div>
