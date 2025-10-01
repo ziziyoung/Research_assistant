@@ -119,23 +119,46 @@ export const AIIndexing = () => {
 
   return (
     <div className="h-full flex flex-col bg-background">
-      <div className="p-6 border-b bg-card space-y-4">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground mb-2">AI Indexes</h2>
-          <p className="text-sm text-muted-foreground">
-            AI-generated document indexes with automatic summaries and metadata
-          </p>
+      <div className="p-4 border-b bg-card/50 backdrop-blur-sm">
+        <div className="flex items-center justify-between gap-4 mb-3">
+          <div>
+            <h2 className="text-xl font-bold text-foreground">AI Indexes</h2>
+            <p className="text-xs text-muted-foreground">
+              {filteredDocuments.length} documents indexed
+            </p>
+          </div>
         </div>
         
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             type="text"
-            placeholder="Search documents by name, summary, or keywords..."
+            placeholder="Search by name, author, keywords, architecture..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-9"
+            className="pl-9 pr-20 h-9 text-sm"
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground hover:text-foreground px-2 py-1 rounded-md hover:bg-muted transition-colors"
+            >
+              Clear
+            </button>
+          )}
+        </div>
+        
+        <div className="flex flex-wrap gap-1.5 mt-2">
+          {["NeurIPS", "ICML", "CVPR", "ResNet", "Transformer", "GAN"].map((filter) => (
+            <Badge
+              key={filter}
+              variant="outline"
+              className="cursor-pointer hover:bg-primary/10 hover:border-primary/50 transition-colors text-xs px-2 py-0.5"
+              onClick={() => setSearchQuery(filter)}
+            >
+              {filter}
+            </Badge>
+          ))}
         </div>
       </div>
 
