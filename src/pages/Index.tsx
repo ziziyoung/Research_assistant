@@ -80,7 +80,7 @@ const Index = () => {
                 </TabsContent>
                 
                 <TabsContent value="shared" className="flex-1 min-h-0 px-6 scrollbar-visible">
-                  <DocumentTable />
+                  <DocumentTable filter="shared" />
                 </TabsContent>
                 
                 <TabsContent value="ai-indexes" className="flex-1 min-h-0 scrollbar-visible">

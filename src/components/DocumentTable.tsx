@@ -186,8 +186,17 @@ const getFileIcon = (type: string) => {
   }
 };
 
-export const DocumentTable = () => {
-  const [documents] = useState<Document[]>(mockDocuments);
+interface DocumentTableProps {
+  filter?: 'all' | 'shared';
+}
+
+export const DocumentTable = ({ filter = 'all' }: DocumentTableProps) => {
+  const currentUser = 'yangyuwei'; // Current logged-in user
+  const filteredDocs = filter === 'shared' 
+    ? mockDocuments.filter(doc => doc.owner !== currentUser)
+    : mockDocuments;
+  
+  const [documents] = useState<Document[]>(filteredDocs);
   const navigate = useNavigate();
 
   const handleFileClick = (fileId: string) => {
