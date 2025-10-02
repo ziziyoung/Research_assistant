@@ -14,7 +14,7 @@ const FileEditor = () => {
   const { fileId } = useParams();
   const navigate = useNavigate();
   const [isAIVisible, setIsAIVisible] = useState(true);
-  const [activeTab, setActiveTab] = useState("assistant");
+  const [activeMainTab, setActiveMainTab] = useState("editor");
 
   // Mock file data - in real app this would come from your data store
   const fileName = fileId === "1" ? "Short Video Competition Analysis Lab" : 
@@ -84,35 +84,35 @@ const FileEditor = () => {
           
           <ResizableHandle withHandle />
 
-          {/* Main Content - File Editing Area */}
+          {/* Main Content - File Editing Area & Knowledge Graph */}
           <ResizablePanel defaultSize={isAIVisible ? 55 : 80} minSize={30}>
             <div className="h-full flex flex-col">
-              <DocumentEditor 
-                initialContent={sampleThesisContent}
-                fileName={fileName}
-                isAIVisible={isAIVisible}
-              />
+              <Tabs value={activeMainTab} onValueChange={setActiveMainTab} className="h-full flex flex-col">
+                <TabsList className="w-full justify-start rounded-none border-b px-6">
+                  <TabsTrigger value="editor">Document Editor</TabsTrigger>
+                  <TabsTrigger value="knowledge">Citation Graph</TabsTrigger>
+                </TabsList>
+                <TabsContent value="editor" className="flex-1 m-0 overflow-hidden">
+                  <DocumentEditor 
+                    initialContent={sampleThesisContent}
+                    fileName={fileName}
+                    isAIVisible={isAIVisible}
+                  />
+                </TabsContent>
+                <TabsContent value="knowledge" className="flex-1 m-0 overflow-hidden">
+                  <AIKnowledgeGraph />
+                </TabsContent>
+              </Tabs>
             </div>
           </ResizablePanel>
 
-          {/* Right Sidebar - AI Assistant & Knowledge Graph (Collapsible & Resizable) */}
+          {/* Right Sidebar - AI Assistant (Collapsible & Resizable) */}
           {isAIVisible && (
             <>
               <ResizableHandle withHandle />
               <ResizablePanel defaultSize={25} minSize={20} maxSize={40}>
-                <div className="h-full border-l bg-background">
-                  <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
-                    <TabsList className="w-full justify-start rounded-none border-b px-4 pt-4">
-                      <TabsTrigger value="assistant">AI Assistant</TabsTrigger>
-                      <TabsTrigger value="knowledge">Knowledge Graph</TabsTrigger>
-                    </TabsList>
-                    <TabsContent value="assistant" className="flex-1 m-0 p-4 overflow-auto">
-                      <AIAssistant />
-                    </TabsContent>
-                    <TabsContent value="knowledge" className="flex-1 m-0 overflow-hidden">
-                      <AIKnowledgeGraph />
-                    </TabsContent>
-                  </Tabs>
+                <div className="h-full border-l p-4 bg-background">
+                  <AIAssistant />
                 </div>
               </ResizablePanel>
             </>
@@ -120,10 +120,10 @@ const FileEditor = () => {
         </ResizablePanelGroup>
       </div>
       
-      {/* Note at bottom about AI capabilities */}
+      {/* Note at bottom about features */}
       {isAIVisible && (
         <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-ai-secondary/90 text-ai-primary px-4 py-2 rounded-lg text-sm backdrop-blur-sm">
-          AI Assistant & Knowledge Graph - Switch tabs to explore citation relationships
+          Switch to Citation Graph tab to explore relationships between this article and references
         </div>
       )}
     </div>
