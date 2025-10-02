@@ -62,9 +62,8 @@ const Index = () => {
             {/* Main Content Tabs */}
             <div className="flex-1 min-h-0">
               <Tabs defaultValue="documents" className="w-full h-full flex flex-col">
-                <TabsList className="grid w-fit grid-cols-5 mx-6 mt-4 mb-4 flex-shrink-0">
+                <TabsList className="grid w-fit grid-cols-4 mx-6 mt-4 mb-4 flex-shrink-0">
                   <TabsTrigger value="documents">Documents</TabsTrigger>
-                  <TabsTrigger value="recent">Recent</TabsTrigger>
                   <TabsTrigger value="shared">Shared</TabsTrigger>
                   <TabsTrigger value="ai-indexes" className="gap-1.5 bg-gradient-to-r from-primary/10 to-primary/5 data-[state=active]:from-primary data-[state=active]:to-primary/80 data-[state=active]:text-primary-foreground">
                     <Sparkles className="h-4 w-4" />
@@ -77,10 +76,6 @@ const Index = () => {
                 </TabsList>
                 
                 <TabsContent value="documents" className="flex-1 min-h-0 px-6 scrollbar-visible">
-                  <DocumentTable />
-                </TabsContent>
-                
-                <TabsContent value="recent" className="flex-1 min-h-0 px-6 scrollbar-visible">
                   <DocumentTable />
                 </TabsContent>
                 
