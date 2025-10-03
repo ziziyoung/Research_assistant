@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { useCitations } from "@/contexts/CitationContext";
 
 interface Message {
   id: string;
@@ -90,7 +89,6 @@ export const AIAssistant = () => {
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
-  const { addCitation, addTest } = useCitations();
 
   // Auto-scroll to bottom when new messages are added
   useEffect(() => {
@@ -98,54 +96,6 @@ export const AIAssistant = () => {
       scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
     }
   }, [messages]);
-
-  const detectCitationsAndGenerateTest = (content: string) => {
-    // Detect citations (articles, authors, years in brackets)
-    const citationPatterns = [
-      /\b([A-Z][a-z]+ et al\., \d{4})\b/g, // "Smith et al., 2023"
-      /\b([A-Z][a-z]+ and [A-Z][a-z]+, \d{4})\b/g, // "Smith and Jones, 2023"
-      /\[([^\]]+)\]/g, // [Citation]
-      /"([^"]+)"/g, // "Quoted text"
-    ];
-
-    const foundCitations: string[] = [];
-    citationPatterns.forEach(pattern => {
-      const matches = content.match(pattern);
-      if (matches) {
-        matches.forEach(match => {
-          if (match.length > 5 && !foundCitations.includes(match)) {
-            foundCitations.push(match);
-          }
-        });
-      }
-    });
-
-    // Add citations with colors
-    foundCitations.forEach(citation => {
-      addCitation({
-        text: citation.replace(/["\[\]]/g, ''),
-        source: citation,
-        color: '', // Will be auto-assigned
-      });
-    });
-
-    // Generate test if citations found
-    if (foundCitations.length > 0) {
-      const testQuestion = `Based on the cited research, what are the key findings regarding the topic discussed?`;
-      const testAnswer = `The research indicates several important findings as documented in ${foundCitations.slice(0, 2).join(' and ')}.`;
-      
-      addTest({
-        question: testQuestion,
-        answer: testAnswer,
-        citations: foundCitations.map(c => c.replace(/["\[\]]/g, '')),
-      });
-
-      toast({
-        title: "Citations detected",
-        description: `Found ${foundCitations.length} citation(s) and generated a test question`,
-      });
-    }
-  };
 
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
@@ -161,25 +111,15 @@ export const AIAssistant = () => {
     setInputValue("");
     setIsLoading(true);
 
-    // Simulate AI response with citation detection
+    // Simulate AI response
     setTimeout(() => {
-      const mockResponses = [
-        `According to recent studies [Smith et al., 2023], the impact of AI on research productivity has increased by 45%. Additionally, "machine learning algorithms" have shown significant improvements in data analysis efficiency.`,
-        `The analysis reveals several key findings. As noted by [Johnson and Brown, 2024], the methodology demonstrates "robust statistical significance" in the results. Furthermore, [Chen et al., 2023] supports these conclusions with empirical evidence.`,
-        `Based on your document library, I found relevant research from [Davis et al., 2024] which discusses "innovative approaches" to the problem. The findings align with [Martinez and Lee, 2023] regarding implementation strategies.`,
-      ];
-
-      const responseContent = mockResponses[Math.floor(Math.random() * mockResponses.length)];
-      
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         type: "assistant",
-        content: responseContent,
+        content: `I understand you're asking about "${inputValue}". Based on your document library, I can help analyze your research materials and provide insights. Would you like me to summarize specific documents or search for particular information across your collection?`,
         timestamp: new Date()
       };
-      
       setMessages(prev => [...prev, assistantMessage]);
-      detectCitationsAndGenerateTest(responseContent);
       setIsLoading(false);
     }, 1500);
   };

@@ -5,7 +5,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { CitationHighlighter } from "./CitationHighlighter";
 import { 
   Bold, 
   Italic, 
@@ -384,7 +383,6 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
               onMouseUp={stopDrawing}
               onMouseLeave={stopDrawing}
             />
-            <CitationHighlighter editorRef={editorRef} />
           </div>
         </div>
 
