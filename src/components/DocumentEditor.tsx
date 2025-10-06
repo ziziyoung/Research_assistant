@@ -257,7 +257,7 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
 
           {/* Text Background Color */}
           <div className="flex items-center gap-2">
-            <label className="text-sm text-muted-foreground">Highlight:</label>
+            <span className="text-xs text-muted-foreground">BG:</span>
             <input
               type="color"
               value={textBgColor}
