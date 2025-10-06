@@ -167,7 +167,7 @@ export const AIIndexing = () => {
                   <TableHead className="min-w-[350px]">Innovation</TableHead>
                   <TableHead className="min-w-[300px]">Code Address</TableHead>
                   <TableHead className="min-w-[200px]">Download URL</TableHead>
-                  <TableHead className="min-w-[120px]">Thumbnail</TableHead>
+                  <TableHead className="min-w-[120px]">Notes Thumbnail</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
