@@ -27,7 +27,7 @@ interface DocumentIndex {
   downloadUrl: string;
   literatureTime: string;
   createdAt: string;
-  processingStatus: 'completed';
+  readingStatus: 'unread' | 'reading' | 'completed';
   conferenceJournal: string;
   datasets: string[];
   networkArchitectures: string[];
@@ -52,7 +52,7 @@ export const AIIndexing = () => {
       downloadUrl: "https://arxiv.org/pdf/2024.12345.pdf",
       literatureTime: "2024-01-15",
       createdAt: "2024-01-15T10:30:00Z",
-      processingStatus: 'completed',
+      readingStatus: 'completed',
       conferenceJournal: "NeurIPS 2024",
       datasets: ["ImageNet", "COCO", "MNIST"],
       networkArchitectures: ["ResNet-50", "Transformer", "CNN"],
@@ -71,7 +71,7 @@ export const AIIndexing = () => {
       downloadUrl: "https://arxiv.org/pdf/2024.67890.pdf",
       literatureTime: "2024-01-20",
       createdAt: "2024-01-20T14:15:00Z",
-      processingStatus: 'completed',
+      readingStatus: 'reading',
       conferenceJournal: "ICML 2024",
       datasets: ["Custom Dataset", "OpenAI Gym"],
       networkArchitectures: ["GAN", "VAE"],
@@ -90,7 +90,7 @@ export const AIIndexing = () => {
       downloadUrl: "https://arxiv.org/pdf/2024.11223.pdf",
       literatureTime: "2024-01-10",
       createdAt: "2024-01-10T09:45:00Z",
-      processingStatus: 'completed',
+      readingStatus: 'unread',
       conferenceJournal: "CVPR 2024",
       datasets: ["Market Data API", "Financial Reports"],
       networkArchitectures: ["LSTM", "GRU"],
@@ -183,7 +183,15 @@ export const AIIndexing = () => {
                       {doc.citation.toLocaleString()}
                     </TableCell>
                     <TableCell>
-                      <Badge variant="secondary">{doc.processingStatus}</Badge>
+                      <Badge 
+                        variant={
+                          doc.readingStatus === 'completed' ? 'default' : 
+                          doc.readingStatus === 'reading' ? 'secondary' : 
+                          'outline'
+                        }
+                      >
+                        {doc.readingStatus}
+                      </Badge>
                     </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
                       {doc.summary}
