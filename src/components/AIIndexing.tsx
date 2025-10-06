@@ -165,9 +165,9 @@ export const AIIndexing = () => {
                   <TableHead className="min-w-[200px]">Datasets</TableHead>
                   <TableHead className="min-w-[250px]">Network Architectures</TableHead>
                   <TableHead className="min-w-[350px]">Innovation</TableHead>
+                  <TableHead className="min-w-[120px]">Notes Thumbnail</TableHead>
                   <TableHead className="min-w-[300px]">Code Address</TableHead>
                   <TableHead className="min-w-[200px]">Download URL</TableHead>
-                  <TableHead className="min-w-[120px]">Notes Thumbnail</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -220,6 +220,11 @@ export const AIIndexing = () => {
                       {doc.innovation}
                     </TableCell>
                     <TableCell>
+                      <div className="w-20 h-24 bg-muted/50 rounded border flex items-center justify-center">
+                        <Image className="h-6 w-6 text-muted-foreground/50" />
+                      </div>
+                    </TableCell>
+                    <TableCell>
                       <a 
                         href={doc.codeAddress} 
                         className="text-sm text-primary hover:underline flex items-center gap-1"
@@ -241,11 +246,6 @@ export const AIIndexing = () => {
                         <Download className="h-4 w-4 shrink-0" />
                         <span>Download PDF</span>
                       </a>
-                    </TableCell>
-                    <TableCell>
-                      <div className="w-20 h-24 bg-muted/50 rounded border flex items-center justify-center">
-                        <Image className="h-6 w-6 text-muted-foreground/50" />
-                      </div>
                     </TableCell>
                   </TableRow>
                 ))}
