@@ -32,6 +32,7 @@ interface DocumentIndex {
   datasets: string[];
   networkArchitectures: string[];
   innovation: string;
+  notes: string;
   author: string;
   citation: number;
 }
@@ -57,6 +58,7 @@ export const AIIndexing = () => {
       datasets: ["ImageNet", "COCO", "MNIST"],
       networkArchitectures: ["ResNet-50", "Transformer", "CNN"],
       innovation: "Novel attention mechanism that improves accuracy by 15% while reducing computational cost",
+      notes: "Experimental results validated across multiple datasets with consistent improvements",
       author: "Smith, J., Johnson, A., & Wang, L.",
       citation: 1523
     },
@@ -76,6 +78,7 @@ export const AIIndexing = () => {
       datasets: ["Custom Dataset", "OpenAI Gym"],
       networkArchitectures: ["GAN", "VAE"],
       innovation: "Introduces a hybrid architecture combining generative and discriminative models",
+      notes: "Code implementation available with detailed API documentation",
       author: "Chen, M., & Rodriguez, P.",
       citation: 847
     },
@@ -95,6 +98,7 @@ export const AIIndexing = () => {
       datasets: ["Market Data API", "Financial Reports"],
       networkArchitectures: ["LSTM", "GRU"],
       innovation: "Real-time market prediction using temporal attention mechanisms",
+      notes: "Includes comprehensive statistical analysis with R implementation",
       author: "Thompson, R., & Lee, K.",
       citation: 2145
     }
@@ -112,6 +116,7 @@ export const AIIndexing = () => {
       doc.datasets.some(dataset => dataset.toLowerCase().includes(query)) ||
       doc.networkArchitectures.some(arch => arch.toLowerCase().includes(query)) ||
       doc.innovation.toLowerCase().includes(query) ||
+      doc.notes.toLowerCase().includes(query) ||
       doc.author.toLowerCase().includes(query) ||
       doc.citation.toString().includes(query)
     );
@@ -167,7 +172,7 @@ export const AIIndexing = () => {
                   <TableHead className="min-w-[350px]">Innovation</TableHead>
                   <TableHead className="min-w-[300px]">Code Address</TableHead>
                   <TableHead className="min-w-[200px]">Download URL</TableHead>
-                  <TableHead className="min-w-[120px]">Thumbnail</TableHead>
+                  <TableHead className="min-w-[300px]">Notes</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -242,10 +247,8 @@ export const AIIndexing = () => {
                         <span>Download PDF</span>
                       </a>
                     </TableCell>
-                    <TableCell>
-                      <div className="w-20 h-24 bg-muted/50 rounded border flex items-center justify-center">
-                        <Image className="h-6 w-6 text-muted-foreground/50" />
-                      </div>
+                    <TableCell className="text-sm text-muted-foreground">
+                      {doc.notes}
                     </TableCell>
                   </TableRow>
                 ))}
