@@ -157,7 +157,7 @@ export const AIIndexing = () => {
                   <TableHead className="min-w-[180px]">Conference/Journal</TableHead>
                   <TableHead className="min-w-[250px]">Author</TableHead>
                   <TableHead className="min-w-[120px]">Citation</TableHead>
-                  <TableHead className="min-w-[120px]">Literature Time</TableHead>
+                  <TableHead className="min-w-[120px]">publication date</TableHead>
                   <TableHead className="min-w-[100px]">Status</TableHead>
                   <TableHead className="min-w-[400px]">Summary</TableHead>
                   <TableHead className="min-w-[300px]">Methods</TableHead>
