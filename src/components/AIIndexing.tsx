@@ -275,18 +275,18 @@ export const AIIndexing = () => {
         )}
       </div>
 
-      {/* Image Preview Dialog */}
+      {/* Image Preview Dialog - Instagram/WeChat style */}
       <Dialog open={!!selectedImage} onOpenChange={(open) => !open && setSelectedImage(null)}>
-        <DialogContent className="max-w-4xl max-h-[90vh]">
-          <DialogHeader>
-            <DialogTitle>{selectedImage?.name}</DialogTitle>
+        <DialogContent className="max-w-6xl max-h-[95vh] p-0 bg-black/95">
+          <DialogHeader className="p-4 border-b border-white/10">
+            <DialogTitle className="text-white text-sm font-normal">{selectedImage?.name}</DialogTitle>
           </DialogHeader>
-          <div className="overflow-auto">
+          <div className="flex items-center justify-center p-4 min-h-[400px] max-h-[calc(95vh-80px)] overflow-auto">
             {selectedImage && (
               <img 
                 src={selectedImage.url} 
                 alt={selectedImage.name}
-                className="w-full h-auto"
+                className="max-w-full max-h-full object-contain rounded-lg"
               />
             )}
           </div>
