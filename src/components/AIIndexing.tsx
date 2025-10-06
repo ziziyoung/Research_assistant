@@ -173,7 +173,9 @@ export const AIIndexing = () => {
               <TableBody>
                 {filteredDocuments.map((doc) => (
                   <TableRow key={doc.id}>
-                    <TableCell className="font-medium">{doc.name}</TableCell>
+                    <TableCell className="font-medium">
+                      {doc.name.replace(/\.[^/.]+$/, '')}
+                    </TableCell>
                     <TableCell className="text-sm">{doc.author}</TableCell>
                     <TableCell className="text-sm font-medium">
                       {doc.citation.toLocaleString()}
