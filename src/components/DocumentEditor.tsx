@@ -43,6 +43,7 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
   const [drawColor, setDrawColor] = useState("#ff0000");
   const [lineWidth, setLineWidth] = useState(3);
   const [lastPos, setLastPos] = useState<{ x: number; y: number } | null>(null);
+  const [textBgColor, setTextBgColor] = useState("#ffff00");
 
   useEffect(() => {
     if (editorRef.current && initialContent) {
@@ -251,6 +252,23 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
           >
             <Underline className="h-4 w-4" />
           </Button>
+
+          <Separator orientation="vertical" className="h-6 mx-1" />
+
+          {/* Text Background Color */}
+          <div className="flex items-center gap-2">
+            <label className="text-sm text-muted-foreground">Highlight:</label>
+            <input
+              type="color"
+              value={textBgColor}
+              onChange={(e) => {
+                setTextBgColor(e.target.value);
+                executeCommand("backColor", e.target.value);
+              }}
+              className="h-8 w-12 border rounded cursor-pointer"
+              title="Text Background Color"
+            />
+          </div>
 
           <Separator orientation="vertical" className="h-6 mx-1" />
 
