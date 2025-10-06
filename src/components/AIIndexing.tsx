@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { 
   Table,
@@ -41,6 +42,7 @@ interface DocumentIndex {
 
 export const AIIndexing = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedImage, setSelectedImage] = useState<{ url: string; name: string } | null>(null);
   
   // Sample AI-generated indexes for display
   const [documents] = useState<DocumentIndex[]>([
@@ -254,7 +256,10 @@ export const AIIndexing = () => {
                       </a>
                     </TableCell>
                     <TableCell>
-                      <div className="w-20 h-28 rounded border overflow-hidden bg-muted/30">
+                      <div 
+                        className="w-20 h-28 rounded border overflow-hidden bg-muted/30 cursor-pointer hover:ring-2 hover:ring-primary transition-all"
+                        onClick={() => setSelectedImage({ url: doc.thumbnail, name: doc.name })}
+                      >
                         <img 
                           src={doc.thumbnail} 
                           alt={`${doc.name} thumbnail`}
@@ -269,6 +274,24 @@ export const AIIndexing = () => {
           </div>
         )}
       </div>
+
+      {/* Image Preview Dialog */}
+      <Dialog open={!!selectedImage} onOpenChange={(open) => !open && setSelectedImage(null)}>
+        <DialogContent className="max-w-4xl max-h-[90vh]">
+          <DialogHeader>
+            <DialogTitle>{selectedImage?.name}</DialogTitle>
+          </DialogHeader>
+          <div className="overflow-auto">
+            {selectedImage && (
+              <img 
+                src={selectedImage.url} 
+                alt={selectedImage.name}
+                className="w-full h-auto"
+              />
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
