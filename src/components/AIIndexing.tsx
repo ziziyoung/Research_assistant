@@ -155,9 +155,9 @@ export const AIIndexing = () => {
                 <TableRow>
                   <TableHead className="min-w-[200px]">Name</TableHead>
                   <TableHead className="min-w-[180px]">Conference/Journal</TableHead>
+                  <TableHead className="min-w-[120px]">publication date</TableHead>
                   <TableHead className="min-w-[250px]">Author</TableHead>
                   <TableHead className="min-w-[120px]">Citation</TableHead>
-                  <TableHead className="min-w-[120px]">publication date</TableHead>
                   <TableHead className="min-w-[100px]">Status</TableHead>
                   <TableHead className="min-w-[400px]">Summary</TableHead>
                   <TableHead className="min-w-[300px]">Methods</TableHead>
@@ -177,11 +177,11 @@ export const AIIndexing = () => {
                       {doc.name.replace(/\.[^/.]+$/, '')}
                     </TableCell>
                     <TableCell className="text-sm">{doc.conferenceJournal}</TableCell>
+                    <TableCell>{doc.literatureTime}</TableCell>
                     <TableCell className="text-sm">{doc.author}</TableCell>
                     <TableCell className="text-sm font-medium">
                       {doc.citation.toLocaleString()}
                     </TableCell>
-                    <TableCell>{doc.literatureTime}</TableCell>
                     <TableCell>
                       <Badge variant="secondary">{doc.processingStatus}</Badge>
                     </TableCell>
