@@ -4,6 +4,12 @@ import { FileText, File, Image, Music, MoreHorizontal, Eye, Download, Trash2, Ch
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import doc1Preview from "@/assets/thumbnails/doc-1-preview.jpg";
+import doc2Preview from "@/assets/thumbnails/doc-2-preview.jpg";
+import doc3Preview from "@/assets/thumbnails/doc-3-preview.jpg";
+import doc4Preview from "@/assets/thumbnails/doc-4-preview.jpg";
+import doc5Preview from "@/assets/thumbnails/doc-5-preview.jpg";
+import doc6Preview from "@/assets/thumbnails/doc-6-preview.jpg";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,6 +32,7 @@ interface Document {
   type: string;
   owner: string;
   modified: string;
+  thumbnail?: string;
 }
 
 const mockDocuments: Document[] = [
@@ -34,42 +41,48 @@ const mockDocuments: Document[] = [
     name: "Short Video Competition Analysis Lab",
     type: "pdf",
     owner: "yangyuwei",
-    modified: "6:52 PM Sep 17"
+    modified: "6:52 PM Sep 17",
+    thumbnail: doc1Preview
   },
   {
     id: "2",
     name: "Board",
     type: "text",
     owner: "yangyuwei",
-    modified: "2:38 PM Sep 17"
+    modified: "2:38 PM Sep 17",
+    thumbnail: doc2Preview
   },
   {
     id: "3",
     name: "Flowchart",
     type: "text",
     owner: "yangyuwei",
-    modified: "2:37 PM Sep 17"
+    modified: "2:37 PM Sep 17",
+    thumbnail: doc3Preview
   },
   {
     id: "4",
     name: "Board",
     type: "data",
     owner: "yangyuwei",
-    modified: "2:36 PM Sep 17"
+    modified: "2:36 PM Sep 17",
+    thumbnail: doc4Preview
   },
   {
     id: "5",
     name: "Q2 Financial Report",
     type: "pdf",
     owner: "johndoe",
-    modified: "11:23 AM Sep 16"
+    modified: "11:23 AM Sep 16",
+    thumbnail: doc5Preview
   },
   {
     id: "6",
     name: "Marketing Strategy 2024",
     type: "text",
     owner: "sarahsmith",
-    modified: "4:15 PM Sep 15"
+    modified: "4:15 PM Sep 15",
+    thumbnail: doc6Preview
   },
   {
     id: "7",
@@ -259,7 +272,7 @@ export const DocumentTable = ({ filter = 'all' }: DocumentTableProps) => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[50px]"></TableHead>
+              <TableHead className="w-[100px]">Preview</TableHead>
               <TableHead>Name</TableHead>
               <TableHead>Owner</TableHead>
               <TableHead>Last opened</TableHead>
@@ -274,7 +287,20 @@ export const DocumentTable = ({ filter = 'all' }: DocumentTableProps) => {
                 onClick={() => handleFileClick(doc.id)}
               >
                 <TableCell>
-                  {getFileIcon(doc.type)}
+                  {doc.thumbnail ? (
+                    <div className="relative w-16 h-16 rounded overflow-hidden bg-muted">
+                      <img 
+                        src={doc.thumbnail} 
+                        alt={doc.name}
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute top-1 left-1 bg-background/80 rounded p-0.5">
+                        {getFileIcon(doc.type)}
+                      </div>
+                    </div>
+                  ) : (
+                    getFileIcon(doc.type)
+                  )}
                 </TableCell>
                 <TableCell>
                   <div>
