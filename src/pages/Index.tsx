@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { Plus, Upload, FileText, Bot, Sparkles, Network } from "lucide-react";
+import { CitationProvider } from "@/contexts/CitationContext";
 
 const Index = () => {
   return (
@@ -100,7 +101,9 @@ const Index = () => {
         {/* Right Sidebar - AI Assistant */}
         <ResizablePanel defaultSize={20} minSize={15} maxSize={35}>
           <div className="h-full min-h-0">
-            <AIAssistant />
+            <CitationProvider>
+              <AIAssistant />
+            </CitationProvider>
           </div>
         </ResizablePanel>
       </ResizablePanelGroup>
