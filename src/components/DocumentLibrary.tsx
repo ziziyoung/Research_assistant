@@ -4,12 +4,6 @@ import { Search, FileText, File, Image, Music, ChevronDown, ChevronRight, Folder
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import doc1Preview from "@/assets/thumbnails/doc-1-preview.jpg";
-import doc2Preview from "@/assets/thumbnails/doc-2-preview.jpg";
-import doc3Preview from "@/assets/thumbnails/doc-3-preview.jpg";
-import doc4Preview from "@/assets/thumbnails/doc-4-preview.jpg";
-import doc5Preview from "@/assets/thumbnails/doc-5-preview.jpg";
-import doc6Preview from "@/assets/thumbnails/doc-6-preview.jpg";
 
 interface Document {
   id: string;
@@ -19,7 +13,6 @@ interface Document {
   modified: string;
   size: string;
   category: string;
-  thumbnail?: string;
 }
 
 interface Category {
@@ -38,8 +31,7 @@ const mockDocuments: Document[] = [
     created: "2024-01-15",
     modified: "6:52 PM Sep 17",
     size: "2.3 MB",
-    category: "recent",
-    thumbnail: doc1Preview
+    category: "recent"
   },
   {
     id: "2",
@@ -48,8 +40,7 @@ const mockDocuments: Document[] = [
     created: "2024-01-14",
     modified: "2:38 PM Sep 17",
     size: "456 KB",
-    category: "boards",
-    thumbnail: doc2Preview
+    category: "boards"
   },
   {
     id: "3",
@@ -58,8 +49,7 @@ const mockDocuments: Document[] = [
     created: "2024-01-13",
     modified: "2:37 PM Sep 17",
     size: "1.2 MB",
-    category: "flowcharts",
-    thumbnail: doc3Preview
+    category: "flowcharts"
   },
   {
     id: "4",
@@ -68,8 +58,7 @@ const mockDocuments: Document[] = [
     created: "2024-01-12",
     modified: "2:36 PM Sep 17",
     size: "5.7 MB",
-    category: "boards",
-    thumbnail: doc4Preview
+    category: "boards"
   },
   {
     id: "5",
@@ -78,8 +67,7 @@ const mockDocuments: Document[] = [
     created: "2024-01-11",
     modified: "1:15 PM Sep 16",
     size: "3.2 MB",
-    category: "flowcharts",
-    thumbnail: doc5Preview
+    category: "flowcharts"
   },
   {
     id: "6",
@@ -88,8 +76,7 @@ const mockDocuments: Document[] = [
     created: "2024-01-10",
     modified: "4:22 PM Sep 15",
     size: "1.8 MB",
-    category: "shared",
-    thumbnail: doc6Preview
+    category: "shared"
   }
 ];
 
@@ -203,36 +190,27 @@ export const DocumentLibrary = () => {
               </CollapsibleTrigger>
               
               <CollapsibleContent className="pb-2">
-                <div className="grid grid-cols-2 gap-2 px-2">
+                <div className="space-y-1">
                   {category.documents.map((doc) => (
-                    <Card
+                    <div
                       key={doc.id}
-                      className="overflow-hidden cursor-pointer hover:shadow-md transition-all group border-border/50"
+                      className="mx-2 p-2 rounded-md cursor-pointer hover:bg-muted/70 transition-colors group"
                       onClick={() => handleDocumentClick(doc.id)}
                     >
-                      {doc.thumbnail && (
-                        <div className="relative h-32 overflow-hidden bg-muted">
-                          <img 
-                            src={doc.thumbnail} 
-                            alt={doc.name}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                          <div className="absolute top-2 left-2">
-                            {getFileIcon(doc.type)}
+                      <div className="flex items-start gap-2">
+                        {getFileIcon(doc.type)}
+                        <div className="flex-1 min-w-0">
+                          <h4 className="font-medium text-xs text-foreground truncate group-hover:text-primary">
+                            {doc.name}
+                          </h4>
+                          <div className="flex items-center gap-1 mt-0.5 text-xs text-muted-foreground">
+                            <span className="truncate">{doc.modified}</span>
+                            <span>•</span>
+                            <span>{doc.size}</span>
                           </div>
                         </div>
-                      )}
-                      <div className="p-2">
-                        <h4 className="font-medium text-xs text-foreground truncate group-hover:text-primary mb-1">
-                          {doc.name}
-                        </h4>
-                        <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
-                          <span className="truncate">{doc.modified}</span>
-                          <span>•</span>
-                          <span>{doc.size}</span>
-                        </div>
                       </div>
-                    </Card>
+                    </div>
                   ))}
                 </div>
               </CollapsibleContent>

@@ -7,6 +7,8 @@ import { AIAssistant } from "@/components/AIAssistant";
 import { DocumentEditor } from "@/components/DocumentEditor";
 import { sampleThesisContent } from "@/data/sampleThesis";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { CitationProvider } from "@/contexts/CitationContext";
+import { TestGenerator } from "@/components/TestGenerator";
 
 const FileEditor = () => {
   const { fileId } = useParams();
@@ -24,6 +26,7 @@ const FileEditor = () => {
                    fileId === "3" ? "slide" : "draft";
 
   return (
+    <CitationProvider>
     <div className="min-h-screen bg-background">
       {/* Header with back navigation */}
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -112,7 +115,10 @@ const FileEditor = () => {
           AI can be hidden - Toggle with the button above
         </div>
       )}
+      
+      <TestGenerator />
     </div>
+    </CitationProvider>
   );
 };
 
