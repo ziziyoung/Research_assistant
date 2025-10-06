@@ -153,8 +153,8 @@ export const AIIndexing = () => {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="min-w-[200px]">Name</TableHead>
                   <TableHead className="min-w-[180px]">Conference/Journal</TableHead>
+                  <TableHead className="min-w-[200px]">Name</TableHead>
                   <TableHead className="min-w-[180px]">publication date</TableHead>
                   <TableHead className="min-w-[250px]">Author</TableHead>
                   <TableHead className="min-w-[120px]">Citation</TableHead>
@@ -173,10 +173,10 @@ export const AIIndexing = () => {
               <TableBody>
                 {filteredDocuments.map((doc) => (
                   <TableRow key={doc.id}>
+                    <TableCell className="text-sm">{doc.conferenceJournal}</TableCell>
                     <TableCell className="font-medium">
                       {doc.name.replace(/\.[^/.]+$/, '')}
                     </TableCell>
-                    <TableCell className="text-sm">{doc.conferenceJournal}</TableCell>
                     <TableCell>{doc.literatureTime}</TableCell>
                     <TableCell className="text-sm">{doc.author}</TableCell>
                     <TableCell className="text-sm font-medium">
