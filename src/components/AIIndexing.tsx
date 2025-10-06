@@ -10,11 +10,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { 
-  Image, 
   Search,
   ExternalLink,
   Download
 } from "lucide-react";
+import researchPaper1 from "@/assets/indexes/research-paper-1.jpg";
+import technicalDoc2 from "@/assets/indexes/technical-doc-2.jpg";
+import marketReport3 from "@/assets/indexes/market-report-3.jpg";
 
 interface DocumentIndex {
   id: string;
@@ -47,7 +49,7 @@ export const AIIndexing = () => {
       name: "Research_Paper_Analysis.pdf",
       summary: "Comprehensive analysis of machine learning algorithms and their applications in data science. This document explores various methodologies and provides insights into best practices for implementation.",
       keywords: ["machine learning", "algorithms", "data science", "analysis", "methodology"],
-      thumbnail: "/api/placeholder/150/200",
+      thumbnail: researchPaper1,
       methodSummary: "Quantitative analysis using statistical methods and experimental validation with cross-validation techniques.",
       codeAddress: "https://github.com/research/ml-analysis/blob/main/analysis.py",
       downloadUrl: "https://arxiv.org/pdf/2024.12345.pdf",
@@ -67,7 +69,7 @@ export const AIIndexing = () => {
       name: "Technical_Documentation.md",
       summary: "Technical documentation covering API specifications, implementation guidelines, and system architecture. Includes detailed examples and code snippets for developers.",
       keywords: ["API", "documentation", "architecture", "development", "specifications"],
-      thumbnail: "/api/placeholder/150/200",
+      thumbnail: technicalDoc2,
       methodSummary: "Systematic documentation approach with structured content organization and practical examples.",
       codeAddress: "https://github.com/project/docs/blob/main/technical-guide.md",
       downloadUrl: "https://arxiv.org/pdf/2024.67890.pdf",
@@ -87,7 +89,7 @@ export const AIIndexing = () => {
       name: "Market_Research_Report.docx", 
       summary: "Market analysis report examining current trends, competitive landscape, and growth opportunities in the technology sector. Contains statistical data and forecasting models.",
       keywords: ["market research", "trends", "competitive analysis", "technology", "forecasting"],
-      thumbnail: "/api/placeholder/150/200",
+      thumbnail: marketReport3,
       methodSummary: "Mixed-methods research combining quantitative market data analysis with qualitative stakeholder interviews.",
       codeAddress: "https://github.com/research/market-analysis/blob/main/report.R",
       downloadUrl: "https://arxiv.org/pdf/2024.11223.pdf",
@@ -252,8 +254,12 @@ export const AIIndexing = () => {
                       </a>
                     </TableCell>
                     <TableCell>
-                      <div className="w-20 h-24 bg-muted/50 rounded border flex items-center justify-center">
-                        <Image className="h-6 w-6 text-muted-foreground/50" />
+                      <div className="w-20 h-28 rounded border overflow-hidden bg-muted/30">
+                        <img 
+                          src={doc.thumbnail} 
+                          alt={`${doc.name} thumbnail`}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
                     </TableCell>
                   </TableRow>
