@@ -160,7 +160,7 @@ export const AIIndexing = () => {
                   <TableHead className="min-w-[120px]">Literature Time</TableHead>
                   <TableHead className="min-w-[100px]">Status</TableHead>
                   <TableHead className="min-w-[400px]">Summary</TableHead>
-                  <TableHead className="min-w-[300px]">Method</TableHead>
+                  <TableHead className="min-w-[300px]">Methods</TableHead>
                   <TableHead className="min-w-[250px]">Keywords</TableHead>
                   <TableHead className="min-w-[200px]">Datasets</TableHead>
                   <TableHead className="min-w-[250px]">Network Architectures</TableHead>
