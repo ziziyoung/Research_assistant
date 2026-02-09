@@ -2,9 +2,9 @@ import { useState, useRef, useEffect } from "react";
 import { Bot, Send, Mic, Square, Volume2, VolumeX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useCitations } from "@/contexts/CitationContext";
+import { GoogleGenAI } from "@google/genai";
 
 interface Message {
   id: string;
@@ -89,6 +89,8 @@ export const AIAssistant = () => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const lastSendTimeRef = useRef<number>(0);
+  const sendCooldownMs = 3000;
   const { toast } = useToast();
   const { addCitation, addTest } = useCitations();
 
@@ -149,6 +151,26 @@ export const AIAssistant = () => {
 
   const handleSendMessage = async () => {
     if (!inputValue.trim()) return;
+    const now = Date.now();
+    if (now - lastSendTimeRef.current < sendCooldownMs) {
+      toast({
+        title: "请稍候",
+        description: `请间隔 ${Math.ceil((sendCooldownMs - (now - lastSendTimeRef.current)) / 1000)} 秒后再发消息，避免触发限流`,
+        variant: "destructive",
+      });
+      return;
+    }
+    lastSendTimeRef.current = now;
+
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    if (!apiKey) {
+      toast({
+        title: "API Key 未配置",
+        description: "请在 .env.local 中设置 VITE_GEMINI_API_KEY",
+        variant: "destructive",
+      });
+      return;
+    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -158,30 +180,88 @@ export const AIAssistant = () => {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputValue;
     setInputValue("");
     setIsLoading(true);
 
-    // Simulate AI response with citation detection
-    setTimeout(() => {
-      const mockResponses = [
-        `According to recent studies [Smith et al., 2023], the impact of AI on research productivity has increased by 45%. Additionally, "machine learning algorithms" have shown significant improvements in data analysis efficiency.`,
-        `The analysis reveals several key findings. As noted by [Johnson and Brown, 2024], the methodology demonstrates "robust statistical significance" in the results. Furthermore, [Chen et al., 2023] supports these conclusions with empirical evidence.`,
-        `Based on your document library, I found relevant research from [Davis et al., 2024] which discusses "innovative approaches" to the problem. The findings align with [Martinez and Lee, 2023] regarding implementation strategies.`,
-      ];
+    const maxHistoryMessages = 20; // 限制上下文条数，减少 token 与限流
+    const recentMessages = messages.slice(-maxHistoryMessages);
 
-      const responseContent = mockResponses[Math.floor(Math.random() * mockResponses.length)];
-      
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: "assistant",
-        content: responseContent,
-        timestamp: new Date()
-      };
-      
-      setMessages(prev => [...prev, assistantMessage]);
-      detectCitationsAndGenerateTest(responseContent);
+    const callGemini = async () => {
+      const ai = new GoogleGenAI({ apiKey });
+      const contents = recentMessages.map((m) => ({
+        role: m.type === "user" ? "user" as const : "model" as const,
+        parts: [{ text: m.content }],
+      }));
+      contents.push({ role: "user" as const, parts: [{ text: currentInput }] });
+
+      return ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents,
+        config: {
+          maxOutputTokens: 1024,
+          temperature: 0.7,
+        },
+      });
+    };
+
+    const is429 = (err: unknown): boolean => {
+      if (!err || typeof err !== "object") return false;
+      const o = err as Record<string, unknown>;
+      const status = o.status ?? o.statusCode ?? o.code;
+      if (status === 429 || status === "429") return true;
+      const msg = String(o.message ?? (err instanceof Error ? err.message : ""));
+      return /429|Too Many Requests|RESOURCE_EXHAUSTED|quota|rate limit/i.test(msg);
+    };
+
+    const maxRetries = 5;
+    const baseDelayMs = 4000;
+
+    try {
+      let lastError: unknown;
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          const response = await callGemini();
+          const responseContent = response.text ?? "";
+          const assistantMessage: Message = {
+            id: (Date.now() + 1).toString(),
+            type: "assistant",
+            content: responseContent || "（无回复内容）",
+            timestamp: new Date()
+          };
+          setMessages(prev => [...prev, assistantMessage]);
+          detectCitationsAndGenerateTest(responseContent);
+          return;
+        } catch (err) {
+          lastError = err;
+          if (attempt < maxRetries && is429(err)) {
+            const delay = baseDelayMs * Math.pow(2, attempt - 1);
+            toast({
+              title: "请求过于频繁",
+              description: `${delay / 1000} 秒后自动重试 (${attempt}/${maxRetries})…`,
+              variant: "destructive",
+            });
+            await new Promise((r) => setTimeout(r, delay));
+          } else {
+            throw err;
+          }
+        }
+      }
+      throw lastError;
+    } catch (err) {
+      const isRateLimit = is429(err);
+      const message = err instanceof Error ? err.message : "Gemini 请求失败";
+      toast({
+        title: isRateLimit ? "请求过于频繁" : "请求失败",
+        description: isRateLimit
+          ? "请等待 2～5 分钟后再试，或到 Google AI Studio 查看该 Key 的配额与用量。"
+          : message,
+        variant: "destructive",
+      });
+      setMessages(prev => prev.filter((m) => m.id !== userMessage.id));
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   const handleVoiceToggle = () => {
