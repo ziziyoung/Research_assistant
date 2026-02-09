@@ -30,9 +30,11 @@ interface DocumentEditorProps {
   initialContent?: string;
   fileName: string;
   isAIVisible?: boolean;
+  /** When set, main area shows PDF viewer instead of rich text editor; toolbar and Markdown Notes are still shown */
+  pdfUrl?: string;
 }
 
-export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = false }: DocumentEditorProps) => {
+export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = false, pdfUrl }: DocumentEditorProps) => {
   const [content, setContent] = useState(initialContent);
   const [isNotesVisible, setIsNotesVisible] = useState(true);
   const [markdownContent, setMarkdownContent] = useState("");
@@ -149,6 +151,8 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
     }
   };
 
+  const isPdfMode = Boolean(pdfUrl);
+
   return (
     <div className="h-full flex flex-col bg-background">
       {/* Toolbar */}
@@ -165,10 +169,11 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
             Notes
           </Button>
 
-          <Separator orientation="vertical" className="h-6 mx-1" />
+          {!isPdfMode && (
+            <>
+              <Separator orientation="vertical" className="h-6 mx-1" />
 
-          {/* Drawing Tools */}
-          <>
+              {/* Drawing Tools */}
               <Button
                 variant={drawMode === "select" ? "default" : "ghost"}
                 size="sm"
@@ -224,168 +229,178 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
               )}
 
               <Separator orientation="vertical" className="h-6 mx-1" />
+
+              {/* Text Formatting */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("bold")}
+                title="Bold (Ctrl+B)"
+              >
+                <Bold className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("italic")}
+                title="Italic (Ctrl+I)"
+              >
+                <Italic className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("underline")}
+                title="Underline (Ctrl+U)"
+              >
+                <Underline className="h-4 w-4" />
+              </Button>
+
+              <Separator orientation="vertical" className="h-6 mx-1" />
+
+              {/* Alignment */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("justifyLeft")}
+                title="Align Left"
+              >
+                <AlignLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("justifyCenter")}
+                title="Align Center"
+              >
+                <AlignCenter className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("justifyRight")}
+                title="Align Right"
+              >
+                <AlignRight className="h-4 w-4" />
+              </Button>
+
+              <Separator orientation="vertical" className="h-6 mx-1" />
+
+              {/* Lists */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("insertUnorderedList")}
+                title="Bullet List"
+              >
+                <List className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("insertOrderedList")}
+                title="Numbered List"
+              >
+                <ListOrdered className="h-4 w-4" />
+              </Button>
+
+              <Separator orientation="vertical" className="h-6 mx-1" />
+
+              {/* Heading Styles */}
+              <select
+                className="h-8 text-sm border rounded px-2 bg-background"
+                onChange={(e) => executeCommand("formatBlock", e.target.value)}
+                defaultValue=""
+              >
+                <option value="">Normal</option>
+                <option value="h1">Heading 1</option>
+                <option value="h2">Heading 2</option>
+                <option value="h3">Heading 3</option>
+                <option value="p">Paragraph</option>
+              </select>
+
+              <Separator orientation="vertical" className="h-6 mx-1" />
+
+              {/* Undo/Redo */}
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("undo")}
+                title="Undo (Ctrl+Z)"
+              >
+                <Undo className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => executeCommand("redo")}
+                title="Redo (Ctrl+Y)"
+              >
+                <Redo className="h-4 w-4" />
+              </Button>
+
+              <Separator orientation="vertical" className="h-6 mx-1" />
             </>
-          
-          {/* Text Formatting */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("bold")}
-            title="Bold (Ctrl+B)"
-          >
-            <Bold className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("italic")}
-            title="Italic (Ctrl+I)"
-          >
-            <Italic className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("underline")}
-            title="Underline (Ctrl+U)"
-          >
-            <Underline className="h-4 w-4" />
-          </Button>
+          )}
 
-          <Separator orientation="vertical" className="h-6 mx-1" />
-
-          {/* Alignment */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("justifyLeft")}
-            title="Align Left"
-          >
-            <AlignLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("justifyCenter")}
-            title="Align Center"
-          >
-            <AlignCenter className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("justifyRight")}
-            title="Align Right"
-          >
-            <AlignRight className="h-4 w-4" />
-          </Button>
-
-          <Separator orientation="vertical" className="h-6 mx-1" />
-
-          {/* Lists */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("insertUnorderedList")}
-            title="Bullet List"
-          >
-            <List className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("insertOrderedList")}
-            title="Numbered List"
-          >
-            <ListOrdered className="h-4 w-4" />
-          </Button>
-
-          <Separator orientation="vertical" className="h-6 mx-1" />
-
-          {/* Heading Styles */}
-          <select
-            className="h-8 text-sm border rounded px-2 bg-background"
-            onChange={(e) => executeCommand("formatBlock", e.target.value)}
-            defaultValue=""
-          >
-            <option value="">Normal</option>
-            <option value="h1">Heading 1</option>
-            <option value="h2">Heading 2</option>
-            <option value="h3">Heading 3</option>
-            <option value="p">Paragraph</option>
-          </select>
-
-          <Separator orientation="vertical" className="h-6 mx-1" />
-
-          {/* Undo/Redo */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("undo")}
-            title="Undo (Ctrl+Z)"
-          >
-            <Undo className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => executeCommand("redo")}
-            title="Redo (Ctrl+Y)"
-          >
-            <Redo className="h-4 w-4" />
-          </Button>
-
-          <Separator orientation="vertical" className="h-6 mx-1" />
-
-          {/* Save */}
+          {/* Save: document in editor mode, notes in PDF mode */}
           <Button
             variant="default"
             size="sm"
-            onClick={handleSave}
+            onClick={isPdfMode ? handleSaveNotes : handleSave}
             className="ml-auto"
+            title={isPdfMode ? "Save notes" : "Save document"}
           >
             <Save className="h-4 w-4 mr-2" />
-            Save
+            {isPdfMode ? "Save Notes" : "Save"}
           </Button>
         </div>
       </div>
 
       {/* Editor Area with Side-by-Side Layout */}
       <div className="flex-1 overflow-hidden flex bg-muted/30">
-        {/* Main Document Editor */}
-        <div className="flex-1 overflow-y-auto scrollbar-visible p-8">
-          <div className="max-w-4xl mx-auto bg-background shadow-lg min-h-full relative">
-            {/* Text Editor */}
-            <div
-              ref={editorRef}
-              contentEditable={drawMode === "select"}
-              onInput={handleInput}
-              className="p-16 outline-none min-h-full prose prose-slate max-w-none relative z-10
-                       [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mb-4 [&_h1]:mt-6
-                       [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-3 [&_h2]:mt-5
-                       [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-2 [&_h3]:mt-4
-                       [&_p]:mb-4 [&_p]:leading-relaxed
-                       [&_ul]:mb-4 [&_ul]:ml-6 [&_ul]:list-disc
-                       [&_ol]:mb-4 [&_ol]:ml-6 [&_ol]:list-decimal
-                       [&_li]:mb-2"
-              style={{ pointerEvents: drawMode === "select" ? "auto" : "none" }}
-              suppressContentEditableWarning
+        {/* Main: PDF viewer or Document Editor */}
+        <div className="flex-1 overflow-hidden flex flex-col min-w-0">
+          {isPdfMode ? (
+            <iframe
+              title={fileName}
+              src={pdfUrl}
+              className="w-full h-full border-0 bg-muted/30"
             />
-            {/* Drawing Canvas Overlay */}
-            <canvas
-              ref={canvasRef}
-              className="absolute top-0 left-0 w-full h-full"
-              style={{ 
-                pointerEvents: drawMode === "select" ? "none" : "auto",
-                cursor: drawMode === "draw" ? "crosshair" : drawMode === "erase" ? "pointer" : "default"
-              }}
-              onMouseDown={startDrawing}
-              onMouseMove={draw}
-              onMouseUp={stopDrawing}
-              onMouseLeave={stopDrawing}
-            />
-            <CitationHighlighter editorRef={editorRef} />
-          </div>
+          ) : (
+            <div className="flex-1 overflow-y-auto scrollbar-visible p-8">
+              <div className="max-w-4xl mx-auto bg-background shadow-lg min-h-full relative">
+                <div
+                  ref={editorRef}
+                  contentEditable={drawMode === "select"}
+                  onInput={handleInput}
+                  className="p-16 outline-none min-h-full prose prose-slate max-w-none relative z-10
+                           [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mb-4 [&_h1]:mt-6
+                           [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-3 [&_h2]:mt-5
+                           [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-2 [&_h3]:mt-4
+                           [&_p]:mb-4 [&_p]:leading-relaxed
+                           [&_ul]:mb-4 [&_ul]:ml-6 [&_ul]:list-disc
+                           [&_ol]:mb-4 [&_ol]:ml-6 [&_ol]:list-decimal
+                           [&_li]:mb-2"
+                  style={{ pointerEvents: drawMode === "select" ? "auto" : "none" }}
+                  suppressContentEditableWarning
+                />
+                <canvas
+                  ref={canvasRef}
+                  className="absolute top-0 left-0 w-full h-full"
+                  style={{
+                    pointerEvents: drawMode === "select" ? "none" : "auto",
+                    cursor: drawMode === "draw" ? "crosshair" : drawMode === "erase" ? "pointer" : "default"
+                  }}
+                  onMouseDown={startDrawing}
+                  onMouseMove={draw}
+                  onMouseUp={stopDrawing}
+                  onMouseLeave={stopDrawing}
+                />
+                <CitationHighlighter editorRef={editorRef} />
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Markdown Notes Panel - Right Side */}
@@ -432,9 +447,11 @@ export const DocumentEditor = ({ initialContent = "", fileName, isAIVisible = fa
 
       {/* Status Bar */}
       <div className="border-t bg-card p-2 text-sm text-muted-foreground flex items-center justify-between">
-        <span>Editing: {fileName}</span>
+        <span>{isPdfMode ? "PDF" : "Editing"}: {fileName}</span>
         <div className="flex items-center gap-4">
-          <span>Document Words: {content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length}</span>
+          {!isPdfMode && (
+            <span>Document Words: {content.replace(/<[^>]*>/g, '').split(/\s+/).filter(Boolean).length}</span>
+          )}
           {isNotesVisible && (
             <span>Notes Words: {markdownContent.split(/\s+/).filter(Boolean).length}</span>
           )}

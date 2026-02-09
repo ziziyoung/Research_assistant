@@ -154,8 +154,8 @@ export const AIAssistant = () => {
     const now = Date.now();
     if (now - lastSendTimeRef.current < sendCooldownMs) {
       toast({
-        title: "请稍候",
-        description: `请间隔 ${Math.ceil((sendCooldownMs - (now - lastSendTimeRef.current)) / 1000)} 秒后再发消息，避免触发限流`,
+        title: "Please wait",
+        description: `Wait ${Math.ceil((sendCooldownMs - (now - lastSendTimeRef.current)) / 1000)}s before sending again to avoid rate limit`,
         variant: "destructive",
       });
       return;
@@ -165,8 +165,8 @@ export const AIAssistant = () => {
     const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
     if (!apiKey) {
       toast({
-        title: "API Key 未配置",
-        description: "请在 .env.local 中设置 VITE_GEMINI_API_KEY",
+        title: "API Key not configured",
+        description: "Set VITE_GEMINI_API_KEY in .env.local",
         variant: "destructive",
       });
       return;
@@ -184,7 +184,7 @@ export const AIAssistant = () => {
     setInputValue("");
     setIsLoading(true);
 
-    const maxHistoryMessages = 20; // 限制上下文条数，减少 token 与限流
+    const maxHistoryMessages = 20; // Limit context length to reduce tokens and rate limit
     const recentMessages = messages.slice(-maxHistoryMessages);
 
     const callGemini = async () => {
@@ -226,7 +226,7 @@ export const AIAssistant = () => {
           const assistantMessage: Message = {
             id: (Date.now() + 1).toString(),
             type: "assistant",
-            content: responseContent || "（无回复内容）",
+            content: responseContent || "(No response content)",
             timestamp: new Date()
           };
           setMessages(prev => [...prev, assistantMessage]);
@@ -237,8 +237,8 @@ export const AIAssistant = () => {
           if (attempt < maxRetries && is429(err)) {
             const delay = baseDelayMs * Math.pow(2, attempt - 1);
             toast({
-              title: "请求过于频繁",
-              description: `${delay / 1000} 秒后自动重试 (${attempt}/${maxRetries})…`,
+              title: "Rate limited",
+              description: `Retrying in ${delay / 1000}s (${attempt}/${maxRetries})…`,
               variant: "destructive",
             });
             await new Promise((r) => setTimeout(r, delay));
@@ -250,11 +250,11 @@ export const AIAssistant = () => {
       throw lastError;
     } catch (err) {
       const isRateLimit = is429(err);
-      const message = err instanceof Error ? err.message : "Gemini 请求失败";
+      const message = err instanceof Error ? err.message : "Gemini request failed";
       toast({
-        title: isRateLimit ? "请求过于频繁" : "请求失败",
+        title: isRateLimit ? "Rate limited" : "Request failed",
         description: isRateLimit
-          ? "请等待 2～5 分钟后再试，或到 Google AI Studio 查看该 Key 的配额与用量。"
+          ? "Wait 2–5 minutes and try again, or check quota in Google AI Studio."
           : message,
         variant: "destructive",
       });

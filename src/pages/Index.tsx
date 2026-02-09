@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import { Header } from "@/components/Header";
 import { DocumentLibrary } from "@/components/DocumentLibrary";
 import { DocumentTable } from "@/components/DocumentTable";
@@ -7,10 +8,34 @@ import { AIKnowledgeGraph } from "@/components/AIKnowledgeGraph";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
-import { Plus, Upload, FileText, Bot, Sparkles, Network } from "lucide-react";
+import { Plus, Upload, Bot, Sparkles, Network } from "lucide-react";
 import { CitationProvider } from "@/contexts/CitationContext";
+import { useIndexedDocuments } from "@/contexts/IndexedDocumentsContext";
+import { useToast } from "@/hooks/use-toast";
 
-const Index = () => {
+function IndexContent() {
+  const [activeTab, setActiveTab] = useState("documents");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { setPendingPdfFile } = useIndexedDocuments();
+  const { toast } = useToast();
+
+  const handleUploadClick = () => fileInputRef.current?.click();
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      e.target.value = "";
+      return;
+    }
+    if (file.type !== "application/pdf") {
+      toast({ title: "Please select a PDF file", variant: "destructive" });
+      e.target.value = "";
+      return;
+    }
+    setPendingPdfFile(file);
+    setActiveTab("ai-indexes");
+    e.target.value = "";
+  };
+
   return (
     <div className="h-screen overflow-hidden bg-background flex flex-col">
       <Header />
@@ -52,6 +77,7 @@ const Index = () => {
                   <Button 
                     variant="outline" 
                     className="gap-2 h-9 px-4 border-2 hover:border-primary/50 hover:bg-primary/5 transition-all duration-200 hover:scale-105 hover:shadow-md"
+                    onClick={handleUploadClick}
                   >
                     <Upload className="h-4 w-4" />
                     <span className="font-medium">Upload</span>
@@ -62,7 +88,8 @@ const Index = () => {
             
             {/* Main Content Tabs */}
             <div className="flex-1 min-h-0">
-              <Tabs defaultValue="documents" className="w-full h-full flex flex-col">
+              <input ref={fileInputRef} type="file" accept=".pdf,application/pdf" className="hidden" aria-label="Upload PDF" onChange={handleFileChange} />
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full h-full flex flex-col">
                 <TabsList className="grid w-fit grid-cols-4 mx-6 mt-4 mb-4 flex-shrink-0">
                   <TabsTrigger value="documents">Documents</TabsTrigger>
                   <TabsTrigger value="shared">Shared</TabsTrigger>
@@ -109,6 +136,6 @@ const Index = () => {
       </ResizablePanelGroup>
     </div>
   );
-};
+}
 
-export default Index;
+export default IndexContent;

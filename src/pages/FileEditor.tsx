@@ -9,21 +9,33 @@ import { sampleThesisContent } from "@/data/sampleThesis";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { CitationProvider } from "@/contexts/CitationContext";
 import { TestGenerator } from "@/components/TestGenerator";
+import { useIndexedDocuments } from "@/contexts/IndexedDocumentsContext";
 
 const FileEditor = () => {
   const { fileId } = useParams();
   const navigate = useNavigate();
   const [isAIVisible, setIsAIVisible] = useState(true);
+  const { documents } = useIndexedDocuments();
+  const indexedDoc = fileId ? documents.find((d) => d.id === fileId) : null;
 
-  // Mock file data - in real app this would come from your data store
-  const fileName = fileId === "1" ? "Short Video Competition Analysis Lab" : 
-                   fileId === "2" ? "Research Notes" :
-                   fileId === "3" ? "Interview Transcript" : 
-                   "Document";
+  // Mock file data for demo fileIds; otherwise use indexed doc or fallback
+  const fileName =
+    indexedDoc
+      ? indexedDoc.name.replace(/\.[^/.]+$/, "")
+      : fileId === "1"
+        ? "Short Video Competition Analysis Lab"
+        : fileId === "2"
+          ? "Research Notes"
+          : fileId === "3"
+            ? "Interview Transcript"
+            : "Document";
 
-  const fileType = fileId === "1" ? "pdf" : 
-                   fileId === "2" ? "doc" : 
-                   fileId === "3" ? "slide" : "draft";
+  const fileType =
+    indexedDoc ? "pdf" : fileId === "1" ? "pdf" : fileId === "2" ? "doc" : fileId === "3" ? "slide" : "draft";
+
+  const hasPdfUrl =
+    indexedDoc?.downloadUrl &&
+    (indexedDoc.downloadUrl.startsWith("http") || indexedDoc.downloadUrl.startsWith("blob:"));
 
   return (
     <CitationProvider>
@@ -84,14 +96,26 @@ const FileEditor = () => {
           
           <ResizableHandle withHandle />
 
-          {/* Main Content - File Editing Area */}
+          {/* Main Content - same as /file/1: DocumentEditor (PDF + editor + Markdown Notes) or editor only */}
           <ResizablePanel defaultSize={isAIVisible ? 55 : 80} minSize={30}>
             <div className="h-full flex flex-col">
-              <DocumentEditor 
-                initialContent={sampleThesisContent}
-                fileName={fileName}
-                isAIVisible={isAIVisible}
-              />
+              {hasPdfUrl ? (
+                <DocumentEditor
+                  fileName={fileName}
+                  isAIVisible={isAIVisible}
+                  pdfUrl={indexedDoc!.downloadUrl}
+                />
+              ) : indexedDoc ? (
+                <div className="flex-1 flex items-center justify-center text-muted-foreground p-6">
+                  <p className="font-medium">No PDF available for preview</p>
+                </div>
+              ) : (
+                <DocumentEditor
+                  initialContent={sampleThesisContent}
+                  fileName={fileName}
+                  isAIVisible={isAIVisible}
+                />
+              )}
             </div>
           </ResizablePanel>
 

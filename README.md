@@ -62,7 +62,29 @@ This project is built with:
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/d85970e9-ad0c-4d7b-8847-042f7ce9120c) and click on Share -> Publish.
+**Option 1 – Lovable**  
+Open [Lovable](https://lovable.dev/projects/d85970e9-ad0c-4d7b-8847-042f7ce9120c) and click Share → Publish.
+
+**Option 2 – Build and deploy yourself**
+
+1. **Build for production**
+   ```sh
+   npm install
+   npm run build
+   ```
+   Output is in the `dist/` folder.
+
+2. **Preview the build locally**
+   ```sh
+   npm run preview
+   ```
+
+3. **Deploy the `dist/` folder** to any static host:
+   - **Vercel**: Connect the repo; build command `npm run build`, output directory `dist`.
+   - **Netlify**: Connect the repo; build command `npm run build`, publish directory `dist`.
+   - **GitHub Pages / any static host**: Upload the contents of `dist/`.
+
+**Environment variable:** Set `VITE_GEMINI_API_KEY` in your hosting provider’s environment (or in `.env.production`) for the AI chat and PDF indexing to work in production.
 
 ## Can I connect a custom domain to my Lovable project?
 
