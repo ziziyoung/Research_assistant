@@ -1,95 +1,183 @@
-# Welcome to your Lovable project
+# Research Assistant
 
-## Project info
+A lightweight **AI-powered research assistant** that allows users to upload PDFs, index their content, and interact with the documents using Google Gemini models.
 
-**URL**: https://lovable.dev/projects/d85970e9-ad0c-4d7b-8847-042f7ce9120c
+This project is designed to work well for **hackathons, demos, and early-stage prototypes**, while also being structured clearly enough for developers to extend or productionize.
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## ✨ What This Project Does
 
-**Use Lovable**
+🔗 **Live Demo**: [https://research-assistant-3ft6.vercel.app/](https://research-assistant-3ft6.vercel.app/)
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d85970e9-ad0c-4d7b-8847-042f7ce9120c) and start prompting.
+> The demo is deployed on **Vercel** and is publicly accessible. It is intended for hackathon reviews and functional demonstrations.
 
-Changes made via Lovable will be committed automatically to this repo.
+* 📄 Upload PDF files directly from the browser
+* 🔍 Extract and chunk text on the client side
+* 🧠 Index and analyze content using **Gemini (gemini-2.5-flash)**
+* ⚡ Fast, frontend-only demo experience
+* 🚫 No backend required (by default)
 
-**Use your preferred IDE**
+Typical use cases:
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+* Research paper summarization
+* Hackathon demos
+* AI-powered document exploration
+* Lightweight RAG-style indexing prototypes
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## 🧠 How It Works (High-Level)
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1. **User uploads a PDF** via the frontend
+2. **PDF text is parsed locally** (browser-side)
+3. Text is **chunked & indexed**
+4. Each chunk (or merged chunks) is sent to **Gemini API**
+5. Gemini responses are used for indexing / reasoning / summaries
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+> ⚠️ Important: Because this is frontend-only, all Gemini calls are made directly from the client using an API key.
 
-# Step 3: Install the necessary dependencies.
-npm i
+---
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+## 🧱 Architecture Overview
+
+```
+Browser (React / TSX)
+│
+├─ PDF Upload
+├─ PDF Parsing (client-side)
+├─ Chunking / Indexing Logic (AIIndexing.tsx)
+│
+└─ Gemini API (gemini-2.5-flash)
+```
+
+* No server
+* No database
+* Ideal for demos and hackathons
+
+---
+
+## 🚀 Features
+
+* ✅ PDF upload & reading
+* ✅ Client-side text extraction
+* ✅ AI-based indexing with Gemini
+* ✅ Graceful handling of quota / rate-limit errors
+* ⚠️ Free Tier quota awareness
+
+---
+
+## ⚙️ Tech Stack
+
+* **Frontend**: React + TypeScript
+* **PDF Parsing**: pdf.js / browser-based parsing
+* **AI Model**: Google Gemini (`gemini-2.5-flash`)
+* **API**: Gemini API (Direct client call)
+
+---
+
+## 🔑 Setup & Installation (Developers)
+
+### 1️⃣ Clone the repo
+
+```bash
+git clone <your-repo-url>
+cd research-assistant
+```
+
+### 2️⃣ Install dependencies
+
+```bash
+npm install
+```
+
+### 3️⃣ Configure environment variables
+
+Create a `.env` file:
+
+```env
+VITE_GEMINI_API_KEY=your_api_key_here
+```
+
+> ⚠️ Never commit your real API key to GitHub.
+
+### 4️⃣ Run locally
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📦 Gemini API Quotas (Very Important)
 
-**Use GitHub Codespaces**
+This project currently uses **Gemini Free Tier** by default.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Free Tier Limits (as of now)
 
-## What technologies are used for this project?
+* Model: `gemini-2.5-flash`
+* **20 generate requests / day / project / model**
+* Quota resets daily at **UTC 00:00**
 
-This project is built with:
+When the quota is exceeded, you will see errors like:
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+```
+429 RESOURCE_EXHAUSTED
+Quota exceeded for generate_content_free_tier_requests
+```
 
-## How can I deploy this project?
+### Practical Implications
 
-**Option 1 – Lovable**  
-Open [Lovable](https://lovable.dev/projects/d85970e9-ad0c-4d7b-8847-042f7ce9120c) and click Share → Publish.
+* Indexing a multi-page PDF can easily exhaust the daily quota
+* Retrying immediately will NOT help if the daily quota is used up
 
-**Option 2 – Build and deploy yourself**
+### Recommended Solutions
 
-1. **Build for production**
-   ```sh
-   npm install
-   npm run build
-   ```
-   Output is in the `dist/` folder.
+* 🔁 Merge multiple chunks into a single request
+* ⏳ Add retry + next-day resume logic
+* 💳 Enable billing for Gemini API (recommended for demos & judging)
 
-2. **Preview the build locally**
-   ```sh
-   npm run preview
-   ```
+---
 
-3. **Deploy the `dist/` folder** to any static host:
-   - **Vercel**: Connect the repo; build command `npm run build`, output directory `dist`.
-   - **Netlify**: Connect the repo; build command `npm run build`, publish directory `dist`.
-   - **GitHub Pages / any static host**: Upload the contents of `dist/`.
+## 🧪 Demo / Hackathon Tips
 
-**Environment variable:** Set `VITE_GEMINI_API_KEY` in your hosting provider’s environment (or in `.env.production`) for the AI chat and PDF indexing to work in production.
+If you are using this project for a **hackathon or demo**:
 
-## Can I connect a custom domain to my Lovable project?
+* ✅ Enable Gemini billing to avoid live demo failures
+* ✅ Use short PDFs (1–5 pages)
+* ✅ Prefer merged prompts instead of per-page calls
+* ✅ Handle `429` errors gracefully in UI
 
-Yes, you can!
+Judges clicking your demo multiple times can otherwise exhaust the Free Tier quickly.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+---
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## ⚠️ Limitations
+
+* Frontend-only API key exposure (not production-safe)
+* Free Tier quota is very limited
+* Not suitable for large PDFs without backend support
+
+---
+
+## 🛣️ Future Improvements
+
+* Backend proxy for Gemini API
+* Persistent vector storage
+* Streaming responses
+* Better chunking & embedding strategies
+* Auth & user-level quota control
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## 🙌 Acknowledgements
+
+* Google Gemini API
+* Open-source PDF parsing libraries
+* Hackathon & research community
